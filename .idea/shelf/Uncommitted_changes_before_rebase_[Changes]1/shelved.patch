@@ -1,0 +1,64 @@
+Index: src/Pages/emtpy.md
+===================================================================
+diff --git a/src/Pages/emtpy.md b/src/Pages/emtpy.md
+deleted file mode 100644
+--- a/src/Pages/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
+Index: src/Hooks/emtpy.md
+===================================================================
+diff --git a/src/Hooks/emtpy.md b/src/Hooks/emtpy.md
+deleted file mode 100644
+--- a/src/Hooks/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
+Index: src/Utils/emtpy.md
+===================================================================
+diff --git a/src/Utils/emtpy.md b/src/Utils/emtpy.md
+deleted file mode 100644
+--- a/src/Utils/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
+Index: src/Services/emtpy.md
+===================================================================
+diff --git a/src/Services/emtpy.md b/src/Services/emtpy.md
+deleted file mode 100644
+--- a/src/Services/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
+Index: src/Store/emtpy.md
+===================================================================
+diff --git a/src/Store/emtpy.md b/src/Store/emtpy.md
+deleted file mode 100644
+--- a/src/Store/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
+Index: src/Assets/emtpy.md
+===================================================================
+diff --git a/src/Assets/emtpy.md b/src/Assets/emtpy.md
+deleted file mode 100644
+--- a/src/Assets/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
+Index: src/Context/emtpy.md
+===================================================================
+diff --git a/src/Context/emtpy.md b/src/Context/emtpy.md
+deleted file mode 100644
+--- a/src/Context/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
+Index: src/Components/emtpy.md
+===================================================================
+diff --git a/src/Components/emtpy.md b/src/Components/emtpy.md
+deleted file mode 100644
+--- a/src/Components/emtpy.md	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
++++ /dev/null	(revision adfa257a6072b4dbedd437f372c89bd20c5f5eeb)
+@@ -1,1 +0,0 @@
+-지워도 되는 파일
