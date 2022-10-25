@@ -1,16 +1,19 @@
 import styled from "styled-components";
 import { Logo } from "./Logo";
 import "../fonts/font.css";
+import { Link } from "react-router-dom";
 //헤더 컴포넌트 입니다
 
 const Header = () => {
   return (
     <HeaderContainer>
-      <Wrapper>
-        <Logo width={50} height={42}></Logo>
-        <DMS>DMS</DMS>
-        <Port>port</Port>
-      </Wrapper>
+      <Link to="/">
+        <Wrapper>
+          <Logo width={50} height={42}></Logo>
+          <DMS>DMS</DMS>
+          <Port>port</Port>
+        </Wrapper>
+      </Link>
       <Wrapper2>
         <Letter>클럽</Letter>
         <Letter>공지</Letter>
