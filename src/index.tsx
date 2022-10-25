@@ -14,7 +14,6 @@ root.render(
       <ThemeProvider theme={baseTheme}>
         <GlobalStyle></GlobalStyle>
         <App />
-        <Footer />
       </ThemeProvider>
     </RecoilRoot>
   </React.StrictMode>
