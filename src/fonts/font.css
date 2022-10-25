@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Italic";
+  font-weight: 50;
+  src: url("./Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "ItalicBold";
+  src: url("./ItalicBold.ttf") format("truetype");
+}
