@@ -36,7 +36,15 @@ export const Letter = styled.div`
   color: #b0bfca;
 `;
 
+<<<<<<< Updated upstream:src/Components/Header/style.ts
 export const Button = styled.input`
+=======
+<<<<<<< Updated upstream:src/Components/Header.tsx
+const Button = styled.button`
+=======
+export const Button = styled.input`
+>>>>>>> Stashed changes:src/Components/Header/style.ts
+>>>>>>> Stashed changes:src/Components/Header.tsx
   width: 80px;
   height: 30px;
   background-color: #226699;
