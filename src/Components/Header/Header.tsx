@@ -1,4 +1,4 @@
-import * as S from "./style"
+import * as S from "./Header.style"
 import { Logo } from "../../Assets/SVG/Logo";
 import "../../fonts/font.css";
 import { Link } from "react-router-dom";
