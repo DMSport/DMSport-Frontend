@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const HeaderContainer = styled.div`
+  position: fixed;
   display: flex;
   justify-content: space-around;
   align-items: center;
