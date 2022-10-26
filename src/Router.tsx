@@ -3,6 +3,8 @@ import Footer from "./Components/Footer/Footer";
 import Header from "./Components/Header/Header";
 import PrivacyPolicy from "./Components/Privacy/PrivacyPolicy";
 import Privacy from "./Components/Privacy/Privacy";
+import Certification from "./Components/SignUp/Certification";
+import SignIn from "./Components/SignIn/SignIn";
 
 function Router() {
     return (
@@ -12,6 +14,8 @@ function Router() {
                 <Route path="/" element=""></Route>
                 <Route path="/Privacy" element={<Privacy />}></Route>
                 <Route path="/PrivacyPolicy" element={<PrivacyPolicy />}></Route>
+                <Route path="Certification" element={<Certification/>}></Route>
+                <Route path="SignIn" element={<SignIn/>}></Route>
                 {/*404page*/}
                 <Route path="*" element="" />
             </Routes>

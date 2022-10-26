@@ -1,6 +1,6 @@
 import { BackGroundImg } from "../../Assets/SVG/BackgroundImg"
 
-const SignUp = () => {
+const Certification = () => {
     return(
         <>
             <BackGroundImg width={50} height={42}></BackGroundImg>
@@ -8,4 +8,4 @@ const SignUp = () => {
     )
 }
 
-export default SignUp
+export default Certification

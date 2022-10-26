@@ -17,8 +17,12 @@ const Header = () => {
       <S.Wrapper2>
         <S.Letter>클럽</S.Letter>
         <S.Letter>공지</S.Letter>
-        <S.Button>로그인</S.Button>
-        <S.Button><Link to="/SignUp">회원가입</Link></S.Button>
+        <Link to="SignIn">
+          <S.Button type="button" value="로그인" />
+        </Link>
+        <Link to="/Certification">
+          <S.Button type="button" value="회원가입" />
+        </Link>
       </S.Wrapper2>
     </S.HeaderContainer>
   );

@@ -36,7 +36,7 @@ export const Letter = styled.div`
   color: #b0bfca;
 `;
 
-export const Button = styled.button`
+export const Button = styled.input`
   width: 80px;
   height: 30px;
   background-color: #226699;
@@ -46,4 +46,5 @@ export const Button = styled.button`
   color: ${(props) => props.theme.white};
   font-size: 15px;
   font-weight: 700;
+  cursor: pointer;
 `;
