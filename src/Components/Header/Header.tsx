@@ -29,7 +29,7 @@ const Header = () => {
           <S.Button type="button" value="회원가입" />
         </S.Wrapper2>
       </S.HeaderContainer>
-      {modal ? (<SignIn modal={modal} setModal={setModal} />) : null}
+      {modal && (<SignIn setModal={setModal} />)}
     </>
   );
 };

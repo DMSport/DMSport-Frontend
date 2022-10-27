@@ -3,23 +3,17 @@ import * as _ from "./SignIn.style"
 
 interface ModalProps {
     setModal: React.Dispatch<React.SetStateAction<boolean>>;
-    modal: boolean;
 }
 
-type onChange = {
-    value : string;
-    name : string;
-}
-
-const SignIn = ({ modal ,setModal }: ModalProps) => {
+const SignIn = ({ setModal }: ModalProps) => {
     const ModalCheck = useRef<HTMLDivElement>(null)
     const [inputs, setInputs] = useState({
         email: "",
         pw: "",
     });
-
+    
     const { email, pw } = inputs;
-
+    
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
         setInputs({
@@ -27,12 +21,8 @@ const SignIn = ({ modal ,setModal }: ModalProps) => {
             [name]: value,
         });
     };
-
+    
     const Disabled = !(email && pw);
-
-    const ViewModal = () => {
-        setModal(!modal)
-    }
 
     return (
         <>
