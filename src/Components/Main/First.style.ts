@@ -9,17 +9,14 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
 `;
-export const TitleText = styled.span`
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 39px;
-  color: white;
-`;
 export const Img = styled.img`
   position: absolute;
   max-height: 100%;
   max-width: 100%;
 `;
-export const Text = styled.span<{textColor: string}>`
-    color: ${props => props.}
-`
+export const Text = styled.span<{ textColor: string }>`
+  color: ${(props) => props.textColor};
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 39px;
+`;
