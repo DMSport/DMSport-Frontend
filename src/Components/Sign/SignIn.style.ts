@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
     display: fixed;
     margin: auto;
-    margin-top: 120px;
+    margin-top: 155px;
     width: 380px;
     height: 504px;
 `
@@ -27,16 +27,23 @@ export const TitleText = styled.div`
     margin-bottom: 37px;
 `
 
-export const TextInput = styled.input`
+export const TextInput = styled.input< { padding?: string, width? :string } >`
     font-size: 16px;
     border: none;
-    width: 274px;
+    width: ${props => props.width|| "274px"};
     margin-top: 10px;
-    padding: 15px 10px;
+    padding: ${ props => props.padding || "15px 10px"};
     border-bottom: 2px solid #ACACAC;
     outline: none;
     &:focus{
         border-bottom: 2px solid black;
+    }
+    :disabled {
+        background-color: white;
+        color: #ACACAC;
+    }
+    ::placeholder{
+        color: #D9D9D9;
     }
 `
 
@@ -48,18 +55,20 @@ export const FYP = styled.div`
     color: #D9D9D9;
 `
 
-export const Button = styled.button`
-    width: 271.08px;
-    height: 50.92px;
+export const Button = styled.button< { width? : string, height? : string, radius? : string, margin? : string } >`
+    width: ${ props => props.width || "271.08px"};
+    height: ${ props => props.height || "50.92px"};
     border: none;
     background: #226699;
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
-    border-radius: 30px;
+    border-radius: ${ props => props.radius || "30px"};
     font-weight: 600;
     font-size: 20px;
     color: #FFFFFF;
+    font-weight: 600;
+    margin: ${ props => props.margin || "0"};
     :disabled {
-      background: #95B2C8;
+    background: #ADD1EC;
     }
 `
 
@@ -68,6 +77,7 @@ export const SignUpText = styled.div`
     font-size: 16px;
     color: #898A8D;
     margin-top: 13px;
+    cursor: pointer;
 `
 
 export const Background = styled.div`
@@ -75,4 +85,15 @@ export const Background = styled.div`
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.6);
+`
+
+export const CertiWrapper = styled.div`
+    display: flex;
+    align-items: flex-end;
+`
+
+export const Eye = styled.img`
+    position: absolute;
+    margin-left: -30px;
+    margin-top: 20px;
 `
