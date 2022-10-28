@@ -1,5 +1,5 @@
 function Second() {
-  return null;
+  return;
 }
 
 export default Second;
