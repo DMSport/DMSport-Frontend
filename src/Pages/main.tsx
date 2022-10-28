@@ -1,6 +1,6 @@
-import First from "../Components/Main/First/First";
-import Second from "../Components/Main/Third/Second";
-import Third from "../Components/Main/Second/Third";
+import First from "../Components/Main/First";
+import Second from "../Components/Main/Second";
+import Third from "../Components/Main/Third";
 
 function Main() {
   return (
