@@ -6,17 +6,23 @@ import { useState } from "react";
 import SignIn from "../Sign/SignIn";
 import Certification from "../Sign/Certification";
 import SignUp from "../Sign/SignUp"
+import FYPCerti from "../Sign/FYPCerti";
+import ChangePw from "../Sign/ChangePw";
 
 const Header = () => {
   const [signInModal, setSignInModal] = useState(false)
   const [certifiModal, setCertifiModal] = useState(false)
   const [signUpModal, setSignUpModal] = useState(false)
+  const [FYPCertiModal, setFYPCertiModal] = useState(false)
+  const [changePwModal, setChangePwModal] = useState(false)
 
   return (
     <>
-      {signInModal && (<SignIn setSignInModal={setSignInModal} setCertifiModal={setCertifiModal} />)}
+      {signInModal && (<SignIn setSignInModal={setSignInModal} setCertifiModal={setCertifiModal} setFYPCertiModal={setFYPCertiModal}/>)}
       {certifiModal && (<Certification setSignUpModal={setSignUpModal} setCertiModal={setCertifiModal} />)}
       {signUpModal && (<SignUp setSignUpModal={setSignUpModal} />)}
+      {FYPCertiModal && (<FYPCerti setChangePwModal={setChangePwModal} setFYPCertiModal={setFYPCertiModal} />)}
+      {changePwModal && (<ChangePw setChangePwModal={setChangePwModal} />)}
       <S.HeaderContainer>
         <Link to="/">
           <S.Wrapper>
