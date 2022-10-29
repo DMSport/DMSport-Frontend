@@ -53,6 +53,7 @@ export const FYP = styled.div`
     font-weight: 600;
     font-size: 14px;
     color: #D9D9D9;
+    cursor: pointer;
 `
 
 export const Button = styled.button< { width? : string, height? : string, radius? : string, margin? : string } >`

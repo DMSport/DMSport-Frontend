@@ -6,9 +6,10 @@ import OpenEye from "../../Assets/SVG/OpenEye.svg"
 interface ModalProps {
     setSignInModal: React.Dispatch<React.SetStateAction<boolean>>;
     setCertifiModal: React.Dispatch<React.SetStateAction<boolean>>;
+    setFYPCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const SignIn = ({ setSignInModal, setCertifiModal }: ModalProps) => {
+const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProps) => {
     const ModalCheck = useRef<HTMLDivElement>(null)
     const [pwType, setPwType] = useState({
         type: 'password',
@@ -31,7 +32,7 @@ const SignIn = ({ setSignInModal, setCertifiModal }: ModalProps) => {
     const SignInModalDown = () => {
         setSignInModal(false)
     }
-    
+
     const { type } = pwType;
 
     return (
@@ -49,7 +50,7 @@ const SignIn = ({ setSignInModal, setCertifiModal }: ModalProps) => {
                             <_.TextInput name="pw" onChange={onChange} value={pw} type={type} placeholder="비밀번호를 입력해주세요" />
                             <_.Eye width="25px" height="25px" src={(type === "password") ? OpenEye : CloseEye} onClick={() => { setPwType((type === "password") ? { type: "text" } : { type: "password" }) }}></_.Eye>
                         </div>
-                        <_.FYP>비밀번호를 잊으셨나요?</_.FYP>
+                        <_.FYP onClick={() => {setFYPCertiModal(true); SignInModalDown()}}>비밀번호를 잊으셨나요?</_.FYP>
                         <_.Button disabled={!(email && pw)} onClick={() => {SignInModalDown()}}>확인</_.Button>
                         <_.SignUpText onClick={() => { setCertifiModal(true); SignInModalDown() }}>회원가입</_.SignUpText>
                     </_.Wrapper>
