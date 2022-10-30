@@ -4,20 +4,30 @@ import CloseEye from "../../Assets/SVG/CloseEye.svg"
 import OpenEye from "../../Assets/SVG/OpenEye.svg"
 
 interface ModalProps {
-    setSignInModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setCertifiModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setFYPCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setSignInModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setCertifiModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setFYPCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProps) => {
-    const ModalCheck = useRef<HTMLDivElement>(null)
-    const [pwType, setPwType] = useState({
-        type: 'password',
+  const ModalCheck = useRef<HTMLDivElement>(null);
+  const [pwType, setPwType] = useState({
+    type: "password",
+  });
+  const [inputs, setInputs] = useState({
+    email: "",
+    pw: "",
+  });
+
+  const { email, pw } = inputs;
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
     });
-    const [inputs, setInputs] = useState({
-        email: "",
-        pw: "",
-    });
+  };
 
     const { email, pw } = inputs;
 
@@ -67,4 +77,5 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
     )
 }
 
-export default SignIn
+
+export default SignIn;
