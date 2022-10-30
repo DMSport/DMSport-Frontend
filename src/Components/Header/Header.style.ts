@@ -8,7 +8,6 @@ export const HeaderContainer = styled.div`
   width: 100vw;
   height: 65px;
   background-color: ${(props) => props.theme.Black};
-  z-index: 99;
 `;
 
 export const Wrapper = styled.div`
