@@ -36,6 +36,7 @@ export const Letter = styled.div`
   font-size: 16px;
   font-weight: 700;
   color: #b0bfca;
+  cursor: pointer;
 `;
 
 export const Button = styled.input`
