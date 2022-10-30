@@ -1,16 +1,5 @@
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 import { useRef, useState, useEffect } from "react";
-=======
-import { useRef, useState } from "react";
->>>>>>> Stashed changes
-=======
-import { useRef, useState } from "react";
->>>>>>> Stashed changes
-=======
-import { useRef, useState } from "react";
->>>>>>> Stashed changes
+
 import * as _ from "./SignIn.style"
 import CloseEye from "../../Assets/SVG/CloseEye.svg"
 import OpenEye from "../../Assets/SVG/OpenEye.svg"
@@ -40,9 +29,7 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
         });
     };
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -50,12 +37,6 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
         };
     }, []);
 
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
     return (
         <>
             <_.Background ref={ModalCheck} onClick={(e) => {
@@ -68,7 +49,7 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
                         <_.TitleText>시작하기</_.TitleText>
                         <div>
                             <_.TextInput padding="15px 40px 15px 10px " name="pw" onChange={onInputChange} value={pw} type={pwType ? "password" : "text"} placeholder="기존 비밀번호를 입력해주세요." />
-                            <_.Eye width="25px" height="25px" src={pwType ? OpenEye : CloseEye} onClick={() => {setPwType(!pwType)}}></_.Eye>
+                            <_.Eye width="25px" height="25px" src={pwType ? OpenEye : CloseEye} onClick={() => { setPwType(!pwType) }}></_.Eye>
                         </div>
                         <div>
                             <_.TextInput padding="15px 40px 15px 10px " name="newPw" onChange={onInputChange} value={newPw} type={newPwType ? "password" : "text"} placeholder="새로운 비밀번호를 입력해주세요" />
@@ -76,7 +57,7 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
                         </div>
                         <div>
                             <_.TextInput padding="15px 40px 15px 10px " name="reNewPw" onChange={onInputChange} value={reNewPw} type={reNewPwType ? "password" : "text"} placeholder="새로운 비밀번호를 재입력해주세요" />
-                            <_.Eye width="25px" height="25px" src={reNewPwType ? OpenEye : CloseEye} onClick={() => {setReNewPwType(!reNewPwType)}}></_.Eye>
+                            <_.Eye width="25px" height="25px" src={reNewPwType ? OpenEye : CloseEye} onClick={() => { setReNewPwType(!reNewPwType) }}></_.Eye>
                         </div>
                         <_.Button disabled={!(newPw && pw && reNewPw)} margin="61px" onClick={() => { setChangePwModal(false) }}>확인</_.Button>
                     </_.Wrapper>

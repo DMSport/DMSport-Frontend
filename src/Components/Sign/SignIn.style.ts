@@ -49,7 +49,6 @@ export const TextInput = styled.input<{ padding?: string; width?: string }>`
 `;
 
 export const FYP = styled.div`
-<<<<<<< Updated upstream
   margin-top: 60px;
   margin-bottom: 10px;
   font-weight: 600;
@@ -57,15 +56,6 @@ export const FYP = styled.div`
   color: #d9d9d9;
   cursor: pointer;
 `;
-=======
-    margin-top: 60px;
-    margin-bottom: 10px;
-    font-weight: 600;
-    font-size: 14px;
-    color: #D9D9D9;
-    cursor: pointer;
-`
->>>>>>> Stashed changes
 
 export const Button = styled.button<{ width?: string; height?: string; radius?: string; margin?: string }>`
   width: ${(props) => props.width || "271.08px"};
