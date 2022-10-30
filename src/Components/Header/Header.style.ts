@@ -8,6 +8,7 @@ export const HeaderContainer = styled.div`
   width: 100vw;
   height: 65px;
   background-color: ${(props) => props.theme.Black};
+  z-index: 99;
 `;
 
 export const Wrapper = styled.div`
@@ -35,6 +36,7 @@ export const Letter = styled.div`
   font-size: 16px;
   font-weight: 700;
   color: #b0bfca;
+  cursor: pointer;
 `;
 
 export const Button = styled.input`
