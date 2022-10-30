@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import * as _ from "./SignIn.style"
 
 interface ModalProps {
@@ -23,6 +23,13 @@ const FYPCerti = ({ setFYPCertiModal, setChangePwModal }: ModalProps) => {
             [name]: value,
         });
     };
+
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
 
     return (
         <>

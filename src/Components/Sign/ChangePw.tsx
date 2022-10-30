@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import * as _ from "./SignIn.style"
 import CloseEye from "../../Assets/SVG/CloseEye.svg"
 import OpenEye from "../../Assets/SVG/OpenEye.svg"
@@ -27,6 +27,13 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
             [name]: value,
         });
     };
+
+    useEffect(() => {
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, []);
 
     return (
         <>

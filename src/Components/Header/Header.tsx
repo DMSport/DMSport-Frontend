@@ -12,7 +12,7 @@ import ChangePw from "../Sign/ChangePw";
 const Header = () => {
   const [signInModal, setSignInModal] = useState(false)
   const [certifiModal, setCertifiModal] = useState(false)
-  const [signUpModal, setSignUpModal] = useState(false)
+  const [signUpModal, setSignUpModal] = useState(true)
   const [FYPCertiModal, setFYPCertiModal] = useState(false)
   const [changePwModal, setChangePwModal] = useState(false)
 
