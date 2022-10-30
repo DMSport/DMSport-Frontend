@@ -10,6 +10,9 @@ import SignUp from "../Sign/SignUp";
 =======
 import SignUp from "../Sign/SignUp"
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
@@ -48,6 +51,9 @@ const Header = () => {
       {FYPCertiModal && (<FYPCerti setChangePwModal={setChangePwModal} setFYPCertiModal={setFYPCertiModal} />)}
       {changePwModal && (<ChangePw setChangePwModal={setChangePwModal} />)}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes

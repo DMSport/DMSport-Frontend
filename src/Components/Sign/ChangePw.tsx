@@ -1,6 +1,10 @@
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { useRef, useState, useEffect } from "react";
+=======
+import { useRef, useState } from "react";
+>>>>>>> Stashed changes
 =======
 import { useRef, useState } from "react";
 >>>>>>> Stashed changes
@@ -38,6 +42,7 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
 
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -45,6 +50,8 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
         };
     }, []);
 
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

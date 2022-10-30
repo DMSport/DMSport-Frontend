@@ -85,9 +85,12 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
                         </div>
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         <_.FYP onClick={() => { setFYPCertiModal(true); SignInModalDown() }}>비밀번호를 잊으셨나요?</_.FYP>
                         <_.Button disabled={!(email && pw)} onClick={() => { SignInModalDown() }}>확인</_.Button>
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
                         <_.FYP onClick={() => {setFYPCertiModal(true); SignInModalDown()}}>비밀번호를 잊으셨나요?</_.FYP>
