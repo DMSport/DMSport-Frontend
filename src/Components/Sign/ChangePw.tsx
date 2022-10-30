@@ -1,4 +1,12 @@
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import { useRef, useState, useEffect } from "react";
+=======
+import { useRef, useState } from "react";
+>>>>>>> Stashed changes
+=======
+import { useRef, useState } from "react";
+>>>>>>> Stashed changes
 import * as _ from "./SignIn.style"
 import CloseEye from "../../Assets/SVG/CloseEye.svg"
 import OpenEye from "../../Assets/SVG/OpenEye.svg"
@@ -28,6 +36,8 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
         });
     };
 
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
     useEffect(() => {
         document.body.style.overflow = "hidden";
         return () => {
@@ -35,6 +45,10 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
         };
     }, []);
 
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
     return (
         <>
             <_.Background ref={ModalCheck} onClick={(e) => {
