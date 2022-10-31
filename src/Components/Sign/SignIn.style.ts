@@ -41,7 +41,6 @@ export const TextInput = styled.input<{ padding?: string; width?: string }>`
     background-color: white;
   }
   :disabled {
-    background-color: white;
     color: #acacac;
   }
   ::placeholder {
