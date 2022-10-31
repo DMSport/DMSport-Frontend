@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import * as _ from "./SignIn.style"
+import * as _ from "../SignIn.style"
 
 interface ModalProps {
     setChangePwModal: React.Dispatch<React.SetStateAction<boolean>>;

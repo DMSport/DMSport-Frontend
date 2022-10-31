@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
-import * as _ from "./SignIn.style"
-import CloseEye from "../../Assets/SVG/CloseEye.svg"
-import OpenEye from "../../Assets/SVG/OpenEye.svg"
+import * as _ from "../SignIn.style"
+import CloseEye from "../../../Assets/SVG/CloseEye.svg"
+import OpenEye from "../../../Assets/SVG/OpenEye.svg"
 
 interface ModalProps {
     setSignInModal: React.Dispatch<React.SetStateAction<boolean>>;

@@ -38,9 +38,9 @@ export const TextInput = styled.input<{ padding?: string; width?: string }>`
   outline: none;
   &:focus {
     border-bottom: 2px solid black;
+    background-color: white;
   }
   :disabled {
-    background-color: white;
     color: #acacac;
   }
   ::placeholder {

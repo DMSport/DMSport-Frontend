@@ -1,7 +1,12 @@
 import { useRef, useState, useEffect } from "react";
-import * as _ from "./SignIn.style"
+import * as _ from "../SignIn.style"
 import axios from 'axios'
-import { ToastError, ToastSuccess } from "../../Utils/Function/AlertMessage"
+import ToastError from "../../../Utils/Function/ErrorMessage"
+import ToastSuccess from "../../../Utils/Function/SuccessMessage"
+import { ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
+import { useSetRecoilState } from 'recoil';
+import { Email } from '../../../Utils/atoms';
 
 interface ModalProps {
     setCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +16,7 @@ interface ModalProps {
 const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
     const ModalCheck = useRef<HTMLDivElement>(null)
     const [OKCerti, setOKCerti] = useState(false)
+    const setEmailRecoil = useSetRecoilState(Email);
     const [inputs, setInputs] = useState({
         email: "",
         auth_code: "",
@@ -24,6 +30,9 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
             ...inputs,
             [name]: value,
         });
+        if (name === "email") {
+            setEmailRecoil(value)
+        }
     };
 
     useEffect(() => {
@@ -37,35 +46,42 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
         axios.post(process.env.REACT_APP_BASE_URL + `users/mail/duplicate`, { "email": email })
             .then(() => {
                 setOKCerti(true)
-                axios.post(process.env.REACT_APP_BASE_URL + `/users/mail/signup`, { "email": email })
+                axios.post(process.env.REACT_APP_BASE_URL + `users/mail/signup`, { "email": email })
                     .then(() => {
                         ToastSuccess("인증번호가 전송되었습니다.")
                     })
                     .catch((e) => {
-                        switch (e.response.status) {
-                            case 400:
-                                return ToastError("이메일을 다시 확인해주세요.");
-                            case 409:
-                                return ToastError("이메일이 중복됩니다.");
-                            case 500:
-                                return ToastError("관리자에게 문의해주세요");
-                            default:
-                                ToastError("네트워크 연결을 확인해주세요.");
+                        if (axios.isAxiosError(e) && e.response) {
+                            switch (e.response.status) {
+                                case 400:
+                                    return ToastError("이메일을 다시 확인해주세요.");
+                                case 409:
+                                    return ToastError("이메일이 중복됩니다.");
+                                case 500:
+                                    return ToastError("관리자에게 문의해주세요");
+                                default:
+                                    ToastError("네트워크 연결을 확인해주세요.");
+                            }
+                        } else {
+                            ToastError("네트워크 연결을 확인해주세요.");
                         }
-                        alert("asdf")
                     })
             })
             .catch((e) => {
-                console.log(e)
-                switch (e.AxiosError.message) {
-                    case 400:
-                        return ToastError("이메일을 다시 확인해주세요.");
-                    case 409:
-                        return ToastError("이메일이 중복됩니다.");
-                    case 500:
-                        return ToastError("관리자에게 문의해주세요");
-                    default:
-                        ToastError("네트워크 연결을 확인해주세요.");
+                setCertiModal(false)
+                if (axios.isAxiosError(e) && e.response) {
+                    switch (e.response.status) {
+                        case 400:
+                            return ToastError("이메일을 다시 확인해주세요.");
+                        case 409:
+                            return ToastError("이메일이 중복됩니다.");
+                        case 500:
+                            return ToastError("관리자에게 문의해주세요");
+                        default:
+                            ToastError("네트워크 연결을 확인해주세요.");
+                    }
+                } else {
+                    ToastError("네트워크 연결을 확인해주세요.");
                 }
             })
     }
@@ -73,17 +89,22 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
     const CertiEmail = () => {
         axios.post(process.env.REACT_APP_BASE_URL + `users/mail/verify`, inputs)
             .then(() => {
+                setTimeout(function () {
+                    ToastSuccess("인증되었습니다.")
+                }, 2000
+                )
                 setCertiModal(false)
                 setSignUpModal(true)
-                ToastSuccess("인증되었습니다.")
             })
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
                     switch (e.response.status) {
-                        case 400:
+                        case 401:
                             return ToastError("인증코드가 잘못되었습니다.");
                         case 500:
                             return ToastError("관리자에게 문의해주세요");
+                        default:
+                            ToastError("네트워크 연결을 확인해주세요.");
                     }
                 } else {
                     ToastError("네트워크 연결을 확인해주세요.");
@@ -93,6 +114,7 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
 
     return (
         <>
+            <ToastContainer />
             <_.Background ref={ModalCheck} onClick={(e) => {
                 if (ModalCheck.current === e.target) {
                     setCertiModal(false)
@@ -105,7 +127,7 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
                             <_.TextInput name="email" onChange={onChange} disabled={OKCerti} width="193px" value={email} type="text" placeholder="이메일을 입력해주세요" />
                             <_.Button onClick={() => { dupliEmail() }} disabled={!(email) || OKCerti} width="70px" height="45px" radius="10px" margin="0 0 0 12px">인증</_.Button>
                         </_.CertiWrapper>
-                        {OKCerti && (<_.TextInput name="pw" onChange={onChange} value={auth_code} type="text" placeholder="인증번호를 입력해주세요" />)}
+                        {OKCerti && (<_.TextInput name="auth_code" onChange={onChange} value={auth_code} type="text" placeholder="인증번호를 입력해주세요" />)}
                         <_.Button id="Certi" margin={OKCerti ? "120px 0 0 0" : "180px 0 0 0"} disabled={!(email && auth_code)} onClick={() => { CertiEmail() }}>확인</_.Button>
                     </_.Wrapper>
                 </_.Container>

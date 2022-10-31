@@ -3,11 +3,11 @@ import { Logo } from "../../Assets/SVG/Logo";
 import "../../fonts/font.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import SignIn from "../Sign/SignIn";
-import Certification from "../Sign/Certification";
-import SignUp from "../Sign/SignUp";
-import FYPCerti from "../Sign/FYPCerti";
-import ChangePw from "../Sign/ChangePw";
+import SignIn from "../Sign/SignIn/SignIn";
+import Certification from "../Sign/SignUp/Certification";
+import SignUp from "../Sign/SignUp/SignUp";
+import FYPCerti from "../Sign/ChangePw/FYPCerti";
+import ChangePw from "../Sign/ChangePw/ChangePw";
 
 const Header = () => {
   const [signInModal, setSignInModal] = useState(false)
