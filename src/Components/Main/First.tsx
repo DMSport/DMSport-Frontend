@@ -1,4 +1,4 @@
-import * as _ from "./First.style";
+import * as _ from "./main.style";
 
 function First() {
   return (

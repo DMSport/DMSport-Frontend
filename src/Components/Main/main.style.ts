@@ -11,12 +11,19 @@ export const Container = styled.div`
 `;
 export const Img = styled.img`
   position: absolute;
-  max-height: 100%;
+  height: 100vh;
   max-width: 100%;
+  z-index: -1;
 `;
 export const Text = styled.span<{ textColor: string }>`
   color: ${(props) => props.textColor};
   font-weight: 700;
   font-size: 32px;
   line-height: 39px;
+  z-index: -1;
+`;
+
+export const SecondContainer = styled(Container)`
+  align-items: flex-start;
+  padding: 196px;
 `;
