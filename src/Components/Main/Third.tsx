@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import * as _ from "./main.style";
 
 function Third() {
@@ -11,9 +12,9 @@ function Third() {
             부원들에게 빠르게 공지하세요.
           </_.Text>
         </div>
-        <_.Text textColor="#72B5CA" style={{ marginTop: "108px" }}>
-          시작하기
-        </_.Text>
+        <Link to="/notice" style={{ marginTop: "108px" }}>
+          <_.Text textColor="#72B5CA">시작하기</_.Text>
+        </Link>
       </_.Container>
     </>
   );

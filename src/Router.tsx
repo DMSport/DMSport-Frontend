@@ -4,13 +4,14 @@ import Header from "./Components/Header/Header";
 import PrivacyPolicy from "./Components/Privacy/PrivacyPolicy";
 import Privacy from "./Components/Privacy/Privacy";
 import NoticePage from "./Pages/NoticePage";
+import Main from "./Pages/main";
 
 function Router() {
   return (
     <>
       <Header />
       <Routes>
-        <Route path="/" element=""></Route>
+        <Route path="/" element={<Main />}></Route>
         <Route path="/Privacy" element={<Privacy />}></Route>
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />}></Route>
         {/*404page*/}
