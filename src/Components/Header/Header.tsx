@@ -16,14 +16,14 @@ const Header = () => {
   const [FYPCertiModal, setFYPCertiModal] = useState(false)
   const [changePwModal, setChangePwModal] = useState(false)
   const AdminLogin = useMemo(() => {
-    return localStorage.getItem("authority") == "ADMIN" ?
+    return localStorage.getItem("authority") === "ADMIN" ?
       <Link to="/adminpage">
         <S.Letter>관리자</S.Letter>
       </Link>
       :
       <>
       </>
-  }, [localStorage.getItem("access_token")])
+  }, [localStorage.getItem("authority")])
   const UserLogin = useMemo(() => {
     return !localStorage.getItem("access_token") ?
       <>
