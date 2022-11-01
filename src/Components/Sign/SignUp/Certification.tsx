@@ -3,8 +3,6 @@ import * as _ from "../SignIn.style"
 import axios from 'axios'
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import ToastSuccess from "../../../Utils/Function/SuccessMessage"
-import { ToastContainer } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css'
 import { useSetRecoilState } from 'recoil';
 import { Email } from '../../../Utils/atoms';
 
@@ -46,10 +44,8 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
         axios.post(process.env.REACT_APP_BASE_URL + `users/mail/duplicate`, { "email": email })
             .then(() => {
                 setOKCerti(true)
+                ToastSuccess("인증번호가 전송되었습니다.")
                 axios.post(process.env.REACT_APP_BASE_URL + `users/mail/signup`, { "email": email })
-                    .then(() => {
-                        ToastSuccess("인증번호가 전송되었습니다.")
-                    })
                     .catch((e) => {
                         if (axios.isAxiosError(e) && e.response) {
                             switch (e.response.status) {
@@ -89,12 +85,11 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
     const CertiEmail = () => {
         axios.post(process.env.REACT_APP_BASE_URL + `users/mail/verify`, inputs)
             .then(() => {
-                setTimeout(function () {
-                    ToastSuccess("인증되었습니다.")
-                }, 2000
-                )
                 setCertiModal(false)
                 setSignUpModal(true)
+            })
+            .then(() => {
+                ToastSuccess("인증되었습니다.")
             })
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
@@ -114,7 +109,7 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
 
     return (
         <>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
             <_.Background ref={ModalCheck} onClick={(e) => {
                 if (ModalCheck.current === e.target) {
                     setCertiModal(false)
