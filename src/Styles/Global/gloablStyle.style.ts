@@ -64,4 +64,8 @@ a {
   text-decoration:none;
   color:inherit;
 }
+button{
+  background-color: rgba(0,0,0,0);
+  border: 0;
+}
 `;
