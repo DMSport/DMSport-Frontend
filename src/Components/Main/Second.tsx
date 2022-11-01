@@ -3,7 +3,7 @@ import * as _ from "./main.style";
 function Second() {
   return (
     <>
-      <_.Img src={require("../../Assets/PNG/Main/second.png")} />
+      <_.Img src={require("../../Assets/PNG/second.png")} alt="" />
       <_.SecondContainer>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <_.Text textColor="white" style={{ marginBottom: "22px" }}>

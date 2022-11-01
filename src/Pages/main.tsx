@@ -4,11 +4,11 @@ import Third from "../Components/Main/Third";
 
 function Main() {
   return (
-    <div style={{ scrollSnapType: "both mandatory" }}>
+    <>
       <First />
       <Second />
       <Third />
-    </div>
+    </>
   );
 }
 

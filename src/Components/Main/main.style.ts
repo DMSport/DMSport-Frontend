@@ -12,7 +12,7 @@ export const Container = styled.div`
 export const Img = styled.img`
   position: absolute;
   height: 100vh;
-  max-width: 100%;
+  width: 100vw;
   z-index: -1;
 `;
 export const Text = styled.span<{ textColor: string }>`

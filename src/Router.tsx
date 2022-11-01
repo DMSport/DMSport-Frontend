@@ -3,13 +3,7 @@ import Footer from "./Components/Footer/Footer";
 import Header from "./Components/Header/Header";
 import PrivacyPolicy from "./Components/Privacy/PrivacyPolicy";
 import Privacy from "./Components/Privacy/Privacy";
-<<<<<<< Updated upstream
 import NoticePage from "./Pages/NoticePage";
-=======
-import Certification from "./Components/Sign/Certification";
-import SignIn from "./Components/Sign/SignIn";
-import Main from "./Pages/main";
->>>>>>> Stashed changes
 
 function Router() {
   return (

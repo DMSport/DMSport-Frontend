@@ -3,7 +3,7 @@ import * as _ from "./main.style";
 function Third() {
   return (
     <>
-      <_.Img src={require("../../Assets/PNG/Main/Third.png")} />
+      <_.Img src={require("../../Assets/PNG/third.png")} alt="" />
       <_.Container>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <_.Text textColor="white">소식은 빠르고 정확해야 합니다.</_.Text>
