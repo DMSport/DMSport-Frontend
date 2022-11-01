@@ -6,6 +6,7 @@ import axios from "axios";
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"
+import { Cookies } from "react-cookie";
 
 interface ModalProps {
     setSignInModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,6 +15,7 @@ interface ModalProps {
 }
 
 const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProps) => {
+    const cookies = new Cookies()
     const ModalCheck = useRef<HTMLDivElement>(null);
     const [pwType, setPwType] = useState({
         type: "password",
@@ -51,7 +53,7 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
         axios.post(process.env.REACT_APP_BASE_URL + `users/auth`, inputs)
             .then((response) => {
                 localStorage.setItem("access_token", response.data.access_token)
-                localStorage.setItem("refresh_token", response.data.refresh_token)
+                cookies.set("refresh_token", response.data.refresh_token,)
                 localStorage.setItem("authority", response.data.authority)
                 Swal.fire(
                     '로그인 성공',
