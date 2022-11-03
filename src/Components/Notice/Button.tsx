@@ -1,5 +1,5 @@
 import { useSetRecoilState } from "recoil";
-import { isNoticeAtom } from "../../Utils/atoms";
+import { isNoticeAtom } from "../../Store/atoms";
 import * as _ from "./Button.style";
 
 interface IButton {

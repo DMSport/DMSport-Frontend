@@ -3,7 +3,7 @@ import styled from "styled-components";
 import NoticeButton from "../Components/Notice/Button";
 import NoticeModal from "../Components/Notice/NoticeModal";
 import Post from "../Components/Notice/Post";
-import { isNoticeAtom, isNoticeModalAtom } from "../Utils/atoms";
+import { isNoticeAtom, isNoticeModalAtom } from "../Store/atoms";
 
 const NoticePage = () => {
   const isNotice = useRecoilValue(isNoticeAtom);

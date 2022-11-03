@@ -4,7 +4,7 @@ import axios from 'axios'
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import ToastSuccess from "../../../Utils/Function/SuccessMessage"
 import { useSetRecoilState } from 'recoil';
-import { Email } from '../../../Utils/atoms';
+import { Email } from '../../../Store/atoms';
 
 interface ModalProps {
     setCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -28,9 +28,6 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
             ...inputs,
             [name]: value,
         });
-        if (name === "email") {
-            setEmailRecoil(value)
-        }
     };
 
     useEffect(() => {
@@ -85,11 +82,10 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
     const CertiEmail = () => {
         axios.post(process.env.REACT_APP_BASE_URL + `users/mail/verify`, inputs)
             .then(() => {
+                setEmailRecoil(email)
+                ToastSuccess("인증되었습니다.")
                 setCertiModal(false)
                 setSignUpModal(true)
-            })
-            .then(() => {
-                ToastSuccess("인증되었습니다.")
             })
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {

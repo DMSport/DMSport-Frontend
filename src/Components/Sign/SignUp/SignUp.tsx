@@ -5,7 +5,7 @@ import * as _ from "../SignIn.style"
 import axios from "axios"
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import { useRecoilValue } from 'recoil';
-import { Email } from '../../../Utils/atoms';
+import { Email } from '../../../Store/atoms';
 import Swal from "sweetalert2";
 
 interface ModalProps {

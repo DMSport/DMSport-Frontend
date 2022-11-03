@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import { isNoticeModalAtom } from "../../Utils/atoms";
+import { isNoticeModalAtom } from "../../Store/atoms";
 import * as _ from "./NoticeModal.style";
 
 function NoticeModal() {
