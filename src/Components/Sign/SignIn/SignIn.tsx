@@ -54,7 +54,7 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
             .then((response) => {
                 const { access_token, refresh_token, authority } = response.data
                 localStorage.setItem("access_token", access_token)
-                cookies.set("refresh_token", refresh_token,)
+                cookies.set("refresh_token", refresh_token)
                 localStorage.setItem("authority", authority)
                 Swal.fire(
                     '로그인 성공',
