@@ -1,6 +1,6 @@
 import * as _ from "./Post.style";
 import { useSetRecoilState } from "recoil";
-import { isNoticeModalAtom } from "../../Utils/atoms";
+import { isNoticeModalAtom } from "../../Store/atoms";
 
 function Post() {
   const setNoticeModalAtom = useSetRecoilState(isNoticeModalAtom);

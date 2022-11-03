@@ -4,11 +4,9 @@ import OpenEye from "../../../Assets/SVG/OpenEye.svg"
 import * as _ from "../SignIn.style"
 import axios from "axios"
 import ToastError from "../../../Utils/Function/ErrorMessage"
-import ToastSuccess from "../../../Utils/Function/SuccessMessage"
-import { ToastContainer } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css'
 import { useRecoilValue } from 'recoil';
-import { Email } from '../../../Utils/atoms';
+import { Email } from '../../../Store/atoms';
+import Swal from "sweetalert2";
 
 interface ModalProps {
     setSignUpModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -44,10 +42,10 @@ const Certification = ({ setSignUpModal }: ModalProps) => {
     }, []);
 
     const CheckPw = () => {
-        if(password === rePassword){
+        if (password === rePassword) {
             SignUp()
         }
-        else{
+        else {
             ToastError("비밀번호가 일치하지 않습니다.")
         }
     }
@@ -55,9 +53,11 @@ const Certification = ({ setSignUpModal }: ModalProps) => {
     const SignUp = () => {
         axios.post(process.env.REACT_APP_BASE_URL + `users`, inputs)
             .then(() => {
-                setTimeout(function () {
-                    ToastSuccess("회원가입이 완료되었습니다.");
-                }, 2000)
+                Swal.fire(
+                    '회원가입 성공',
+                    '회원가입에 성공하였습니다.',
+                    'success'
+                )
             })
             .then(() => {
                 setSignUpModal(false)
@@ -84,7 +84,7 @@ const Certification = ({ setSignUpModal }: ModalProps) => {
 
     return (
         <>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
             <_.Background ref={ModalCheck} onClick={(e) => {
                 if (ModalCheck.current === e.target) {
                     setSignUpModal(false)
