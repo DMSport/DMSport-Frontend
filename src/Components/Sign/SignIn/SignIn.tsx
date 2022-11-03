@@ -52,9 +52,10 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
     const SignIn = () => {
         axios.post(process.env.REACT_APP_BASE_URL + `users/auth`, inputs)
             .then((response) => {
-                localStorage.setItem("access_token", response.data.access_token)
-                cookies.set("refresh_token", response.data.refresh_token,)
-                localStorage.setItem("authority", response.data.authority)
+                const { access_token, refresh_token, authority } = response.data
+                localStorage.setItem("access_token", access_token)
+                cookies.set("refresh_token", refresh_token,)
+                localStorage.setItem("authority", authority)
                 Swal.fire(
                     '로그인 성공',
                     '로그인에 성공하셨습니다.',
