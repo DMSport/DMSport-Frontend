@@ -10,22 +10,23 @@ import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
 
 const Header = () => {
-  const [signInModal, setSignInModal] = useState(false)
-  const [certifiModal, setCertifiModal] = useState(false)
-  const [signUpModal, setSignUpModal] = useState(false)
-  const [FYPCertiModal, setFYPCertiModal] = useState(false)
-  const [changePwModal, setChangePwModal] = useState(false)
+  const [signInModal, setSignInModal] = useState(false);
+  const [certifiModal, setCertifiModal] = useState(false);
+  const [signUpModal, setSignUpModal] = useState(false);
+  const [FYPCertiModal, setFYPCertiModal] = useState(false);
+  const [changePwModal, setChangePwModal] = useState(false);
   const AdminLogin = useMemo(() => {
-    return localStorage.getItem("authority") === "ADMIN" ?
+    return localStorage.getItem("authority") === "ADMIN" ? (
       <Link to="/adminpage">
         <S.Letter>관리자</S.Letter>
       </Link>
-      :
-      <>
-      </>
-  }, [localStorage.getItem("authority")])
+    ) : (
+      <></>
+    );
+  }, [localStorage.getItem("authority")]);
+
   const UserLogin = useMemo(() => {
-    return !localStorage.getItem("access_token") ?
+    return !localStorage.getItem("access_token") ? (
       <>
         <S.Button
           onClick={() => {
@@ -42,19 +43,22 @@ const Header = () => {
           value="회원가입"
         />
       </>
-      :
+    ) : (
       <Link to="/mypage">
         <S.Letter>마이페이지</S.Letter>
       </Link>
-  }, [localStorage.getItem("access_token")]
-  )
+    );
+  }, [localStorage.getItem("access_token")]);
+
   return (
     <>
-      {signInModal && (<SignIn setSignInModal={setSignInModal} setCertifiModal={setCertifiModal} setFYPCertiModal={setFYPCertiModal} />)}
-      {certifiModal && (<Certification setSignUpModal={setSignUpModal} setCertiModal={setCertifiModal} />)}
-      {signUpModal && (<SignUp setSignUpModal={setSignUpModal} />)}
-      {FYPCertiModal && (<FYPCerti setChangePwModal={setChangePwModal} setFYPCertiModal={setFYPCertiModal} />)}
-      {changePwModal && (<ChangePw setChangePwModal={setChangePwModal} />)}
+      {signInModal && (
+        <SignIn setSignInModal={setSignInModal} setCertifiModal={setCertifiModal} setFYPCertiModal={setFYPCertiModal} />
+      )}
+      {certifiModal && <Certification setSignUpModal={setSignUpModal} setCertiModal={setCertifiModal} />}
+      {signUpModal && <SignUp setSignUpModal={setSignUpModal} />}
+      {FYPCertiModal && <FYPCerti setChangePwModal={setChangePwModal} setFYPCertiModal={setFYPCertiModal} />}
+      {changePwModal && <ChangePw setChangePwModal={setChangePwModal} />}
       <S.HeaderContainer>
         <Link to="/">
           <S.Wrapper>
@@ -74,6 +78,6 @@ const Header = () => {
       </S.HeaderContainer>
     </>
   );
-};                    
+};
 
 export default Header;

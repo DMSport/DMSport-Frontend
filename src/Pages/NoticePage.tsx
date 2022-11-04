@@ -39,7 +39,7 @@ export default NoticePage;
 
 const NoticeContainer = styled.div`
   width: 100vw;
-  height: 89vh;
+  height: 100vh;
   background-color: #ececec;
 `;
 
@@ -65,7 +65,7 @@ const Space = styled.div`
   gap: 30px;
   top: 170px;
   left: 400px;
-  width: 930px;
+  width: 65vw;
   height: 450px;
   flex-wrap: nowrap;
   overflow-y: scroll;
