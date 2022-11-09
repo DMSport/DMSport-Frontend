@@ -5,6 +5,9 @@ export const Container = styled.div`
   width: 100vw;
   height: 100vh;
 `;
+/**
+ * 사이드 컴포넌트 스타일
+ */
 export const SideContainer = styled.div`
   display: flex;
   align-items: flex-end;
@@ -16,26 +19,22 @@ export const SideContainer = styled.div`
   overflow: scroll;
   padding: 30px;
 `;
-export const MainContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  width: calc(100vw - 274px);
-  justify-content: center;
-  z-index: -1;
-  align-items: center;
-`;
-export const SideBtnWrapper = styled.div`
+export const SideBtnWrapper = styled.div<{ isUserClick: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 236px;
   max-height: 400px;
-  border: 1px solid #55acee;
+  border: ${(props) => (props.isUserClick ? "1px solid #55acee" : "0")};
   border-radius: 30px;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
   padding: 20px;
   z-index: -1;
+  &:div {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+  }
 `;
 export const SideBtnColorStick = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;
@@ -49,37 +48,6 @@ export const SideBtnGrayStick = styled.div<{ width: number }>`
   background: "white";
   border-radius: 60px;
 `;
-export const MainSpotContainer = styled.div`
-  z-index: 1;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  column-gap: 250px;
-  row-gap: 15px;
-  position: relative;
-`;
-export const MainSpotWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 50px 50px;
-  column-gap: 100px;
-  justify-content: center;
-  align-items: center;
-  background-color: white;
-  border-radius: 20px;
-  width: 343px;
-  height: 194px;
-  position: relative;
-`;
-export const MainSpotBtn = styled.div<{ bgColor: string }>`
-  width: 50px;
-  height: 50px;
-  background-color: ${(props) => props.bgColor};
-  border-radius: 60px;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 15px;
-`;
 export const Text = styled.p<{
   size: number;
   color?: string;
@@ -92,4 +60,59 @@ export const Text = styled.p<{
   height: ${(props) => props.height}px;
   font-size: ${(props) => props.size}px;
   width: ${(props) => props.width}px;
+`;
+
+/**
+ * 축구 컴포넌트 스타일
+ */
+export const SoccerContainer = styled.div`
+  display: flex;
+  height: 100vh;
+  width: calc(100vw - 274px);
+  justify-content: center;
+  align-items: center;
+`;
+/**
+ * 배드민턴 컴포넌트 스타일
+ */
+export const BadmintonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: calc(100vw - 274px);
+  justify-content: center;
+  z-index: -1;
+  align-items: center;
+`;
+
+export const BadmintonSpotContainer = styled.div`
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 250px;
+  row-gap: 15px;
+  position: relative;
+`;
+export const BadmintonSpotWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 50px 50px;
+  column-gap: 100px;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  width: 343px;
+  height: 194px;
+  position: relative;
+`;
+export const BadmintonSpotBtn = styled.div<{ bgColor: string }>`
+  width: 50px;
+  height: 50px;
+  background-color: ${(props) => props.bgColor};
+  border-radius: 60px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
 `;
