@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import { useRecoilValue } from 'recoil';
-import { Email } from '../../../Store/atoms';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { ChangeModal, Email } from '../../../Store/atoms';
 import * as _ from "../SignIn.style"
 import CloseEye from "../../../Assets/SVG/CloseEye.svg"
 import OpenEye from "../../../Assets/SVG/OpenEye.svg"
@@ -8,15 +8,12 @@ import axios from "axios"
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import Swal from "sweetalert2"
 
-interface ModalProps {
-    setChangePwModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const ChangePw = ({ setChangePwModal }: ModalProps) => {
+const ChangePw = () => {
     const ModalCheck = useRef<HTMLDivElement>(null)
     const [newPwType, setNewPwType] = useState(true)
     const [reNewPwType, setReNewPwType] = useState(true)
     const emailRecoil = useRecoilValue(Email)
+    const setChangeModalValue = useSetRecoilState(ChangeModal);
     const [inputs, setInputs] = useState({
         newPw: "",
         reNewPw: ""
@@ -51,14 +48,14 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
 
     //수정 필요
     const ChangePwAPI = () => {
-        axios.put(process.env.REACT_APP_BASE_URL + `users/password`, { "new_password": newPw, "email": emailRecoil})
+        axios.put(process.env.REACT_APP_BASE_URL + `users/password`, { "new_password": newPw, "email": emailRecoil })
             .then(() => {
                 Swal.fire(
                     '비밀번호 번경 성공',
                     '비밀번호가 성공적으로 변경되었습니다.',
                     'success'
                 )
-                setChangePwModal(false)
+                setChangeModalValue("")
             })
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
@@ -80,7 +77,7 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
         <>
             <_.Background ref={ModalCheck} onClick={(e) => {
                 if (ModalCheck.current === e.target) {
-                    setChangePwModal(false)
+                    setChangeModalValue("")
                 }
             }}>
                 <_.Container>
@@ -103,4 +100,3 @@ const ChangePw = ({ setChangePwModal }: ModalProps) => {
 }
 
 export default ChangePw
-

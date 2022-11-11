@@ -1,43 +1,43 @@
-import * as S from "./Header.style";
+import * as _ from "./Header.style";
 import { Logo } from "../../Assets/SVG/Logo";
 import "../../fonts/font.css";
 import { Link } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import SignIn from "../Sign/SignIn/SignIn";
 import Certification from "../Sign/SignUp/Certification";
 import SignUp from "../Sign/SignUp/SignUp";
 import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
+import { ChangeAdminHeader, ChangeModal, ChangeUserHeader } from "../../Store/atoms";
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 const Header = () => {
-  const [signInModal, setSignInModal] = useState(false);
-  const [certifiModal, setCertifiModal] = useState(false);
-  const [signUpModal, setSignUpModal] = useState(false);
-  const [FYPCertiModal, setFYPCertiModal] = useState(false);
-  const [changePwModal, setChangePwModal] = useState(false);
+  const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
+  const adminHeader = useRecoilValue(ChangeAdminHeader)
+  const userHeader = useRecoilValue(ChangeUserHeader)
   const AdminLogin = useMemo(() => {
-    return localStorage.getItem("authority") === "ADMIN" ? (
+    return adminHeader ? (
       <Link to="/adminpage">
-        <S.Letter>관리자</S.Letter>
+        <_.Letter>관리자</_.Letter>
       </Link>
     ) : (
       <></>
     );
-  }, [localStorage.getItem("authority")]);
+  }, [adminHeader]);
 
   const UserLogin = useMemo(() => {
-    return !localStorage.getItem("access_token") ? (
+    return userHeader ? (
       <>
-        <S.Button
+        <_.Button
           onClick={() => {
-            setSignInModal(true);
+            setChangeModalValue("SignIn")
           }}
           type="button"
           value="로그인"
         />
-        <S.Button
+        <_.Button
           onClick={() => {
-            setCertifiModal(true);
+            setChangeModalValue("Certification")
           }}
           type="button"
           value="회원가입"
@@ -45,37 +45,57 @@ const Header = () => {
       </>
     ) : (
       <Link to="/mypage">
-        <S.Letter>마이페이지</S.Letter>
+        <_.Letter>마이페이지</_.Letter>
       </Link>
     );
-  }, [localStorage.getItem("access_token")]);
+  }, [userHeader]);
+
+  const Modal = useMemo(() => {
+    switch (changeModalValue) {
+      case "SignIn":
+        return (
+          <SignIn />
+        )
+      case "Certification":
+        return (
+          <Certification />
+        )
+      case "SignUp":
+        return (
+          <SignUp />
+        )
+      case "FYPCerti":
+        return (
+          <FYPCerti />
+        )
+      case "ChangePw":
+        return (
+          <ChangePw />)
+      default:
+        return(<></>)
+    }
+  },[changeModalValue])
 
   return (
     <>
-      {signInModal && (
-        <SignIn setSignInModal={setSignInModal} setCertifiModal={setCertifiModal} setFYPCertiModal={setFYPCertiModal} />
-      )}
-      {certifiModal && <Certification setSignUpModal={setSignUpModal} setCertiModal={setCertifiModal} />}
-      {signUpModal && <SignUp setSignUpModal={setSignUpModal} />}
-      {FYPCertiModal && <FYPCerti setChangePwModal={setChangePwModal} setFYPCertiModal={setFYPCertiModal} />}
-      {changePwModal && <ChangePw setChangePwModal={setChangePwModal} />}
-      <S.HeaderContainer>
+      {Modal}
+      <_.HeaderContainer>
         <Link to="/">
-          <S.Wrapper>
+          <_.Wrapper>
             <Logo width={50} height={42}></Logo>
-            <S.DMS>DMS</S.DMS>
-            <S.Port>port</S.Port>
-          </S.Wrapper>
+            <_.DMS>DMS</_.DMS>
+            <_.Port>port</_.Port>
+          </_.Wrapper>
         </Link>
-        <S.Wrapper2>
+        <_.Wrapper2>
           {AdminLogin}
-          <S.Letter>클럽</S.Letter>
+          <_.Letter>클럽</_.Letter>
           <Link to="/notice">
-            <S.Letter>공지</S.Letter>
+            <_.Letter>공지</_.Letter>
           </Link>
           {UserLogin}
-        </S.Wrapper2>
-      </S.HeaderContainer>
+        </_.Wrapper2>
+      </_.HeaderContainer>
     </>
   );
 };
