@@ -4,17 +4,13 @@ import axios from "axios"
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import ToastSuccess from "../../../Utils/Function/SuccessMessage"
 import { useSetRecoilState } from 'recoil';
-import { Email } from '../../../Store/atoms';
+import { ChangeModal, Email } from '../../../Store/atoms';
 
-interface ModalProps {
-    setChangePwModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setFYPCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const FYPCerti = ({ setFYPCertiModal, setChangePwModal }: ModalProps) => {
+const FYPCerti = () => {
     const ModalCheck = useRef<HTMLDivElement>(null)
     const [OKCerti, setOKCerti] = useState(false)
     const setEmailRecoil = useSetRecoilState(Email);
+    const setChangeModalValue = useSetRecoilState(ChangeModal);
     const [inputs, setInputs] = useState({
         email: "",
         auth_code: "",
@@ -42,7 +38,7 @@ const FYPCerti = ({ setFYPCertiModal, setChangePwModal }: ModalProps) => {
         setOKCerti(true)
         ToastSuccess("인증번호가 전송되었습니다.")
         axios.post(process.env.REACT_APP_BASE_URL + `users/mail/find`, { "email": email })
-        .then(() => {
+            .then(() => {
             })
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
@@ -66,8 +62,7 @@ const FYPCerti = ({ setFYPCertiModal, setChangePwModal }: ModalProps) => {
             .then(() => {
                 setEmailRecoil(email)
                 ToastSuccess("인증되었습니다.")
-                setFYPCertiModal(false)
-                setChangePwModal(true)
+                setChangeModalValue("ChangePw")
             })
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
@@ -89,7 +84,7 @@ const FYPCerti = ({ setFYPCertiModal, setChangePwModal }: ModalProps) => {
         <>
             <_.Background ref={ModalCheck} onClick={(e) => {
                 if (ModalCheck.current === e.target) {
-                    setFYPCertiModal(false)
+                    setChangeModalValue("")
                 }
             }}>
                 <_.Container>
@@ -97,10 +92,10 @@ const FYPCerti = ({ setFYPCertiModal, setChangePwModal }: ModalProps) => {
                         <_.TitleText>인증하기</_.TitleText>
                         <_.CertiWrapper>
                             <_.TextInput name="email" onChange={onChange} disabled={OKCerti} width="193px" value={email} type="text" placeholder="이메일을 입력해주세요" />
-                            <_.Button onClick={ EmailCode } disabled={!(email) || OKCerti} width="70px" height="45px" radius="10px" margin="0 0 0 12px">인증</_.Button>
+                            <_.Button onClick={EmailCode} disabled={!(email) || OKCerti} width="70px" height="45px" radius="10px" margin="0 0 0 12px">인증</_.Button>
                         </_.CertiWrapper>
                         {OKCerti && (<_.TextInput name="auth_code" onChange={onChange} value={auth_code} type="text" placeholder="인증번호를 입력해주세요" />)}
-                        <_.Button id="Certi" margin={OKCerti ? "120px 0 0 0" : "180px 0 0 0"} disabled={!(email && auth_code)} onClick={ CertiEmail }>확인</_.Button>
+                        <_.Button id="Certi" margin={OKCerti ? "120px 0 0 0" : "180px 0 0 0"} disabled={!(email && auth_code)} onClick={CertiEmail}>확인</_.Button>
                     </_.Wrapper>
                 </_.Container>
             </_.Background>

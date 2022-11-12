@@ -4,17 +4,13 @@ import axios from 'axios'
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import ToastSuccess from "../../../Utils/Function/SuccessMessage"
 import { useSetRecoilState } from 'recoil';
-import { Email } from '../../../Store/atoms';
+import { ChangeModal, Email } from '../../../Store/atoms';
 
-interface ModalProps {
-    setCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setSignUpModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
+const Certification = () => {
     const ModalCheck = useRef<HTMLDivElement>(null)
     const [OKCerti, setOKCerti] = useState(false)
     const setEmailRecoil = useSetRecoilState(Email);
+    const setChangeModalValue = useSetRecoilState(ChangeModal);
     const [inputs, setInputs] = useState({
         email: "",
         auth_code: "",
@@ -61,7 +57,7 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
                     })
             })
             .catch((e) => {
-                setCertiModal(false)
+                setChangeModalValue("")
                 if (axios.isAxiosError(e) && e.response) {
                     switch (e.response.status) {
                         case 400:
@@ -84,8 +80,7 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
             .then(() => {
                 setEmailRecoil(email)
                 ToastSuccess("인증되었습니다.")
-                setCertiModal(false)
-                setSignUpModal(true)
+                setChangeModalValue("SignUp")
             })
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
@@ -105,10 +100,9 @@ const Certification = ({ setCertiModal, setSignUpModal }: ModalProps) => {
 
     return (
         <>
-            {/* <ToastContainer /> */}
             <_.Background ref={ModalCheck} onClick={(e) => {
                 if (ModalCheck.current === e.target) {
-                    setCertiModal(false)
+                    setChangeModalValue("")
                 }
             }}>
                 <_.Container>
