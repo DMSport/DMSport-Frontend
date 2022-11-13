@@ -1,15 +1,28 @@
 import * as _ from "./Post.style";
 import { useSetRecoilState } from "recoil";
-import { isNoticeModalAtom } from "../../Store/atoms";
+import { isNoticeModalAtom, NoticeIdAtom } from "../../Store/atoms";
+import { CreatedDate } from "../../Utils/Function/Timer";
 
-function Post() {
+interface IPost {
+  title: string;
+  setModalType: any;
+  created_at: string;
+  id: number;
+}
+
+function Post({ title, setModalType, created_at, id }: IPost) {
   const setNoticeModalAtom = useSetRecoilState(isNoticeModalAtom);
-  const toggleNoticeModalAtom = () => setNoticeModalAtom((prev) => !prev);
+  const setNoticeIdAtom = useSetRecoilState(NoticeIdAtom);
+  const toggleNoticeModalAtom = () => {
+    setModalType("VIEW");
+    setNoticeModalAtom((prev) => !prev);
+    setNoticeIdAtom(id);
+  };
 
   return (
     <_.Container onClick={toggleNoticeModalAtom}>
-      <_.Title>제목</_.Title>
-      <_.Time>방금전</_.Time>
+      <_.Title>{title}</_.Title>
+      <_.Time>{CreatedDate(created_at)}</_.Time>
     </_.Container>
   );
 }

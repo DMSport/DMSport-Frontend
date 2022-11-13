@@ -1,19 +1,24 @@
 import { useSetRecoilState } from "recoil";
-import { isNoticeAtom } from "../../Store/atoms";
+import { NoticeTypeAtom } from "../../Store/atoms";
+import ClubType from "../../Utils/ClubType";
 import * as _ from "./Button.style";
 
 interface IButton {
-  num: number;
-  color: boolean;
+  isSelected: boolean;
   message: string;
 }
 
-const Button = ({ num, color, message }: IButton) => {
-  const setNoticeAtom = useSetRecoilState(isNoticeAtom);
-  const toggleNoticeAtom = (num: number) => setNoticeAtom(num);
+const Button = ({ isSelected, message }: IButton) => {
+  const setNoticeTypeAtom = useSetRecoilState(NoticeTypeAtom);
+  const toggleNoticeAtom = (notice: any) => setNoticeTypeAtom(notice);
 
   return (
-    <_.Container onClick={() => toggleNoticeAtom(num)} backcolor={color} type="button" value={message}></_.Container>
+    <_.Container
+      onClick={() => toggleNoticeAtom(ClubType(message))}
+      backcolor={isSelected}
+      type="button"
+      value={message}
+    ></_.Container>
   );
 };
 
