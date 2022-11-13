@@ -1,32 +1,122 @@
 import { Link, useLocation } from "react-router-dom";
+import SoccerIcon from "../../Assets/SVG/club/soccer";
 import MoonIcon from "../../Assets/SVG/moonIcon";
+import useFetch from "../../Hooks/useFetch";
 import * as _ from "./style";
+import { useEffect } from "react";
 
+interface ITodayVoteData {
+  is_ban: boolean;
+  ban_period: string;
+  max_people: number;
+  vote: {
+    vote_id: number;
+    time: "LUNCH" | "DINNER";
+    vote_count: number;
+  }[];
+}
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname } = useLocation();
-  console.log(pathname);
+
   return (
     <_.Container>
       <SideBar pathname={pathname} />
       {clubName === "badminton" && <BadmintonPage />}
       {clubName === "soccer" && <SoccerPage />}
+      {clubName === "volleyball" && <VolleyballPage />}
+      {clubName === "basketball" && <BasketballPage />}
     </_.Container>
   );
 }
-function SoccerPage() {
+function BasketballPage() {
   return (
-    <_.SoccerContainer>
-      <img src={require("../../Assets/PNG/soccerBg.png")} alt="" height={600} />
-    </_.SoccerContainer>
+    <_.MainContainer>
+      <img
+        src={require("../../Assets/PNG/basketballBg.png")}
+        alt=""
+        height={"70%"}
+      />
+    </_.MainContainer>
+  );
+}
+function VolleyballPage() {
+  return (
+    <_.MainContainer>
+      <img
+        src={require("../../Assets/PNG/volleyball.png")}
+        alt=""
+        height={"70%"}
+      />
+    </_.MainContainer>
+  );
+}
+function SoccerPage() {
+  const date = new Date();
+  const parseDate = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()}`;
+  const [voteClub] = useFetch("/club/vote/{vote-id}");
+  const [getVote, { data: voteData }] = useFetch<ITodayVoteData>(
+    "http://3.35.154.118:8080" + "club/vote?type=soccer&date=" + parseDate
+  );
+
+  useEffect(() => {
+    getVote({
+      method: "get",
+    });
+  }, []);
+  const onValidVoteClub = () => {
+    voteClub({
+      method: "post",
+      headers: {
+        // 토큰이 들어가야 하는 곳
+        Authorization: "",
+      },
+    });
+  };
+  return (
+    <_.MainContainer>
+      <img
+        src={require("../../Assets/PNG/soccerBg.png")}
+        alt=""
+        height={"70%"}
+      />
+      <SoccerIcon />
+      <_.Text
+        size={24}
+        color={"white"}
+        weight={700}
+        style={{ position: "absolute" }}
+        onClick={onValidVoteClub}
+      >
+        참가하기
+      </_.Text>
+      <div
+        style={{
+          marginTop: "20em",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <_.Text size={32} weight={600}>
+          {voteData?.vote.length}/{voteData?.max_people}
+        </_.Text>
+        <_.Text size={32} weight={600}>
+          {Number(voteData?.max_people) - Number(voteData?.vote.length)}명 남음
+        </_.Text>
+      </div>
+    </_.MainContainer>
   );
 }
 function BadmintonPage() {
   return (
     <>
-      <_.BadmintonContainer>
+      <_.MainContainer>
         <img
           src={require("../../Assets/PNG/badmintonBg.png")}
-          height="600"
+          height={"70%"}
           style={{
             position: "absolute",
           }}
@@ -46,7 +136,7 @@ function BadmintonPage() {
             </_.BadmintonSpotWrapper>
           ))}
         </_.BadmintonSpotContainer>
-      </_.BadmintonContainer>
+      </_.MainContainer>
     </>
   );
 }
@@ -77,9 +167,12 @@ function SideBar({ pathname }: { pathname: string }) {
       <_.Text size={36} weight={700} height={44}>
         클럽
       </_.Text>
-      <SideBtn content="농구" link="basketball" pathname={pathname} />
-      <SideBtn content="배드민턴" link="badminton" pathname={pathname} />
-      <SideBtn content="축구" link="soccer" pathname={pathname} />
+      <div>
+        <SideBtn content="농구" link="basketball" pathname={pathname} />
+        <SideBtn content="배드민턴" link="badminton" pathname={pathname} />
+        <SideBtn content="축구" link="soccer" pathname={pathname} />
+        <SideBtn content="배구" link="volleyball" pathname={pathname} />
+      </div>
     </_.SideContainer>
   );
 }
@@ -93,6 +186,23 @@ function SideBtn({
   link: string;
   pathname: string;
 }) {
+  const date = new Date();
+  const parseDate = `${date.getFullYear()}-${
+    date.getMonth() + 1
+  }-${date.getDate()}`;
+  const [getVote, { data: voteData }] = useFetch<ITodayVoteData>(
+    "http://3.35.154.118:8080" +
+      "club/vote?type=" +
+      pathname.slice(6) +
+      "&date=" +
+      parseDate
+  );
+
+  useEffect(() => {
+    getVote({
+      method: "get",
+    });
+  }, []);
   return (
     <Link to={`/club/${link}`}>
       <_.SideBtnWrapper isUserClick={pathname.slice(6) === link}>
@@ -123,7 +233,7 @@ function SideBtn({
             00 : 00 : 00
           </_.Text>
           <_.Text size={18} weight={600} color={"#898A8D"}>
-            4/5명
+            {voteData?.vote.length}/{voteData?.max_people}명
           </_.Text>
         </div>
       </_.SideBtnWrapper>
