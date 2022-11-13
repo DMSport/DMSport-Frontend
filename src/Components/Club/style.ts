@@ -23,6 +23,7 @@ export const SideBtnWrapper = styled.div<{ isUserClick: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 10px;
   width: 236px;
   max-height: 400px;
   border: ${(props) => (props.isUserClick ? "1px solid #55acee" : "0")};
@@ -30,7 +31,7 @@ export const SideBtnWrapper = styled.div<{ isUserClick: boolean }>`
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
   padding: 20px;
   z-index: -1;
-  &:div {
+  div {
     display: flex;
     justify-content: space-between;
     align-content: center;
@@ -65,44 +66,42 @@ export const Text = styled.p<{
 /**
  * 축구 컴포넌트 스타일
  */
-export const SoccerContainer = styled.div`
-  display: flex;
-  height: 100vh;
-  width: calc(100vw - 274px);
-  justify-content: center;
-  align-items: center;
-`;
-/**
- * 배드민턴 컴포넌트 스타일
- */
-export const BadmintonContainer = styled.div`
+export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
   width: calc(100vw - 274px);
   justify-content: center;
-  z-index: -1;
   align-items: center;
+  z-index: -1;
+  img {
+    position: absolute;
+    z-index: -1;
+  }
+  svg {
+    position: absolute;
+    z-index: 0;
+  }
 `;
 
 export const BadmintonSpotContainer = styled.div`
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  column-gap: 250px;
+  column-gap: 200px;
   row-gap: 15px;
   position: relative;
 `;
 export const BadmintonSpotWrapper = styled.div`
   display: grid;
-  grid-template-columns: 50px 50px;
+  grid-template-columns: 25px 50px;
   column-gap: 100px;
   justify-content: center;
   align-items: center;
   background-color: white;
   border-radius: 20px;
-  width: 343px;
-  height: 194px;
+  width: 300px;
+  height: 150px;
   position: relative;
 `;
 export const BadmintonSpotBtn = styled.div<{ bgColor: string }>`
