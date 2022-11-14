@@ -7,16 +7,15 @@ import ToastError from "../../../Utils/Function/ErrorMessage"
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"
 import { Cookies } from "react-cookie";
+import { useSetRecoilState } from "recoil";
+import { ChangeAdminHeader, ChangeModal, ChangeUserHeader } from "../../../Store/atoms";
 
-interface ModalProps {
-    setSignInModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setCertifiModal: React.Dispatch<React.SetStateAction<boolean>>;
-    setFYPCertiModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProps) => {
+const SignIn = () => {
     const cookies = new Cookies()
     const ModalCheck = useRef<HTMLDivElement>(null);
+    const setChangeModalValue = useSetRecoilState(ChangeModal);
+    const setAdminHeader = useSetRecoilState(ChangeAdminHeader);
+    const setUserHeader = useSetRecoilState(ChangeUserHeader);
     const [pwType, setPwType] = useState({
         type: "password",
     });
@@ -44,7 +43,7 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
     }, []);
 
     const SignInModalDown = () => {
-        setSignInModal(false)
+        setChangeModalValue("")
     }
 
     const { type } = pwType;
@@ -56,6 +55,10 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
                 localStorage.setItem("access_token", access_token)
                 cookies.set("refresh_token", refresh_token)
                 localStorage.setItem("authority", authority)
+                setUserHeader(false)
+                if(authority === "Admin"){
+                    setAdminHeader(false)
+                }
                 Swal.fire(
                     '로그인 성공',
                     '로그인에 성공하셨습니다.',
@@ -98,9 +101,9 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
                             <_.TextInput name="password" onChange={onChange} value={password} type={type} placeholder="비밀번호를 입력해주세요" />
                             <_.Eye width="25px" height="25px" src={(type === "password") ? OpenEye : CloseEye} onClick={() => { setPwType((type === "password") ? { type: "text" } : { type: "password" }) }}></_.Eye>
                         </div>
-                        <_.FYP onClick={() => { setFYPCertiModal(true); SignInModalDown() }}>비밀번호를 잊으셨나요?</_.FYP>
+                        <_.FYP onClick={() => { setChangeModalValue("FYPCerti") }}>비밀번호를 잊으셨나요?</_.FYP>
                         <_.Button disabled={!(email && password)} onClick={SignIn}>확인</_.Button>
-                        <_.SignUpText onClick={() => { setCertifiModal(true); SignInModalDown() }}>회원가입</_.SignUpText>
+                        <_.SignUpText onClick={() => { setChangeModalValue("Certification") }}>회원가입</_.SignUpText>
                     </_.Wrapper>
                 </_.Container>
             </_.Background>
@@ -108,5 +111,4 @@ const SignIn = ({ setFYPCertiModal, setSignInModal, setCertifiModal }: ModalProp
     )
 }
 
-
-export default SignIn;
+export default SignIn
