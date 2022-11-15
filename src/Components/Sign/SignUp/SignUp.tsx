@@ -8,19 +8,18 @@ import { useSetRecoilState, useRecoilValue } from "recoil";
 import { ChangeModal, Email } from "../../../Store/atoms";
 import Swal from "sweetalert2";
 
-
 const SignUp = () => {
-    const ModalCheck = useRef<HTMLDivElement>(null)
-    const [pwType, setPwType] = useState(true)
-    const [rePwType, setRePwType] = useState(true)
-    const emailRecoil = useRecoilValue(Email);
-    const setChangeModalValue = useSetRecoilState(ChangeModal);
-    const [inputs, setInputs] = useState({
-        email: emailRecoil,
-        name: "",
-        password: ""
-    });
-    const [rePassword, setRePassword] = useState("")
+  const ModalCheck = useRef<HTMLDivElement>(null);
+  const [pwType, setPwType] = useState(true);
+  const [rePwType, setRePwType] = useState(true);
+  const emailRecoil = useRecoilValue(Email);
+  const setChangeModalValue = useSetRecoilState(ChangeModal);
+  const [inputs, setInputs] = useState({
+    email: emailRecoil,
+    name: "",
+    password: "",
+  });
+  const [rePassword, setRePassword] = useState("");
 
   const { name, password } = inputs;
 
@@ -39,47 +38,42 @@ const SignUp = () => {
     };
   }, []);
 
-    const CheckPw = () => {
-        if (password === rePassword) {
-            SignUpAPI()
-        }
-        else {
-            ToastError("비밀번호가 일치하지 않습니다.")
-        }
+  const CheckPw = () => {
+    if (password === rePassword) {
+      SignUpAPI();
+    } else {
+      ToastError("비밀번호가 일치하지 않습니다.");
     }
   };
 
-    const SignUpAPI = () => {
-        axios.post(process.env.REACT_APP_BASE_URL + `users`, inputs)
-            .then(() => {
-                Swal.fire(
-                    '회원가입 성공',
-                    '회원가입에 성공하였습니다.',
-                    'success'
-                )
-            })
-            .then(() => {
-                setChangeModalValue("")
-            })
-            .catch((e) => {
-                if (axios.isAxiosError(e) && e.response) {
-                    switch (e.response.status) {
-                        case 400:
-                            return ToastError("아이디나 비밀번호에 공백이 포함되어 있습니다.");
-                        case 401:
-                            return ToastError("이메일이 인증되지 않았습니다.");
-                        case 409:
-                            return ToastError("아이디가 중복됩니다.");
-                        case 500:
-                            return ToastError("관리자에게 문의해주세요");
-                        default:
-                            ToastError("네트워크 연결을 확인해주세요.");
-                    }
-                } else {
-                    ToastError("네트워크 연결을 확인해주세요.");
-                }
-            })
-    }
+  const SignUpAPI = () => {
+    axios
+      .post(process.env.REACT_APP_BASE_URL + `users`, inputs)
+      .then(() => {
+        Swal.fire("회원가입 성공", "회원가입에 성공하였습니다.", "success");
+      })
+      .then(() => {
+        setChangeModalValue("");
+      })
+      .catch((e) => {
+        if (axios.isAxiosError(e) && e.response) {
+          switch (e.response.status) {
+            case 400:
+              return ToastError("아이디나 비밀번호에 공백이 포함되어 있습니다.");
+            case 401:
+              return ToastError("이메일이 인증되지 않았습니다.");
+            case 409:
+              return ToastError("아이디가 중복됩니다.");
+            case 500:
+              return ToastError("관리자에게 문의해주세요");
+            default:
+              ToastError("네트워크 연결을 확인해주세요.");
+          }
+        } else {
+          ToastError("네트워크 연결을 확인해주세요.");
+        }
+      });
+  };
 
   return (
     <>
@@ -149,4 +143,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp
+export default SignUp;
