@@ -8,7 +8,7 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { ChangeModal, Email } from '../../../Store/atoms';
 import Swal from "sweetalert2";
 
-const Certification = () => {
+const SignUp = () => {
     const ModalCheck = useRef<HTMLDivElement>(null)
     const [pwType, setPwType] = useState(true)
     const [rePwType, setRePwType] = useState(true)
@@ -40,14 +40,14 @@ const Certification = () => {
 
     const CheckPw = () => {
         if (password === rePassword) {
-            SignUp()
+            SignUpAPI()
         }
         else {
             ToastError("비밀번호가 일치하지 않습니다.")
         }
     }
 
-    const SignUp = () => {
+    const SignUpAPI = () => {
         axios.post(process.env.REACT_APP_BASE_URL + `users`, inputs)
             .then(() => {
                 Swal.fire(
@@ -107,4 +107,4 @@ const Certification = () => {
     )
 }
 
-export default Certification
+export default SignUp
