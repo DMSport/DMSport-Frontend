@@ -23,16 +23,6 @@ export const Email = atom({
 });
 
 export const ChangeModal = atom({
-  key: 'changeModal',
-  default: ""
-})
-
-export const ChangeAdminHeader = atom({
-  key: 'changeModal',
-  default: false
-})
-
-export const ChangeUserHeader = atom({
-  key: 'changeModal',
-  default: false
-})
+  key: "changeModal",
+  default: "",
+});

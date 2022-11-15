@@ -38,7 +38,7 @@ const Header = () => {
         />
       </>
     );
-  }, [userHeader]);
+  }, [localStorage.getItem("access_token")]);
 
   const Modal = useMemo(() => {
     switch (changeModalValue) {
