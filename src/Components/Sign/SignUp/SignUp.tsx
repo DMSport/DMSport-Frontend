@@ -4,19 +4,16 @@ import OpenEye from "../../../Assets/SVG/OpenEye.svg";
 import * as _ from "../SignIn.style";
 import axios from "axios";
 import ToastError from "../../../Utils/Function/ErrorMessage";
-import { useRecoilValue } from "recoil";
-import { Email } from "../../../Store/atoms";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { ChangeModal, Email } from "../../../Store/atoms";
 import Swal from "sweetalert2";
 
-interface ModalProps {
-  setSignUpModal: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-const Certification = ({ setSignUpModal }: ModalProps) => {
+const Certification = () => {
   const ModalCheck = useRef<HTMLDivElement>(null);
   const [pwType, setPwType] = useState(true);
   const [rePwType, setRePwType] = useState(true);
   const emailRecoil = useRecoilValue(Email);
+  const setChangeModalValue = useSetRecoilState(ChangeModal);
   const [inputs, setInputs] = useState({
     email: emailRecoil,
     name: "",
@@ -56,7 +53,7 @@ const Certification = ({ setSignUpModal }: ModalProps) => {
         Swal.fire("회원가입 성공", "회원가입에 성공하였습니다.", "success");
       })
       .then(() => {
-        setSignUpModal(false);
+        setChangeModalValue("");
       })
       .catch((e) => {
         if (axios.isAxiosError(e) && e.response) {
@@ -85,7 +82,7 @@ const Certification = ({ setSignUpModal }: ModalProps) => {
         ref={ModalCheck}
         onClick={(e) => {
           if (ModalCheck.current === e.target) {
-            setSignUpModal(false);
+            setChangeModalValue("");
           }
         }}
       >

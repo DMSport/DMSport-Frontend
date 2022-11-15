@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import NoticeButton from "../../Components/Notice/Button";
 import NoticeModal from "../../Components/Notice/NoticeModal";
 import Post from "../../Components/Notice/Post";
@@ -22,8 +22,7 @@ export interface INotice {
 const NoticePage = () => {
   const navigate = useNavigate();
   const NoticeType = useRecoilValue(NoticeTypeAtom);
-  const isNoticeModal = useRecoilValue(isNoticeModalAtom);
-  const setNoticeModalAtom = useSetRecoilState(isNoticeModalAtom);
+  const [isNoticeModal, setNoticeModalAtom] = useRecoilState(isNoticeModalAtom);
   const [modalType, setModalType] = useState<ModalType>("VIEW");
   const WriteNotice = () => {
     setModalType("WRITE");
