@@ -8,6 +8,14 @@ export const Container = styled.div`
   align-items: center;
 `;
 
+export const Loader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 30px;
+  font-weight: 700;
+`;
+
 //모달 앞부분 중앙
 export const White = styled.div`
   position: fixed;
@@ -38,30 +46,68 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   height: 70px;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: 70px;
   border-bottom: 1px solid;
 `;
 
 //제목
-export const Title = styled.div`
+export const Title = styled.input`
+  width: 400px;
   font-size: 24px;
   font-weight: 700;
+  border: 0;
+  outline: 0;
 `;
 
 //시간
-export const Time = styled.div`
+export const Time = styled.input`
   position: absolute;
   right: 30px;
   font-size: 20px;
   font-weight: 400;
+  text-align: right;
+  border: 0;
+  outline: 0;
 `;
 
-export const Notice = styled.div`
+export const Notice = styled.textarea`
   width: 700px;
+  height: 200px;
   margin-left: 70px;
   margin-top: 30px;
   font-size: 24px;
   line-height: 29px;
   font-weight: 500;
+  border: 0;
+  outline: 0;
+  resize: none;
+`;
+
+export const Button = styled.input`
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 110px;
+  height: 40px;
+  color: ${(props) => props.theme.white};
+  background-color: #5596aa;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+`;
+
+export const EditButton = styled(Button)`
+  left: 400px;
+`;
+
+export const DeleteButton = styled(Button)`
+  left: 530px;
 `;

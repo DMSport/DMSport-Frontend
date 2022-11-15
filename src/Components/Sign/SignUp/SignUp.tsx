@@ -1,12 +1,13 @@
 import { useRef, useState, useEffect } from "react";
-import CloseEye from "../../../Assets/SVG/CloseEye.svg"
-import OpenEye from "../../../Assets/SVG/OpenEye.svg"
-import * as _ from "../SignIn.style"
-import axios from "axios"
-import ToastError from "../../../Utils/Function/ErrorMessage"
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { ChangeModal, Email } from '../../../Store/atoms';
+import CloseEye from "../../../Assets/SVG/CloseEye.svg";
+import OpenEye from "../../../Assets/SVG/OpenEye.svg";
+import * as _ from "../SignIn.style";
+import axios from "axios";
+import ToastError from "../../../Utils/Function/ErrorMessage";
+import { useSetRecoilState, useRecoilValue } from "recoil";
+import { ChangeModal, Email } from "../../../Store/atoms";
 import Swal from "sweetalert2";
+
 
 const SignUp = () => {
     const ModalCheck = useRef<HTMLDivElement>(null)
@@ -21,22 +22,22 @@ const SignUp = () => {
     });
     const [rePassword, setRePassword] = useState("")
 
-    const { name, password } = inputs;
+  const { name, password } = inputs;
 
-    const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = e.target;
-        setInputs({
-            ...inputs,
-            [name]: value,
-        });
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "auto";
     };
-
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => {
-            document.body.style.overflow = "auto";
-        };
-    }, []);
+  }, []);
 
     const CheckPw = () => {
         if (password === rePassword) {
@@ -46,6 +47,7 @@ const SignUp = () => {
             ToastError("비밀번호가 일치하지 않습니다.")
         }
     }
+  };
 
     const SignUpAPI = () => {
         axios.post(process.env.REACT_APP_BASE_URL + `users`, inputs)
@@ -79,32 +81,72 @@ const SignUp = () => {
             })
     }
 
-    return (
-        <>
-            {/* <ToastContainer /> */}
-            <_.Background ref={ModalCheck} onClick={(e) => {
-                if (ModalCheck.current === e.target) {
-                    setChangeModalValue("")
-                }
-            }}>
-                <_.Container>
-                    <_.Wrapper>
-                        <_.TitleText>시작하기</_.TitleText>
-                        <_.TextInput name="name" onChange={onInputChange} value={name} type="text" placeholder="이름(실명)을 입력해주세요." />
-                        <div>
-                            <_.TextInput padding="15px 40px 15px 10px " name="password" onChange={onInputChange} value={password} type={pwType ? "password" : "text"} placeholder="비밀번호를 입력해주세요" />
-                            <_.Eye width="25px" height="25px" src={pwType ? OpenEye : CloseEye} onClick={() => { setPwType(!(pwType)) }}></_.Eye>
-                        </div>
-                        <div>
-                            <_.TextInput padding="15px 40px 15px 10px " onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setRePassword(e.target.value) }} value={rePassword} type={rePwType ? "password" : "text"} placeholder="비밀번호를 재입력해주세요" />
-                            <_.Eye width="25px" height="25px" src={rePwType ? OpenEye : CloseEye} onClick={() => { setRePwType(!(rePwType)) }}></_.Eye>
-                        </div>
-                        <_.Button disabled={!(name && password && rePassword)} margin="61px" onClick={CheckPw}>확인</_.Button>
-                    </_.Wrapper>
-                </_.Container>
-            </_.Background>
-        </>
-    )
-}
+  return (
+    <>
+      {/* <ToastContainer /> */}
+      <_.Background
+        ref={ModalCheck}
+        onClick={(e) => {
+          if (ModalCheck.current === e.target) {
+            setChangeModalValue("");
+          }
+        }}
+      >
+        <_.Container>
+          <_.Wrapper>
+            <_.TitleText>시작하기</_.TitleText>
+            <_.TextInput
+              name="name"
+              onChange={onInputChange}
+              value={name}
+              type="text"
+              placeholder="이름(실명)을 입력해주세요."
+            />
+            <div>
+              <_.TextInput
+                padding="15px 40px 15px 10px "
+                name="password"
+                onChange={onInputChange}
+                value={password}
+                type={pwType ? "password" : "text"}
+                placeholder="비밀번호를 입력해주세요"
+              />
+              <_.Eye
+                width="25px"
+                height="25px"
+                src={pwType ? OpenEye : CloseEye}
+                onClick={() => {
+                  setPwType(!pwType);
+                }}
+              ></_.Eye>
+            </div>
+            <div>
+              <_.TextInput
+                padding="15px 40px 15px 10px "
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                  setRePassword(e.target.value);
+                }}
+                value={rePassword}
+                type={rePwType ? "password" : "text"}
+                placeholder="비밀번호를 재입력해주세요"
+              />
+              <_.Eye
+                width="25px"
+                height="25px"
+                src={rePwType ? OpenEye : CloseEye}
+                onClick={() => {
+                  setRePwType(!rePwType);
+                }}
+              ></_.Eye>
+            </div>
+            <_.Button disabled={!(name && password && rePassword)} margin="61px" onClick={CheckPw}>
+              확인
+            </_.Button>
+          </_.Wrapper>
+        </_.Container>
+      </_.Background>
+    </>
+  );
+};
 
 export default SignUp

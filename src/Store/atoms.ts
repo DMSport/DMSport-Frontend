@@ -1,8 +1,10 @@
 import { atom } from "recoil";
 
-export const isNoticeAtom = atom({
+type NoticeType = "ALL" | "BASKETBALL" | "SOCCER" | "VOLLEYBALL" | "BADMINTON";
+
+export const NoticeTypeAtom = atom<NoticeType>({
   key: "isNotice",
-  default: 0,
+  default: "ALL",
 });
 
 export const isNoticeModalAtom = atom({
@@ -10,9 +12,14 @@ export const isNoticeModalAtom = atom({
   default: false,
 });
 
+export const NoticeIdAtom = atom({
+  key: "NoticeId",
+  default: 0,
+});
+
 export const Email = atom({
-  key: 'email',
-  default: ''
+  key: "email",
+  default: "",
 });
 
 export const ChangeModal = atom({

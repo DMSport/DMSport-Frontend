@@ -9,12 +9,12 @@ import SignUp from "../Sign/SignUp/SignUp";
 import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
 import { ChangeAdminHeader, ChangeModal, ChangeUserHeader } from "../../Store/atoms";
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const Header = () => {
   const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
-  const adminHeader = useRecoilValue(ChangeAdminHeader)
-  const userHeader = useRecoilValue(ChangeUserHeader)
+  const adminHeader = useRecoilValue(ChangeAdminHeader);
+  const userHeader = useRecoilValue(ChangeUserHeader);
   const AdminLogin = useMemo(() => {
     return adminHeader ? (
       <Link to="/adminpage">
@@ -30,14 +30,14 @@ const Header = () => {
       <>
         <_.Button
           onClick={() => {
-            setChangeModalValue("SignIn")
+            setChangeModalValue("SignIn");
           }}
           type="button"
           value="로그인"
         />
         <_.Button
           onClick={() => {
-            setChangeModalValue("Certification")
+            setChangeModalValue("Certification");
           }}
           type="button"
           value="회원가입"
@@ -53,28 +53,19 @@ const Header = () => {
   const Modal = useMemo(() => {
     switch (changeModalValue) {
       case "SignIn":
-        return (
-          <SignIn />
-        )
+        return <SignIn />;
       case "Certification":
-        return (
-          <Certification />
-        )
+        return <Certification />;
       case "SignUp":
-        return (
-          <SignUp />
-        )
+        return <SignUp />;
       case "FYPCerti":
-        return (
-          <FYPCerti />
-        )
+        return <FYPCerti />;
       case "ChangePw":
-        return (
-          <ChangePw />)
+        return <ChangePw />;
       default:
-        return(<></>)
+        return <></>;
     }
-  },[changeModalValue])
+  }, [changeModalValue]);
 
   return (
     <>
