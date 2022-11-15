@@ -8,25 +8,19 @@ import Certification from "../Sign/SignUp/Certification";
 import SignUp from "../Sign/SignUp/SignUp";
 import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
-import { ChangeAdminHeader, ChangeModal, ChangeUserHeader } from "../../Store/atoms";
+import {
+  ChangeAdminHeader,
+  ChangeModal,
+  ChangeUserHeader,
+} from "../../Store/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 const Header = () => {
   const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
-  const adminHeader = useRecoilValue(ChangeAdminHeader);
   const userHeader = useRecoilValue(ChangeUserHeader);
-  const AdminLogin = useMemo(() => {
-    return adminHeader ? (
-      <Link to="/adminpage">
-        <_.Letter>관리자</_.Letter>
-      </Link>
-    ) : (
-      <></>
-    );
-  }, [adminHeader]);
 
   const UserLogin = useMemo(() => {
-    return userHeader ? (
+    return (
       <>
         <_.Button
           onClick={() => {
@@ -43,10 +37,6 @@ const Header = () => {
           value="회원가입"
         />
       </>
-    ) : (
-      <Link to="/mypage">
-        <_.Letter>마이페이지</_.Letter>
-      </Link>
     );
   }, [userHeader]);
 
@@ -79,12 +69,24 @@ const Header = () => {
           </_.Wrapper>
         </Link>
         <_.Wrapper2>
-          {AdminLogin}
+          {localStorage.getItem("authority") === "ADMIN" ? (
+            <Link to="/adminpage">
+              <_.Letter>관리자</_.Letter>
+            </Link>
+          ) :
+            <></>
+          }
           <_.Letter>클럽</_.Letter>
           <Link to="/notice">
             <_.Letter>공지</_.Letter>
           </Link>
-          {UserLogin}
+          {localStorage.getItem("access_token") ? (
+            <Link to="/mypage">
+              <_.Letter>마이페이지</_.Letter>
+            </Link>
+          ) : (
+            UserLogin
+          )}
         </_.Wrapper2>
       </_.HeaderContainer>
     </>
