@@ -8,25 +8,23 @@ import Certification from "../Sign/SignUp/Certification";
 import SignUp from "../Sign/SignUp/SignUp";
 import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
-import { ChangeAdminHeader, ChangeModal, ChangeUserHeader } from "../../Store/atoms";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { ChangeModal } from "../../Store/atoms";
+import { useRecoilState } from "recoil";
 
 const Header = () => {
   const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
-  const adminHeader = useRecoilValue(ChangeAdminHeader);
-  const userHeader = useRecoilValue(ChangeUserHeader);
   const AdminLogin = useMemo(() => {
-    return adminHeader ? (
-      <Link to="/adminpage">
-        <_.Letter>관리자</_.Letter>
-      </Link>
-    ) : (
-      <></>
+    return (
+      localStorage.getItem("authority") === "ADMIN" && (
+        <Link to="/adminpage">
+          <_.Letter>관리자</_.Letter>
+        </Link>
+      )
     );
-  }, [adminHeader]);
+  }, []);
 
   const UserLogin = useMemo(() => {
-    return userHeader ? (
+    return localStorage.getItem("access_token") ? (
       <>
         <_.Button
           onClick={() => {
@@ -48,7 +46,7 @@ const Header = () => {
         <_.Letter>마이페이지</_.Letter>
       </Link>
     );
-  }, [userHeader]);
+  }, [localStorage.getItem("access_token")]);
 
   const Modal = useMemo(() => {
     switch (changeModalValue) {
