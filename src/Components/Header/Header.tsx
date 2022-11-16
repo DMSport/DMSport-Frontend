@@ -8,8 +8,8 @@ import Certification from "../Sign/SignUp/Certification";
 import SignUp from "../Sign/SignUp/SignUp";
 import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
-import { ChangeModal, ChangeUserHeader } from "../../Store/atoms";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { ChangeModal } from "../../Store/atoms";
+import { useRecoilState } from "recoil";
 
 const Header = () => {
   const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
