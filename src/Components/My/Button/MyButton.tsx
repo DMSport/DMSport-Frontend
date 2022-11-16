@@ -1,6 +1,8 @@
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import * as _ from "../Button/MyButton.style";
+import { ChangeUserHeader } from "../../../Store/atoms";
+import { useSetRecoilState } from "recoil";
 import { Cookies } from "react-cookie";
 
 interface IMy {
@@ -10,14 +12,16 @@ interface IMy {
 }
 
 function MyButton({ type, color, content }: IMy) {
-  const cookies = new Cookies();
+  const cookies = new Cookies()
+  const setUserHeader = useSetRecoilState(ChangeUserHeader);
   const navigate = useNavigate();
 
   const button = () => {
     if (type === "logout") {
       localStorage.removeItem("access_token");
       localStorage.removeItem("authority");
-      cookies.remove("refresh_token");
+      cookies.remove("refresh_token")
+      setUserHeader(true)
       Swal.fire("로그아웃 성공", "로그아웃되었습니다.", "success");
       navigate("/");
     }

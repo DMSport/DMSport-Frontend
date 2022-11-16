@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import NoticeButton from "../../Components/Notice/Button";
 import NoticeModal from "../../Components/Notice/NoticeModal";
 import Post from "../../Components/Notice/Post";
