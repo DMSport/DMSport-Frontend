@@ -11,12 +11,13 @@ export const Container = styled.div`
  */
 export const SideContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   height: 200px;
   margin-top: 65px;
   overflow-x: scroll;
-  padding: 30px;
+  padding-left: 15rem;
+  padding-right: 15rem;
   div {
     display: flex;
     gap: 22px;
@@ -68,11 +69,27 @@ export const Text = styled.p<{
 
 export const ToggleBtnWrapper = styled.div`
   display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
   width: 176px;
   height: 60px;
   background-color: white;
+  border-radius: 60px;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.3);
+  svg {
+    margin: 25px;
+  }
 `;
-export const ToggleBtn = styled.div<{ isNight: boolean }>``;
+export const ToggleBtn = styled.div<{ isNight: boolean }>`
+  position: absolute;
+  width: 88px;
+  height: 60px;
+  background-color: #575757;
+  transform: ${(props) => (props.isNight ? "translate(88px)" : "translate(0)")};
+  border-radius: ${(props) =>
+    props.isNight ? "0 60px 60px 0" : "60px 0 0 60px"};
+`;
 /**
  * 축구 컴포넌트 스타일
  */

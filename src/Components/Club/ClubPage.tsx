@@ -6,11 +6,19 @@ import { useEffect } from "react";
 import VolleyballIcon from "../../Assets/SVG/club/volleyball";
 import BasketballIcon from "../../Assets/SVG/club/basketball";
 import BadmintonIcon from "../../Assets/SVG/club/badminton";
+import MoonIcon from "../../Assets/SVG/moonIcon";
+import SunIcon from "../../Assets/SVG/SunIcon";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 
 // TODO : page부분 반복되는 부분 리팩토링해야함(통합)
+const IsNight = atom({
+  key: "isNight",
+  default: false,
+});
+
 const localUrl = "http://3.35.154.118:8080";
 const token =
-  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njg2Njk5OTEsImlhdCI6MTY2ODY2NjM5MX0.OoK9zkNUmlsPMLbTg5X_ySxNvRMUnvtBKugZC-61R_w";
+  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njg2ODIzNTUsImlhdCI6MTY2ODY3ODc1NX0.c8Rx5HD2hIi2ndv2EABopuTVI67msTGGULMeTPKHXlI";
 interface ITodayVoteData {
   is_ban: boolean;
   ban_period: string;
@@ -40,6 +48,7 @@ export default function ClubPage({ clubName }: { clubName: string }) {
     </_.Container>
   );
 }
+
 function BasketballPage() {
   return (
     <_.MainContainer>
@@ -69,9 +78,10 @@ function SoccerPage() {
   const parseDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()}`;
-  const [POSTvoteClub] = useFetch(localUrl + "/club/vote/{vote-id}");
+  const isNight = useRecoilValue(IsNight);
+  const [POSTvoteClub] = useFetch(`${localUrl}/club/vote/{vote-id}`);
   const [GETvote, { data: voteData }] = useFetch<ITodayVoteData>(
-    `${localUrl}/clubs/vote?type=BASKETBALL&date=${parseDate}`
+    `${localUrl}/clubs/vote?type=SOCCER&date=${parseDate}`
   );
 
   useEffect(() => {
@@ -117,7 +127,7 @@ function SoccerPage() {
         }}
       >
         <_.Text size={32} weight={600}>
-          {voteData?.vote.length}/{voteData?.max_people}
+          {isNight ? voteData?.vote[0].time : voteData?.vote[1].time}
         </_.Text>
         <_.Text size={32} weight={600}>
           {Number(voteData?.max_people) - Number(voteData?.vote.length)}명 남음
@@ -162,14 +172,11 @@ function BadmintonLine() {
   );
 }
 function SideBar({ pathname }: { pathname: string }) {
+  const [isNight, setIsNight] = useRecoilState(IsNight);
+  console.log(isNight);
   return (
     <_.SideContainer>
-      <_.Text
-        size={36}
-        weight={700}
-        height={44}
-        style={{ position: "absolute", left: "13rem" }}
-      >
+      <_.Text size={36} weight={700} height={44}>
         클럽
       </_.Text>
       <div>
@@ -178,6 +185,11 @@ function SideBar({ pathname }: { pathname: string }) {
         <SideBtn content="축구" link="soccer" pathname={pathname} />
         <SideBtn content="배구" link="volleyball" pathname={pathname} />
       </div>
+      <_.ToggleBtnWrapper onClick={() => setIsNight((current) => !current)}>
+        <MoonIcon />
+        <SunIcon />
+        <_.ToggleBtn isNight={isNight} />
+      </_.ToggleBtnWrapper>
     </_.SideContainer>
   );
 }
