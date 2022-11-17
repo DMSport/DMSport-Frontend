@@ -1,10 +1,16 @@
 import { Link, useLocation } from "react-router-dom";
 import SoccerIcon from "../../Assets/SVG/club/soccer";
-import MoonIcon from "../../Assets/SVG/moonIcon";
 import useFetch from "../../Hooks/useFetch";
 import * as _ from "./style";
 import { useEffect } from "react";
+import VolleyballIcon from "../../Assets/SVG/club/volleyball";
+import BasketballIcon from "../../Assets/SVG/club/basketball";
+import BadmintonIcon from "../../Assets/SVG/club/badminton";
 
+// TODO : page부분 반복되는 부분 리팩토링해야함(통합)
+const localUrl = "http://3.35.154.118:8080";
+const token =
+  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njg2Njk5OTEsImlhdCI6MTY2ODY2NjM5MX0.OoK9zkNUmlsPMLbTg5X_ySxNvRMUnvtBKugZC-61R_w";
 interface ITodayVoteData {
   is_ban: boolean;
   ban_period: string;
@@ -18,13 +24,19 @@ interface ITodayVoteData {
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname } = useLocation();
 
+  const pages: { [key: string]: object } = {
+    badminton: <BadmintonPage />,
+    soccer: <SoccerPage />,
+    volleyball: <VolleyballPage />,
+    basketball: <BasketballPage />,
+  };
+
   return (
     <_.Container>
-      <SideBar pathname={pathname} />
-      {clubName === "badminton" && <BadmintonPage />}
-      {clubName === "soccer" && <SoccerPage />}
-      {clubName === "volleyball" && <VolleyballPage />}
-      {clubName === "basketball" && <BasketballPage />}
+      <>
+        <SideBar pathname={pathname} />
+        {pages[clubName]}
+      </>
     </_.Container>
   );
 }
@@ -36,6 +48,7 @@ function BasketballPage() {
         alt=""
         height={"70%"}
       />
+      <BasketballIcon />
     </_.MainContainer>
   );
 }
@@ -47,6 +60,7 @@ function VolleyballPage() {
         alt=""
         height={"70%"}
       />
+      <VolleyballIcon />
     </_.MainContainer>
   );
 }
@@ -55,22 +69,24 @@ function SoccerPage() {
   const parseDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()}`;
-  const [voteClub] = useFetch("/club/vote/{vote-id}");
-  const [getVote, { data: voteData }] = useFetch<ITodayVoteData>(
-    "http://3.35.154.118:8080" + "club/vote?type=soccer&date=" + parseDate
+  const [POSTvoteClub] = useFetch(localUrl + "/club/vote/{vote-id}");
+  const [GETvote, { data: voteData }] = useFetch<ITodayVoteData>(
+    `${localUrl}/clubs/vote?type=BASKETBALL&date=${parseDate}`
   );
 
   useEffect(() => {
-    getVote({
+    GETvote({
       method: "get",
+      headers: {
+        Authorization: token,
+      },
     });
   }, []);
   const onValidVoteClub = () => {
-    voteClub({
+    POSTvoteClub({
       method: "post",
       headers: {
-        // 토큰이 들어가야 하는 곳
-        Authorization: "",
+        Authorization: token,
       },
     });
   };
@@ -117,25 +133,9 @@ function BadmintonPage() {
         <img
           src={require("../../Assets/PNG/badmintonBg.png")}
           height={"70%"}
-          style={{
-            position: "absolute",
-          }}
           alt=""
         />
-        <_.BadmintonSpotContainer>
-          {[1, 2, 3, 4].map((i) => (
-            <_.BadmintonSpotWrapper>
-              {[1, 2, 3, 4].map((i) => (
-                <_.BadmintonSpotBtn bgColor="#80CBE3">
-                  <_.Text size={15} weight={700} color={"white"}>
-                    지관
-                  </_.Text>
-                </_.BadmintonSpotBtn>
-              ))}
-              <BadmintonLine />
-            </_.BadmintonSpotWrapper>
-          ))}
-        </_.BadmintonSpotContainer>
+        <BadmintonIcon />
       </_.MainContainer>
     </>
   );
@@ -164,7 +164,12 @@ function BadmintonLine() {
 function SideBar({ pathname }: { pathname: string }) {
   return (
     <_.SideContainer>
-      <_.Text size={36} weight={700} height={44}>
+      <_.Text
+        size={36}
+        weight={700}
+        height={44}
+        style={{ position: "absolute", left: "13rem" }}
+      >
         클럽
       </_.Text>
       <div>
@@ -186,57 +191,35 @@ function SideBtn({
   link: string;
   pathname: string;
 }) {
-  const date = new Date();
-  const parseDate = `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()}`;
-  const [getVote, { data: voteData }] = useFetch<ITodayVoteData>(
-    "http://3.35.154.118:8080" +
-      "club/vote?type=" +
-      pathname.slice(6) +
-      "&date=" +
-      parseDate
-  );
-
-  useEffect(() => {
-    getVote({
-      method: "get",
-    });
-  }, []);
   return (
     <Link to={`/club/${link}`}>
       <_.SideBtnWrapper isUserClick={pathname.slice(6) === link}>
-        <div>
-          <_.Text size={25} weight={700} height={43.57}>
-            {content}
-          </_.Text>
-          <MoonIcon />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.15)",
-            borderRadius: "60px",
-          }}
-        >
-          <_.SideBtnColorStick width={100} />
-          <_.SideBtnGrayStick width={100} />
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <_.Text size={14} weight={600} color={"#898A8D"}>
-            00 : 00 : 00
-          </_.Text>
-          <_.Text size={18} weight={600} color={"#898A8D"}>
-            {voteData?.vote.length}/{voteData?.max_people}명
-          </_.Text>
-        </div>
+        <_.Text weight={700} size={24}>
+          {content}
+        </_.Text>
       </_.SideBtnWrapper>
     </Link>
+  );
+}
+
+/**
+ * 후에 추가할 베드민턴 컴포넌트
+ */
+function WillBadmintonComponent() {
+  return (
+    <_.BadmintonSpotContainer>
+      {[1, 2, 3, 4].map((i) => (
+        <_.BadmintonSpotWrapper>
+          {[1, 2, 3, 4].map((i) => (
+            <_.BadmintonSpotBtn bgColor="#80CBE3">
+              <_.Text size={15} weight={700} color={"white"}>
+                지관
+              </_.Text>
+            </_.BadmintonSpotBtn>
+          ))}
+          <BadmintonLine />
+        </_.BadmintonSpotWrapper>
+      ))}
+    </_.BadmintonSpotContainer>
   );
 }
