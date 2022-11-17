@@ -10,7 +10,6 @@ import MoonIcon from "../../Assets/SVG/moonIcon";
 import SunIcon from "../../Assets/SVG/SunIcon";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 
-// TODO : page부분 반복되는 부분 리팩토링해야함(통합)
 const IsNight = atom({
   key: "isNight",
   default: false,
@@ -18,7 +17,7 @@ const IsNight = atom({
 
 const localUrl = "http://3.35.154.118:8080";
 const token =
-  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njg2ODIzNTUsImlhdCI6MTY2ODY3ODc1NX0.c8Rx5HD2hIi2ndv2EABopuTVI67msTGGULMeTPKHXlI";
+  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njg3MDY0ODgsImlhdCI6MTY2ODcwMjg4OH0.jC-YM-fm0YP04hdNYltZUrxf6CuD-xURMLcIhuY7PbY";
 interface ITodayVoteData {
   is_ban: boolean;
   ban_period: string;
@@ -32,19 +31,14 @@ interface ITodayVoteData {
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname } = useLocation();
 
-  const pages: { [key: string]: object } = {
-    badminton: <BadmintonPage />,
-    soccer: <SoccerPage />,
-    volleyball: <VolleyballPage />,
-    basketball: <BasketballPage />,
-  };
-
   return (
     <_.Container>
-      <>
-        <SideBar pathname={pathname} />
-        {pages[clubName]}
-      </>
+      <SideBar pathname={pathname} />
+      <MainPageComponent
+        src={""}
+        pathname={pathname.slice(6).toUpperCase()}
+        Icon={() => <SoccerIcon />}
+      />
     </_.Container>
   );
 }
@@ -52,11 +46,7 @@ export default function ClubPage({ clubName }: { clubName: string }) {
 function BasketballPage() {
   return (
     <_.MainContainer>
-      <img
-        src={require("../../Assets/PNG/basketballBg.png")}
-        alt=""
-        height={"70%"}
-      />
+      <img src={require("")} alt="" height={"70%"} />
       <BasketballIcon />
     </_.MainContainer>
   );
@@ -73,15 +63,27 @@ function VolleyballPage() {
     </_.MainContainer>
   );
 }
-function SoccerPage() {
+function MainPageComponent({
+  src,
+  pathname,
+  Icon,
+}: {
+  src: string;
+  pathname: string;
+  Icon: () => JSX.Element;
+}) {
   const date = new Date();
   const parseDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()}`;
   const isNight = useRecoilValue(IsNight);
-  const [POSTvoteClub] = useFetch(`${localUrl}/club/vote/{vote-id}`);
   const [GETvote, { data: voteData }] = useFetch<ITodayVoteData>(
-    `${localUrl}/clubs/vote?type=SOCCER&date=${parseDate}`
+    `${localUrl}/clubs/vote?type=${pathname}&date=${parseDate}`
+  );
+  const [POSTvoteClub] = useFetch(
+    `${localUrl}/club/vote/${
+      isNight ? voteData?.vote[1].vote_id : voteData?.vote[0].vote_id
+    }`
   );
 
   useEffect(() => {
@@ -102,12 +104,8 @@ function SoccerPage() {
   };
   return (
     <_.MainContainer>
-      <img
-        src={require("../../Assets/PNG/soccerBg.png")}
-        alt=""
-        height={"70%"}
-      />
-      <SoccerIcon />
+      <img src={src} alt="" height={"70%"} />
+      {Icon && <Icon />}
       <_.Text
         size={24}
         color={"white"}
@@ -127,7 +125,8 @@ function SoccerPage() {
         }}
       >
         <_.Text size={32} weight={600}>
-          {isNight ? voteData?.vote[0].time : voteData?.vote[1].time}
+          {isNight ? voteData?.vote.length : voteData?.vote.length}/
+          {voteData?.max_people}
         </_.Text>
         <_.Text size={32} weight={600}>
           {Number(voteData?.max_people) - Number(voteData?.vote.length)}명 남음
@@ -173,7 +172,6 @@ function BadmintonLine() {
 }
 function SideBar({ pathname }: { pathname: string }) {
   const [isNight, setIsNight] = useRecoilState(IsNight);
-  console.log(isNight);
   return (
     <_.SideContainer>
       <_.Text size={36} weight={700} height={44}>
