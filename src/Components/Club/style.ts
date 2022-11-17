@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
 `;
@@ -10,25 +11,27 @@ export const Container = styled.div`
  */
 export const SideContainer = styled.div`
   display: flex;
-  align-items: flex-end;
-  flex-direction: column;
-  height: auto;
-  width: 400px;
-  gap: 25px;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
   margin-top: 65px;
-  overflow: scroll;
+  overflow-x: scroll;
   padding: 30px;
+  div {
+    display: flex;
+    gap: 22px;
+  }
 `;
 export const SideBtnWrapper = styled.div<{ isUserClick: boolean }>`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 10px;
-  width: 236px;
-  max-height: 400px;
+  justify-content: center;
+  align-items: center;
+  width: 148px;
+  height: 92px;
   border: ${(props) => (props.isUserClick ? "1px solid #55acee" : "0")};
   border-radius: 30px;
-  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
   padding: 20px;
   z-index: -1;
   div {
@@ -63,6 +66,13 @@ export const Text = styled.p<{
   width: ${(props) => props.width}px;
 `;
 
+export const ToggleBtnWrapper = styled.div`
+  display: flex;
+  width: 176px;
+  height: 60px;
+  background-color: white;
+`;
+export const ToggleBtn = styled.div<{ isNight: boolean }>``;
 /**
  * 축구 컴포넌트 스타일
  */
@@ -70,20 +80,25 @@ export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: calc(100vw - 274px);
+  width: 100vw;
   justify-content: center;
   align-items: center;
   z-index: -1;
   img {
     position: absolute;
     z-index: -1;
+    top: calc(50% + 100px);
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   svg {
     position: absolute;
     z-index: 0;
   }
 `;
-
+/**
+ * 배드민턴 새로운 버전 스타일
+ */
 export const BadmintonSpotContainer = styled.div`
   z-index: 1;
   display: grid;
