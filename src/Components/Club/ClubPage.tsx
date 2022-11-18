@@ -25,34 +25,37 @@ interface ITodayVoteData {
   max_people: number;
   vote: IVoteData[];
 }
+
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname: oldPathname } = useLocation();
   const pathname = oldPathname.slice(6);
+
+  // key 이름은 clubName과 일치하게 작성해야 한다.
   const clubPages: { [key: string]: object } = {
     soccer: (
-      <MainPageComponent
-        src={""}
+      <ClubMainPages
+        src={require("../../Assets/PNG/soccerBg.png")}
         pathname={pathname.toUpperCase()}
         Icon={() => <SoccerIcon />}
       />
     ),
     basketball: (
-      <MainPageComponent
-        src={""}
+      <ClubMainPages
+        src={require("../../Assets/PNG/basketballBg.png")}
         pathname={pathname.toUpperCase()}
         Icon={() => <BasketballIcon />}
       />
     ),
     badminton: (
-      <MainPageComponent
-        src={""}
+      <ClubMainPages
+        src={require("../../Assets/PNG/badmintonBg.png")}
         pathname={pathname.toUpperCase()}
         Icon={() => <BadmintonIcon />}
       />
     ),
     volleyball: (
-      <MainPageComponent
-        src={""}
+      <ClubMainPages
+        src={require("../../Assets/PNG/volleyball.png")}
         pathname={pathname.toUpperCase()}
         Icon={() => <VolleyballIcon />}
       />
@@ -63,34 +66,13 @@ export default function ClubPage({ clubName }: { clubName: string }) {
     <_.Container>
       <>
         <SideBar pathname={pathname} />
-        {clubPages[clubName.slice(6)]}
+        {clubPages[clubName]}
       </>
     </_.Container>
   );
 }
 
-function BasketballPage() {
-  return (
-    <_.MainContainer>
-      <img src={require("")} alt="" height={"70%"} />
-      <BasketballIcon />
-    </_.MainContainer>
-  );
-}
-function VolleyballPage() {
-  return (
-    <_.MainContainer>
-      <img
-        src={require("../../Assets/PNG/volleyball.png")}
-        alt=""
-        height={"70%"}
-      />
-      <VolleyballIcon />
-    </_.MainContainer>
-  );
-}
-
-function MainPageComponent({
+function ClubMainPages({
   src,
   pathname,
   Icon,
@@ -99,32 +81,22 @@ function MainPageComponent({
   pathname: string;
   Icon: () => JSX.Element;
 }) {
+  const [voteData, setVoteData] = useState<IVoteData>();
+
   const date = new Date();
   const parseDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()}`;
+
   const whatTime = useRecoilValue(WhatTime);
+
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
     `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
   );
-  const [voteData, setVoteData] = useState<IVoteData>();
-  useEffect(() => {
-    setVoteData(
-      allVoteData?.vote?.filter((prev: any) => prev.time === whatTime)[0]
-    );
-  }, [whatTime]);
   const [POSTvoteClub] = useFetch(
     `${process.env.REACT_APP_BASE_URL}club/vote/${voteData?.vote_id}`
   );
 
-  useEffect(() => {
-    GETvote({
-      method: "get",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    });
-  }, []);
   const onValidVoteClub = () => {
     POSTvoteClub({
       method: "post",
@@ -133,6 +105,22 @@ function MainPageComponent({
       },
     });
   };
+
+  useEffect(() => {
+    setVoteData(
+      allVoteData?.vote?.filter((prev: any) => prev.time === whatTime)[0]
+    );
+  }, [allVoteData?.vote, whatTime]);
+
+  useEffect(() => {
+    GETvote({
+      method: "get",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    });
+  }, [whatTime, pathname]);
+  
   return (
     <_.MainContainer>
       <img src={src} alt="" height={"70%"} />
@@ -141,7 +129,6 @@ function MainPageComponent({
         size={24}
         color={"white"}
         weight={700}
-        as="button"
         style={{ position: "absolute" }}
         onClick={onValidVoteClub}
       >
@@ -171,41 +158,7 @@ function MainPageComponent({
     </_.MainContainer>
   );
 }
-function BadmintonPage() {
-  return (
-    <>
-      <_.MainContainer>
-        <img
-          src={require("../../Assets/PNG/badmintonBg.png")}
-          height={"70%"}
-          alt=""
-        />
-        <BadmintonIcon />
-      </_.MainContainer>
-    </>
-  );
-}
-function BadmintonLine() {
-  return (
-    <svg
-      width="4"
-      height="157"
-      viewBox="0 0 4 157"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      style={{ position: "absolute", left: "50%" }}
-    >
-      <line
-        x1="2"
-        y1="156.338"
-        x2="2"
-        y2="0.645233"
-        stroke="black"
-        strokeWidth="3"
-      />
-    </svg>
-  );
-}
+
 function SideBar({ pathname }: { pathname: string }) {
   const [whatTime, setWhatTime] = useRecoilState(WhatTime);
   return (
@@ -271,5 +224,26 @@ function WillBadmintonComponent() {
         </_.BadmintonSpotWrapper>
       ))}
     </_.BadmintonSpotContainer>
+  );
+}
+function BadmintonLine() {
+  return (
+    <svg
+      width="4"
+      height="157"
+      viewBox="0 0 4 157"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ position: "absolute", left: "50%" }}
+    >
+      <line
+        x1="2"
+        y1="156.338"
+        x2="2"
+        y2="0.645233"
+        stroke="black"
+        strokeWidth="3"
+      />
+    </svg>
   );
 }
