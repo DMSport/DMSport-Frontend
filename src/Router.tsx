@@ -5,7 +5,8 @@ import PrivacyPolicy from "./Components/Privacy/PrivacyPolicy";
 import Privacy from "./Components/Privacy/Privacy";
 import NoticePage from "./Pages/NoticePage/NoticePage";
 import Main from "./Pages/main";
-import MyPage from "./Pages/MyPage";
+import MyPage from "./Pages/MyPage/MyPage";
+import AdminPage from "./Pages/adminPage";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
         {/*404page*/}
         <Route path="/notice" element={<NoticePage />} />
         <Route path="/mypage" element={<MyPage />} />
+        <Route path="/adminpage" element={<AdminPage />} />
         <Route path="*" element="" />
       </Routes>
       <Footer />
