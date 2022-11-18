@@ -7,9 +7,10 @@ import { useRecoilState } from "recoil";
 import { MenuAtom } from "../Store/atoms";
 import { useState } from "react";
 import StudentSearch from "../Components/ManageSportsClub/StudentSearch";
+import { MenuType } from "../Store/atoms";
 
 interface IMenu {
-  id: string;
+  id: MenuType;
   title: string;
 }
 
@@ -22,11 +23,11 @@ const AdminPage = () => {
     { id: "NOTICE", title: "전체 공지 작성" },
   ];
 
-  const Click = (id: string) => {
+  const Click = (id: MenuType) => {
     setSelect(id);
   };
 
-  const MenuImg = (id: string) => {
+  const MenuImg = (id: MenuType) => {
     switch (id) {
       case "STUDENT":
         return <People color={select === id ? "white" : "#898A8D"} />;
@@ -53,6 +54,7 @@ const AdminPage = () => {
           })}
         </div>
       </Aside>
+      <StudentSearch />
     </Container>
   );
 };
