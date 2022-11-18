@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import SoccerIcon from "../../Assets/SVG/club/soccer";
 import useFetch from "../../Hooks/useFetch";
 import * as _ from "./style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import VolleyballIcon from "../../Assets/SVG/club/volleyball";
 import BasketballIcon from "../../Assets/SVG/club/basketball";
 import BadmintonIcon from "../../Assets/SVG/club/badminton";
@@ -10,35 +10,61 @@ import MoonIcon from "../../Assets/SVG/moonIcon";
 import SunIcon from "../../Assets/SVG/SunIcon";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 
-const IsNight = atom({
-  key: "isNight",
-  default: false,
+const WhatTime = atom<"DINNER" | "LUNCH">({
+  key: "whatTime",
+  default: "DINNER",
 });
-
-const localUrl = "http://3.35.154.118:8080";
-const token =
-  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYW5namlzb3VuZ0Bkc20uaHMua3IiLCJ0eXAiOiJhY2Nlc3MiLCJleHAiOjE2Njg3MDY0ODgsImlhdCI6MTY2ODcwMjg4OH0.jC-YM-fm0YP04hdNYltZUrxf6CuD-xURMLcIhuY7PbY";
+interface IVoteData {
+  vote_id: number;
+  time: "LUNCH" | "DINNER";
+  vote_count: number;
+}
 interface ITodayVoteData {
   is_ban: boolean;
   ban_period: string;
   max_people: number;
-  vote: {
-    vote_id: number;
-    time: "LUNCH" | "DINNER";
-    vote_count: number;
-  }[];
+  vote: IVoteData[];
 }
 export default function ClubPage({ clubName }: { clubName: string }) {
-  const { pathname } = useLocation();
+  const { pathname: oldPathname } = useLocation();
+  const pathname = oldPathname.slice(6);
+  const clubPages: { [key: string]: object } = {
+    soccer: (
+      <MainPageComponent
+        src={""}
+        pathname={pathname.toUpperCase()}
+        Icon={() => <SoccerIcon />}
+      />
+    ),
+    basketball: (
+      <MainPageComponent
+        src={""}
+        pathname={pathname.toUpperCase()}
+        Icon={() => <BasketballIcon />}
+      />
+    ),
+    badminton: (
+      <MainPageComponent
+        src={""}
+        pathname={pathname.toUpperCase()}
+        Icon={() => <BadmintonIcon />}
+      />
+    ),
+    volleyball: (
+      <MainPageComponent
+        src={""}
+        pathname={pathname.toUpperCase()}
+        Icon={() => <VolleyballIcon />}
+      />
+    ),
+  };
 
   return (
     <_.Container>
-      <SideBar pathname={pathname} />
-      <MainPageComponent
-        src={""}
-        pathname={pathname.slice(6).toUpperCase()}
-        Icon={() => <SoccerIcon />}
-      />
+      <>
+        <SideBar pathname={pathname} />
+        {clubPages[clubName.slice(6)]}
+      </>
     </_.Container>
   );
 }
@@ -63,6 +89,7 @@ function VolleyballPage() {
     </_.MainContainer>
   );
 }
+
 function MainPageComponent({
   src,
   pathname,
@@ -76,21 +103,25 @@ function MainPageComponent({
   const parseDate = `${date.getFullYear()}-${
     date.getMonth() + 1
   }-${date.getDate()}`;
-  const isNight = useRecoilValue(IsNight);
-  const [GETvote, { data: voteData }] = useFetch<ITodayVoteData>(
-    `${localUrl}/clubs/vote?type=${pathname}&date=${parseDate}`
+  const whatTime = useRecoilValue(WhatTime);
+  const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
+    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
   );
+  const [voteData, setVoteData] = useState<IVoteData>();
+  useEffect(() => {
+    setVoteData(
+      allVoteData?.vote?.filter((prev: any) => prev.time === whatTime)[0]
+    );
+  }, [whatTime]);
   const [POSTvoteClub] = useFetch(
-    `${localUrl}/club/vote/${
-      isNight ? voteData?.vote[1].vote_id : voteData?.vote[0].vote_id
-    }`
+    `${process.env.REACT_APP_BASE_URL}club/vote/${voteData?.vote_id}`
   );
 
   useEffect(() => {
     GETvote({
       method: "get",
       headers: {
-        Authorization: token,
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     });
   }, []);
@@ -98,7 +129,7 @@ function MainPageComponent({
     POSTvoteClub({
       method: "post",
       headers: {
-        Authorization: token,
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     });
   };
@@ -110,6 +141,7 @@ function MainPageComponent({
         size={24}
         color={"white"}
         weight={700}
+        as="button"
         style={{ position: "absolute" }}
         onClick={onValidVoteClub}
       >
@@ -125,11 +157,15 @@ function MainPageComponent({
         }}
       >
         <_.Text size={32} weight={600}>
-          {isNight ? voteData?.vote.length : voteData?.vote.length}/
-          {voteData?.max_people}
+          <>
+            {Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}/
+            {allVoteData?.max_people}
+          </>
         </_.Text>
         <_.Text size={32} weight={600}>
-          {Number(voteData?.max_people) - Number(voteData?.vote.length)}명 남음
+          {Number(allVoteData?.max_people) -
+            Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}
+          명 남음
         </_.Text>
       </div>
     </_.MainContainer>
@@ -171,7 +207,7 @@ function BadmintonLine() {
   );
 }
 function SideBar({ pathname }: { pathname: string }) {
-  const [isNight, setIsNight] = useRecoilState(IsNight);
+  const [whatTime, setWhatTime] = useRecoilState(WhatTime);
   return (
     <_.SideContainer>
       <_.Text size={36} weight={700} height={44}>
@@ -183,10 +219,14 @@ function SideBar({ pathname }: { pathname: string }) {
         <SideBtn content="축구" link="soccer" pathname={pathname} />
         <SideBtn content="배구" link="volleyball" pathname={pathname} />
       </div>
-      <_.ToggleBtnWrapper onClick={() => setIsNight((current) => !current)}>
+      <_.ToggleBtnWrapper
+        onClick={() =>
+          setWhatTime((prev) => (prev !== "DINNER" ? "DINNER" : "LUNCH"))
+        }
+      >
         <MoonIcon />
         <SunIcon />
-        <_.ToggleBtn isNight={isNight} />
+        <_.ToggleBtn isNight={whatTime} />
       </_.ToggleBtnWrapper>
     </_.SideContainer>
   );

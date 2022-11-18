@@ -20,10 +20,7 @@ function Router() {
         <Route path="/notice" element={<NoticePage />}></Route>
         <Route path="/mypage" element={<MyPage />}></Route>
         <Route path="/club">
-          <Route
-            path="/club/soccer"
-            element={<ClubPage clubName={"soccer"} />}
-          />
+          <Route path="soccer" element={<ClubPage clubName={"soccer"} />} />
           <Route
             path="basketball"
             element={<ClubPage clubName={"basketball"} />}

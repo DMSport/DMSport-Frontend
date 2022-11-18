@@ -65,6 +65,7 @@ export const Text = styled.p<{
   height: ${(props) => props.height}px;
   font-size: ${(props) => props.size}px;
   width: ${(props) => props.width}px;
+  z-index: 1;
 `;
 
 export const ToggleBtnWrapper = styled.div`
@@ -81,14 +82,15 @@ export const ToggleBtnWrapper = styled.div`
     margin: 25px;
   }
 `;
-export const ToggleBtn = styled.div<{ isNight: boolean }>`
+export const ToggleBtn = styled.div<{ isNight: string }>`
   position: absolute;
   width: 88px;
   height: 60px;
   background-color: #575757;
-  transform: ${(props) => (props.isNight ? "translate(88px)" : "translate(0)")};
+  transform: ${(props) =>
+    props.isNight === "DINNER" ? "translate(88px)" : "translate(0)"};
   border-radius: ${(props) =>
-    props.isNight ? "0 60px 60px 0" : "60px 0 0 60px"};
+    props.isNight === "DINNER" ? "0 60px 60px 0" : "60px 0 0 60px"};
 `;
 /**
  * 축구 컴포넌트 스타일
