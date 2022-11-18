@@ -7,7 +7,6 @@ import NoticeModal from "../../Components/Notice/NoticeModal";
 import Post from "../../Components/Notice/Post";
 import { NoticeTypeAtom, isNoticeModalAtom } from "../../Store/atoms";
 import api from "../../Utils/api/notice";
-import ToastError from "../../Utils/Function/ErrorMessage";
 import * as _ from "./NoticePage.style";
 
 export type ModalType = "VIEW" | "EDIT" | "WRITE";
@@ -20,7 +19,6 @@ export interface INotice {
 }
 
 const NoticePage = () => {
-  const navigate = useNavigate();
   const NoticeType = useRecoilValue(NoticeTypeAtom);
   const [isNoticeModal, setNoticeModalAtom] = useRecoilState(isNoticeModalAtom);
   const [modalType, setModalType] = useState<ModalType>("VIEW");
@@ -32,12 +30,7 @@ const NoticePage = () => {
     setNoticeModalAtom((prev) => !prev);
   };
 
-  const { data } = useQuery(["Notice"], api.getNoticeAll, {
-    onError: () => {
-      ToastError("로그인을 확인해주세요");
-      navigate("/");
-    },
-  });
+  const { data } = useQuery(["Notice"], api.getNoticeAll);
 
   return (
     <_.NoticeContainer>
