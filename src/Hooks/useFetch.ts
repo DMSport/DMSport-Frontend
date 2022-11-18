@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 
 type IFetchResponse<T> = [IfetchHandler, IFetchStates<T>];
@@ -35,21 +35,24 @@ function useFetch<T = any>(url: string): IFetchResponse<T> {
     loading: false,
     error: undefined,
   });
-  const fetchHandler = async ({ method, headers, data }: IFetchingConfig) => {
-    setState((current) => ({ ...current, loading: true }));
-    await axios(url, {
-      method,
-      headers: {
-        ...headers,
-      },
-      data: JSON.stringify(data),
-    })
-      .then((response) =>
-        setState((prev) => ({ ...prev, data: response.data }))
-      )
-      .catch((error) => setState((current) => ({ ...current, error: error })))
-      .finally(() => setState((current) => ({ ...current, loading: false })));
-  };
+  const fetchHandler = useCallback(
+    async ({ method, headers, data }: IFetchingConfig) => {
+      setState((current) => ({ ...current, loading: true }));
+      await axios(url, {
+        method,
+        headers: {
+          ...headers,
+        },
+        data: JSON.stringify(data),
+      })
+        .then((response) =>
+          setState((prev) => ({ ...prev, data: response.data }))
+        )
+        .catch((error) => setState((current) => ({ ...current, error: error })))
+        .finally(() => setState((current) => ({ ...current, loading: false })));
+    },
+    []
+  );
   return [fetchHandler, { ...state }];
 }
 
