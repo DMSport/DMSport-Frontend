@@ -92,9 +92,6 @@ export const ToggleBtn = styled.div<{ isNight: string }>`
   border-radius: ${(props) =>
     props.isNight === "DINNER" ? "0 60px 60px 0" : "60px 0 0 60px"};
 `;
-/**
- * 축구 컴포넌트 스타일
- */
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
