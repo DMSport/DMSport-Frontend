@@ -120,7 +120,8 @@ function ClubMainPages({
       },
     });
   }, [whatTime, pathname]);
-  
+
+  console.log(allVoteData);
   return (
     <_.MainContainer>
       <img src={src} alt="" height={"70%"} />
