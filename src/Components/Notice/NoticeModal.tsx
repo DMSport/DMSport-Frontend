@@ -158,7 +158,8 @@ function NoticeModal({ modalType, setModalType }: IModalType) {
       <_.White>
         {ModalContent()}
         {((localStorage.getItem("authority") !== "USER" &&
-          localStorage.getItem("authority")?.split("_")[0] === noticeTypeAtom) ||
+          localStorage.getItem("authority")?.split("_")[0] === noticeTypeAtom &&
+          modalType !== "WRITE") ||
           localStorage.getItem("authority") === "ADMIN") && (
           <>
             {isEditClicked ? (

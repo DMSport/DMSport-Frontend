@@ -13,6 +13,7 @@ import { useRecoilState } from "recoil";
 
 const Header = () => {
   const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
+
   const UserLogin = useMemo(() => {
     return (
       <>
@@ -67,9 +68,9 @@ const Header = () => {
             <Link to="/adminpage">
               <_.Letter>관리자</_.Letter>
             </Link>
-          ) :
+          ) : (
             <></>
-          }
+          )}
           <_.Letter>클럽</_.Letter>
           <Link to="/notice">
             <_.Letter>공지</_.Letter>
