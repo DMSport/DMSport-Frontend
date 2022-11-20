@@ -6,7 +6,7 @@ import Privacy from "./Components/Privacy/Privacy";
 import NoticePage from "./Pages/NoticePage/NoticePage";
 import Main from "./Pages/main";
 import MyPage from "./Pages/MyPage/MyPage";
-import AdminPage from "./Pages/adminPage";
+import AdminPage from "./Pages/adminpage/adminPage";
 
 function Router() {
   return (
@@ -19,7 +19,13 @@ function Router() {
         {/*404page*/}
         <Route path="/notice" element={<NoticePage />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/adminpage" element={<AdminPage />} />
+        <Route path="/adminpage" element={<AdminPage aside="SearchUser" />} />
+        <Route path="/adminpage/banpage" element={<AdminPage aside="" />} />
+        <Route path="/adminpage/noticepage" element={<AdminPage aside="" />} />
+        {/* <Route
+            path="basketball"
+            element={<ClubPage clubName={"basketball"} />}
+          /> */}
         <Route path="*" element="" />
       </Routes>
       <Footer />
