@@ -8,11 +8,15 @@ import Certification from "../Sign/SignUp/Certification";
 import SignUp from "../Sign/SignUp/SignUp";
 import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
-import { ChangeModal } from "../../Store/atoms";
-import { useRecoilState } from "recoil";
+import {
+  ChangeModal,
+  ChangeUserHeader,
+} from "../../Store/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 const Header = () => {
   const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
+  const userHeader = useRecoilValue(ChangeUserHeader);
 
   const UserLogin = useMemo(() => {
     return (
@@ -33,7 +37,7 @@ const Header = () => {
         />
       </>
     );
-  }, [localStorage.getItem("access_token")]);
+  }, [userHeader]);
 
   const Modal = useMemo(() => {
     switch (changeModalValue) {
@@ -68,9 +72,9 @@ const Header = () => {
             <Link to="/adminpage">
               <_.Letter>관리자</_.Letter>
             </Link>
-          ) : (
+          ) :
             <></>
-          )}
+          }
           <_.Letter>클럽</_.Letter>
           <Link to="/notice">
             <_.Letter>공지</_.Letter>
