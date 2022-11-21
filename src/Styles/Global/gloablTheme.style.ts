@@ -11,4 +11,5 @@ export const baseTheme: DefaultTheme = {
   Black: "#000000",
   white: "#FFFFFF",
   white200: "#DDDDDD",
+  SkyBlue: "#7D9BE9",
 };

@@ -11,5 +11,6 @@ declare module "styled-components" {
     white: string;
     white200: string;
     Hint1: string;
+    SkyBlue: string;
   }
 }
