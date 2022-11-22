@@ -9,6 +9,7 @@ import StudentSearch from "../../Components/ManageSportsClub/studentsearch/Stude
 import { MenuType } from "../../Store/atoms";
 import { useNavigate } from "react-router-dom";
 import * as _ from "./adminPage.style";
+import BanPage from "../../Components/ManageSportsClub/ClubBan/BanPage";
 
 interface IMenu {
   id: MenuType;
@@ -45,6 +46,8 @@ const AdminPage = ({ aside }: { aside: string }) => {
     switch (aside) {
       case "SearchUser":
         return <StudentSearch margin={clicked} />;
+      case "ClubBan":
+        return <BanPage margin={clicked} />
       default:
         return null;
     }
