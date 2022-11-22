@@ -25,7 +25,7 @@ export const Front = styled.div<{ flip: boolean }>`
   border: 2px solid #80cce3;
   transform: rotateY(${(props) => (props.flip ? 180 : 0)}deg);
   z-index: ${(props) => (props.flip ? 0 : 1)};
-  transition: 1s;
+  transition: 1.5s;
 `;
 
 export const FrontWrapper = styled.div`
@@ -52,7 +52,7 @@ export const Back = styled.div<{ flip: boolean }>`
   border: 2px solid #80cce3;
   transform: rotateY(${(props) => (props.flip ? 0 : 180)}deg);
   z-index: ${(props) => (props.flip ? 1 : 0)};
-  transition: 1s;
+  transition: 1.5s;
 `;
 
 export const Name = styled.div`

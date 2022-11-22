@@ -17,19 +17,19 @@ export interface IUser {
   length?: number;
 }
 
-export type ISearchType = "ALL" | "USER" | "ADMIN" | "MANAGER";
+export type ISearchType = "ALL" | "USER" | "MANAGER";
 
-const StudentSearch = () => {
+const StudentSearch = ({ margin }: { margin: boolean }) => {
   const [keyword, onChangeKeyword] = useInput();
   const { data } = useQuery(["user"], api.getUsers);
-  const type: ISearchType[] = ["ALL", "USER", "ADMIN", "MANAGER"];
+  const type: ISearchType[] = ["ALL", "USER", "MANAGER"];
   const [searchType, setSearchType] = useState<ISearchType>("ALL");
   const [page, setPage] = useState<number>(0);
   const NoticeModal = useRecoilValue(isNoticeModalAtom);
 
   return (
-    <>
-      <_.Container>
+    <_.Display>
+      <_.Container margin={margin}>
         <_.SearchWrapper>
           <_.Input onChange={onChangeKeyword} value={keyword} />
           <_.Img src={Search} alt="검색" />
@@ -47,6 +47,7 @@ const StudentSearch = () => {
           {data?.data
             ?.filter((props: IUser) => props.name.includes(keyword))
             ?.filter((props: IUser) => (searchType !== "ALL" ? props.authority.includes(searchType) : props))
+            ?.filter((props: IUser) => props.authority !== "ADMIN" && props)
             ?.slice(page * 12, page * 12 + 12)
             ?.map((res: IUser) => {
               return <UserCard key={res.id} name={res.name} id={res.id} authority={res.authority} />;
@@ -55,7 +56,7 @@ const StudentSearch = () => {
         <PageNation page={page} setPage={setPage} data={data?.data} searchType={searchType} keyword={keyword} />
       </_.Container>
       {NoticeModal && <UserModal />}
-    </>
+    </_.Display>
   );
 };
 

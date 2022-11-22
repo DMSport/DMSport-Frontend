@@ -1,9 +1,15 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const Display = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+export const Container = styled.div<{ margin: boolean }>`
   position: absolute;
-  top: 100px;
-  left: 300px;
+  margin-left: ${(props) => (props.margin ? 10 : 300)}px;
+  transition: 0.5s;
+  margin-top: 100px;
   width: 75vw;
   height: 630px;
 `;
