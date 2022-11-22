@@ -68,6 +68,8 @@ const SignIn = () => {
                     switch (e.response.status) {
                         case 400:
                             return ToastError("관리자에게 문의해주세요");
+                        case 401:
+                            return ToastError("비밀번호를 다시 확인해주세요.");
                         case 404:
                             return ToastError("계정을 찾을 수 없습니다");
                         case 500:
