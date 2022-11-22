@@ -44,7 +44,7 @@ const AdminPage = ({ aside }: { aside: string }) => {
   const asidepage = () => {
     switch (aside) {
       case "SearchUser":
-        return <StudentSearch />;
+        return <StudentSearch margin={clicked} />;
       default:
         return null;
     }

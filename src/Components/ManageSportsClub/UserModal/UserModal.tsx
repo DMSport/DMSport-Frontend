@@ -20,7 +20,7 @@ const UserModal = () => {
   };
 
   const Flip = (event: React.MouseEvent<HTMLElement>) => {
-    setFlip((prev) => !prev);
+    setFlip(true);
     EventBubbling(event);
   };
 

@@ -18,19 +18,20 @@ const PageNation = ({ page, setPage, data, searchType, keyword }: IPage) => {
   };
 
   const Right = () => {
-    if (page !== 2) {
+    if (page !== Math.ceil(data?.filter((props: IUser) => props.authority !== "ADMIN" && props)?.length / 12) - 1) {
       setPage((prev) => prev + 1);
     }
   };
 
   const dt = data
     ?.filter((props: IUser) => props.name.includes(keyword))
+    ?.filter((props: IUser) => props.authority !== "ADMIN" && props)
     ?.filter((props: IUser) => (searchType !== "ALL" ? props.authority.includes(searchType) : props));
 
   return (
     <_.Pages>
       <_.Arrow onClick={Left}>&lt;</_.Arrow>
-      {dt?.slice(0, Math.floor(dt?.length / 12) + 1).map((res, i) => {
+      {dt?.slice(0, Math.ceil(dt?.length / 12)).map((res, i) => {
         return (
           <_.Number key={res.id} onClick={() => setPage(i)} isSelect={page === i}>
             {i + 1}
