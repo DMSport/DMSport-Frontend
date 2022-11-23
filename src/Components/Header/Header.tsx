@@ -13,6 +13,7 @@ import {
   ChangeUserHeader,
 } from "../../Store/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
+import ChangePwMy from "../My/ChangePw/ChangePwMy";
 
 const Header = () => {
   const [changeModalValue, setChangeModalValue] = useRecoilState(ChangeModal);
@@ -51,6 +52,8 @@ const Header = () => {
         return <FYPCerti />;
       case "ChangePw":
         return <ChangePw />;
+      case "ChangePwMy":
+        return <ChangePwMy />
       default:
         return <></>;
     }

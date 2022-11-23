@@ -26,7 +26,7 @@ const BanPage = ({ margin }: { margin: boolean }) => {
 
     const { SOCCER, BASKETBALL, BADMINTON, VOLLEYBALL } = inputs;
 
-    const onChangeDate = (e: React.ChangeEvent<HTMLInputElement> ) => {
+    const onChangeDate = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
         setInputs({
             ...inputs,
@@ -43,11 +43,14 @@ const BanPage = ({ margin }: { margin: boolean }) => {
 
     const BanAPI = (e: any) => {
         const { value, name } = e.target
-        axios.patch(process.env.REACT_APP_BASE_URL + `admin/ban`, { "club_type": name, "ban_period": value }, {headers: {Authorization:` Bearer ${localStorage.getItem("access_token")}`}})
+        axios
+            .patch(process.env.REACT_APP_BASE_URL + `admin/ban`,
+                { "club_type": name, "ban_period": value },
+                { headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` } })
             .then((response) => {
                 Swal.fire(
                     '정지 성공',
-                    `${value}까지 해당 클럽이 정지됩니다.`,
+                    `${value}일까지 해당 클럽이 정지됩니다.`,
                     'success'
                 )
             })

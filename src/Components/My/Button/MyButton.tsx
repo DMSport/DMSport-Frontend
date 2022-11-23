@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import * as _ from "../Button/MyButton.style";
-import { ChangeUserHeader } from "../../../Store/atoms";
+import { ChangeModal, ChangeUserHeader } from "../../../Store/atoms";
 import { useSetRecoilState } from "recoil";
 import { Cookies } from "react-cookie";
 
@@ -15,6 +15,7 @@ function MyButton({ type, color, content }: IMy) {
   const cookies = new Cookies()
   const setUserHeader = useSetRecoilState(ChangeUserHeader);
   const navigate = useNavigate();
+  const setChangeModalValue = useSetRecoilState(ChangeModal);
 
   const button = () => {
     if (type === "logout") {
@@ -28,6 +29,7 @@ function MyButton({ type, color, content }: IMy) {
     if (type === "deleteuser") {
     }
     if (type === "changepw") {
+      setChangeModalValue("ChangePwMy")
     }
   };
   return (

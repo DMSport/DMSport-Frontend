@@ -7,7 +7,7 @@ export const Display = styled.div`
 
 export const Container = styled.div<{ margin: boolean }>`
   position: absolute;
-  margin-left: ${(props) => (props.margin ? 0 : 250)}px;
+  margin-left: ${(props) => (props.margin ? 50 : 300)}px;
   transition: 0.5s;
   margin-top: 100px;
   width: 75vw;
