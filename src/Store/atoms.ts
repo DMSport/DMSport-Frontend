@@ -2,6 +2,7 @@ import { atom } from "recoil";
 
 type NoticeType = "ALL" | "BASKETBALL" | "SOCCER" | "VOLLEYBALL" | "BADMINTON";
 
+export type MenuType = "STUDENT" | "SPORTS" | "NOTICE";
 export const NoticeTypeAtom = atom<NoticeType>({
   key: "isNotice",
   default: "ALL",
@@ -23,11 +24,21 @@ export const Email = atom({
 });
 
 export const ChangeModal = atom({
-  key: 'changeModal',
-  default: ""
-})
+  key: "changeModal",
+  default: "",
+});
 
 export const ChangeUserHeader = atom({
-  key: 'changeModal',
-  default: false
-})
+  key: "changeUser",
+  default: false,
+});
+
+export const MenuAtom = atom<MenuType>({
+  key: "menu",
+  default: "STUDENT",
+});
+
+export const UserAtom = atom({
+  key: "uesr",
+  default: { name: "", authority: "USER", user_id: 0 },
+});
