@@ -63,8 +63,10 @@ const ChangePwMy = () => {
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
                     switch (e.response.status) {
+                        case 400:
+                            return ToastError("비밀번호를 규칙에 맞춰 입력해주세요.");
                         case 401:
-                            return ToastError("이메일을 다시 확인해주세요.");
+                            return ToastError("비밀번호를 다시 확인해주세요.");
                         case 500:
                             return ToastError("관리자에게 문의해주세요");
                         default:
@@ -88,7 +90,7 @@ const ChangePwMy = () => {
                         <_.TitleText>비밀번호 변경</_.TitleText>
                         <div>
                             <_.TextInput padding="15px 40px 15px 10px " name="old_password" onChange={onInputChange} value={old_password} type={oldPwType ? "password" : "text"} placeholder="기존 비밀번호를 입력해주세요" />
-                            <_.Eye width="25px" height="25px" src={newPwType ? OpenEye : CloseEye} onClick={() => { setNewPwType(!oldPwType) }}></_.Eye>
+                            <_.Eye width="25px" height="25px" src={oldPwType ? OpenEye : CloseEye} onClick={() => { setOldPwType(!oldPwType) }}></_.Eye>
                         </div>
                         <div>
                             <_.TextInput padding="15px 40px 15px 10px " name="new_password" onChange={onInputChange} value={new_password} type={newPwType ? "password" : "text"} placeholder="새로운 비밀번호를 입력해주세요" />
