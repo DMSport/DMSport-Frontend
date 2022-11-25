@@ -77,8 +77,10 @@ const Header = () => {
             </Link>
           ) :
             <></>
-          }
-          <_.Letter>클럽</_.Letter>
+          )}
+          <Link to="/club/soccer">
+            <_.Letter>클럽</_.Letter>
+          </Link>
           <Link to="/notice">
             <_.Letter>공지</_.Letter>
           </Link>

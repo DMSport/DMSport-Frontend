@@ -5,8 +5,8 @@ import PrivacyPolicy from "./Components/Privacy/PrivacyPolicy";
 import Privacy from "./Components/Privacy/Privacy";
 import NoticePage from "./Pages/NoticePage/NoticePage";
 import Main from "./Pages/main";
-import MyPage from "./Pages/MyPage/MyPage";
-import AdminPage from "./Pages/adminpage/adminPage";
+import MyPage from "./Pages/MyPage";
+import ClubPage from "./Components/Club/ClubPage";
 
 function Router() {
   return (
@@ -17,15 +17,23 @@ function Router() {
         <Route path="/Privacy" element={<Privacy />} />
         <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
         {/*404page*/}
-        <Route path="/notice" element={<NoticePage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/adminpage" element={<AdminPage aside="SearchUser" />} />
-        <Route path="/adminpage/banpage" element={<AdminPage aside="ClubBan" />} />
-        <Route path="/adminpage/noticepage" element={<AdminPage aside="" />} />
-        {/* <Route
+        <Route path="/notice" element={<NoticePage />}></Route>
+        <Route path="/mypage" element={<MyPage />}></Route>
+        <Route path="/club">
+          <Route path="soccer" element={<ClubPage clubName={"soccer"} />} />
+          <Route
             path="basketball"
             element={<ClubPage clubName={"basketball"} />}
-          /> */}
+          />
+          <Route
+            path="badminton"
+            element={<ClubPage clubName={"badminton"} />}
+          />
+          <Route
+            path="volleyball"
+            element={<ClubPage clubName={"volleyball"} />}
+          />
+        </Route>
         <Route path="*" element="" />
       </Routes>
       <Footer />
