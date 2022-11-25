@@ -13,13 +13,6 @@ function Second() {
             DMSport를 이용하면 손쉽게 관리할 수 있습니다.
           </_.Text>
         </div>
-        <_.Text
-          textColor="#72B5CA"
-          as={"button"}
-          style={{ marginTop: "133px" }}
-        >
-          시작하기
-        </_.Text>
       </_.SecondContainer>
     </>
   );
