@@ -8,10 +8,7 @@ import Certification from "../Sign/SignUp/Certification";
 import SignUp from "../Sign/SignUp/SignUp";
 import FYPCerti from "../Sign/ChangePw/FYPCerti";
 import ChangePw from "../Sign/ChangePw/ChangePw";
-import {
-  ChangeModal,
-  ChangeUserHeader,
-} from "../../Store/atoms";
+import { ChangeModal, ChangeUserHeader } from "../../Store/atoms";
 import { useRecoilState, useRecoilValue } from "recoil";
 import ChangePwMy from "../My/ChangePw/ChangePwMy";
 
@@ -53,7 +50,7 @@ const Header = () => {
       case "ChangePw":
         return <ChangePw />;
       case "ChangePwMy":
-        return <ChangePwMy />
+        return <ChangePwMy />;
       default:
         return <></>;
     }
@@ -75,7 +72,7 @@ const Header = () => {
             <Link to="/adminpage">
               <_.Letter>관리자</_.Letter>
             </Link>
-          ) :
+          ) : (
             <></>
           )}
           <Link to="/club/soccer">
