@@ -20,7 +20,7 @@ function Router() {
         <Route path="/notice" element={<NoticePage />} />
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/adminpage" element={<AdminPage aside="SearchUser" />} />
-        <Route path="/adminpage/banpage" element={<AdminPage aside="" />} />
+        <Route path="/adminpage/banpage" element={<AdminPage aside="ClubBan" />} />
         <Route path="/adminpage/noticepage" element={<AdminPage aside="AdminNotice" />} />
         {/* <Route
             path="basketball"

@@ -1,25 +1,25 @@
 import { useRef, useState, useEffect } from "react";
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { ChangeModal, Email } from '../../../Store/atoms';
-import * as _ from "../SignIn.style"
+import * as _ from "../../Sign/SignIn.style"
 import CloseEye from "../../../Assets/SVG/CloseEye.svg"
 import OpenEye from "../../../Assets/SVG/OpenEye.svg"
 import axios from "axios"
 import ToastError from "../../../Utils/Function/ErrorMessage"
 import Swal from "sweetalert2"
 
-const ChangePw = () => {
+const ChangePwMy = () => {
     const ModalCheck = useRef<HTMLDivElement>(null)
+    const [oldPwType, setOldPwType] = useState(true)
     const [newPwType, setNewPwType] = useState(true)
     const [reNewPwType, setReNewPwType] = useState(true)
-    const emailRecoil = useRecoilValue(Email)
     const setChangeModalValue = useSetRecoilState(ChangeModal);
     const [inputs, setInputs] = useState({
-        newPw: "",
-        reNewPw: ""
+        old_password: "",
+        new_password: "",
+        reNew_password: ""
     });
-
-    const { newPw, reNewPw } = inputs;
+    const { old_password, new_password, reNew_password } = inputs;
 
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target;
@@ -38,7 +38,7 @@ const ChangePw = () => {
     }, []);
 
     const CheckPw = () => {
-        if (newPw === reNewPw) {
+        if (new_password === reNew_password) {
             ChangePwAPI()
         }
         else {
@@ -48,8 +48,10 @@ const ChangePw = () => {
 
     //수정 필요
     const ChangePwAPI = () => {
-        axios.put(process.env.REACT_APP_BASE_URL + `users/password`,
-        { "new_password": newPw, "email": emailRecoil })
+        axios
+            .patch(process.env.REACT_APP_BASE_URL + `users/password`,
+                { "old_password": old_password, "new_password": new_password },
+                { headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` } })
             .then(() => {
                 Swal.fire(
                     '비밀번호 번경 성공',
@@ -61,8 +63,10 @@ const ChangePw = () => {
             .catch((e) => {
                 if (axios.isAxiosError(e) && e.response) {
                     switch (e.response.status) {
+                        case 400:
+                            return ToastError("비밀번호를 규칙에 맞춰 입력해주세요.");
                         case 401:
-                            return ToastError("이메일을 다시 확인해주세요.");
+                            return ToastError("비밀번호를 다시 확인해주세요.");
                         case 500:
                             return ToastError("관리자에게 문의해주세요");
                         default:
@@ -83,16 +87,20 @@ const ChangePw = () => {
             }}>
                 <_.Container>
                     <_.Wrapper>
-                        <_.TitleText>시작하기</_.TitleText>
+                        <_.TitleText>비밀번호 변경</_.TitleText>
                         <div>
-                            <_.TextInput padding="15px 40px 15px 10px " name="newPw" onChange={onInputChange} value={newPw} type={newPwType ? "password" : "text"} placeholder="새로운 비밀번호를 입력해주세요" />
+                            <_.TextInput padding="15px 40px 15px 10px " name="old_password" onChange={onInputChange} value={old_password} type={oldPwType ? "password" : "text"} placeholder="기존 비밀번호를 입력해주세요" />
+                            <_.Eye width="25px" height="25px" src={oldPwType ? OpenEye : CloseEye} onClick={() => { setOldPwType(!oldPwType) }}></_.Eye>
+                        </div>
+                        <div>
+                            <_.TextInput padding="15px 40px 15px 10px " name="new_password" onChange={onInputChange} value={new_password} type={newPwType ? "password" : "text"} placeholder="새로운 비밀번호를 입력해주세요" />
                             <_.Eye width="25px" height="25px" src={newPwType ? OpenEye : CloseEye} onClick={() => { setNewPwType(!newPwType) }}></_.Eye>
                         </div>
                         <div>
-                            <_.TextInput padding="15px 40px 15px 10px " name="reNewPw" onChange={onInputChange} value={reNewPw} type={reNewPwType ? "password" : "text"} placeholder="새로운 비밀번호를 재입력해주세요" />
+                            <_.TextInput padding="15px 40px 15px 10px " name="reNew_password" onChange={onInputChange} value={reNew_password} type={reNewPwType ? "password" : "text"} placeholder="새로운 비밀번호를 재입력해주세요" />
                             <_.Eye width="25px" height="25px" src={reNewPwType ? OpenEye : CloseEye} onClick={() => { setReNewPwType(!reNewPwType) }}></_.Eye>
                         </div>
-                        <_.Button margin="120px 61px 61px 61px" disabled={!(newPw && reNewPw)} onClick={CheckPw}>확인</_.Button>
+                        <_.Button margin="69px 61px 61px 61px" disabled={!(old_password && new_password)} onClick={CheckPw}>확인</_.Button>
                     </_.Wrapper>
                 </_.Container>
             </_.Background>
@@ -100,4 +108,4 @@ const ChangePw = () => {
     )
 }
 
-export default ChangePw
+export default ChangePwMy
