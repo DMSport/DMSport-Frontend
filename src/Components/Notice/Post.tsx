@@ -4,7 +4,7 @@ import { isNoticeModalAtom, NoticeIdAtom } from "../../Store/atoms";
 import { CreatedDate } from "../../Utils/Function/Timer";
 import { ModalType } from "../../Pages/NoticePage/NoticePage";
 
-interface IPost {
+export interface IPost {
   title: string;
   setModalType: React.Dispatch<React.SetStateAction<ModalType>>;
   created_at: string;

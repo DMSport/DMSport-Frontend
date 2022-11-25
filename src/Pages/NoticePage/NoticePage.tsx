@@ -9,7 +9,7 @@ import { NoticeTypeAtom, isNoticeModalAtom } from "../../Store/atoms";
 import api from "../../Utils/api/notice";
 import * as _ from "./NoticePage.style";
 
-export type ModalType = "VIEW" | "EDIT" | "WRITE";
+export type ModalType = "VIEW" | "EDIT" | "WRITE" | "ADMINWRITE";
 export interface INotice {
   id: number;
   type: string;
@@ -55,7 +55,7 @@ const NoticePage = () => {
             return <Post key={id} setModalType={setModalType} id={id} created_at={created_at} title={title}></Post>;
           })}
       </_.Space>
-      {isNoticeModal && <NoticeModal modalType={modalType} setModalType={setModalType} />}
+      {isNoticeModal && <NoticeModal color="#5596aa" modalType={modalType} setModalType={setModalType} />}
     </_.NoticeContainer>
   );
 };

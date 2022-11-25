@@ -84,7 +84,7 @@ export const Notice = styled.textarea`
   resize: none;
 `;
 
-export const Button = styled.input`
+export const Button = styled.input<{ color: string }>`
   position: absolute;
   left: 50%;
   bottom: 60px;
@@ -95,7 +95,7 @@ export const Button = styled.input`
   width: 110px;
   height: 40px;
   color: ${(props) => props.theme.white};
-  background-color: #5596aa;
+  background-color: ${(props) => props.color};
   font-size: 18px;
   font-weight: 600;
   border-radius: 10px;
@@ -110,4 +110,17 @@ export const EditButton = styled(Button)`
 
 export const DeleteButton = styled(Button)`
   left: 530px;
+`;
+
+export const Select = styled.select`
+  position: absolute;
+  right: 30px;
+  width: 130px;
+  height: 40px;
+  background: url("https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png") calc(100% - 5px)
+    center no-repeat;
+  background-size: 20px;
+  padding: 5px 30px 5px 10px;
+  border-radius: 4px;
+  outline: 0 none;
 `;

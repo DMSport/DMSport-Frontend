@@ -88,4 +88,13 @@ export const Select = styled.select`
   position: absolute;
   top: 200px;
   left: 30px;
+  width: 130px;
+  height: 35px;
+  background: url("https://freepikpsd.com/media/2019/10/down-arrow-icon-png-7-Transparent-Images.png") calc(100% - 5px)
+    center no-repeat;
+  background-size: 20px;
+  padding: 5px 30px 5px 10px;
+  border-radius: 4px;
+  outline: 0 none;
+  border: 1px solid ${(props) => props.theme.Primary};
 `;

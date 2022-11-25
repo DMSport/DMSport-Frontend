@@ -64,4 +64,17 @@ export default {
       },
     });
   },
+  postAdminNotice(title: string, content: string, noticeType: string) {
+    return request({
+      url: `notices/admin?type=${noticeType}`,
+      method: "post",
+      data: {
+        title,
+        content,
+      },
+      headers: {
+        Authorization: `Bearer ${localStorage.access_token}`,
+      },
+    });
+  },
 };

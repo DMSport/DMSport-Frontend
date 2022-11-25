@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Pages = styled.div`
   position: absolute;
-  top: 600px;
+  bottom: 1%;
   display: flex;
   justify-content: center;
   align-items: center;
