@@ -51,10 +51,11 @@ const SignIn = () => {
     axios
       .post(process.env.REACT_APP_BASE_URL + `users/auth`, inputs)
       .then((response) => {
-        const { access_token, refresh_token, authority } = response.data;
+        const { access_token, refresh_token, authority, expired_at } = response.data;
         localStorage.setItem("access_token", access_token);
         cookies.set("refresh_token", refresh_token);
         localStorage.setItem("authority", authority);
+        localStorage.setItem("expiresAt", expired_at);
         setUserHeader(false);
         Swal.fire("로그인 성공", "로그인에 성공하셨습니다.", "success");
         navigate("/");
@@ -111,11 +112,7 @@ const SignIn = () => {
                 height="25px"
                 src={type === "password" ? OpenEye : CloseEye}
                 onClick={() => {
-                  setPwType(
-                    type === "password"
-                      ? { type: "text" }
-                      : { type: "password" }
-                  );
+                  setPwType(type === "password" ? { type: "text" } : { type: "password" });
                 }}
               ></_.Eye>
             </div>
