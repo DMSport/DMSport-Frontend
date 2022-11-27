@@ -18,7 +18,6 @@ const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> 
         "X-Refresh-Token": `${refreshToken}`,
       },
     });
-    console.log(data);
     token = data.access_token;
     localStorage.setItem("access_token", data.access_token);
     cookies.set("refresh_token", data.refresh_token);
