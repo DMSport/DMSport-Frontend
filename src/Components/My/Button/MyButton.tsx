@@ -15,60 +15,61 @@ interface IMy {
 
 function MyButton({ type, color, content }: IMy) {
   const setChangeModalValue = useSetRecoilState(ChangeModal);
-  const cookies = new Cookies()
+  const cookies = new Cookies();
   const setUserHeader = useSetRecoilState(ChangeUserHeader);
   const navigater = useNavigate();
 
   const RemoveToken = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("authority");
-    cookies.remove("refresh_token")
-    setUserHeader(true)
+    localStorage.removeItem("expiresAt");
+    cookies.remove("refresh_token");
+    setUserHeader(true);
     navigater("/");
-  }
+  };
 
   const Button = () => {
     switch (type) {
       case "logout":
         axios
-          .delete(process.env.REACT_APP_BASE_URL + `users/logout`,
-            { headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` } })
+          .delete(process.env.REACT_APP_BASE_URL + `users/logout`, {
+            headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` },
+          })
           .then(() => {
             Swal.fire("로그아웃 성공", "로그아웃되었습니다.", "success");
-            RemoveToken()
+            RemoveToken();
           })
           .catch(() => {
             ToastError("로그아웃에 실패하였습니다.");
-          })
-        break
+          });
+        break;
       case "deleteuser":
         (async () => {
           const { value: getName } = await Swal.fire({
-            title: '회원탈퇴',
-            text: '회원을 탈퇴하면 다시는 되돌릴 수 없습니다.',
-            input: 'text',
-            inputPlaceholder: '비밀번호를 입력해주세요.'
-          })
+            title: "회원탈퇴",
+            text: "회원을 탈퇴하면 다시는 되돌릴 수 없습니다.",
+            input: "text",
+            inputPlaceholder: "비밀번호를 입력해주세요.",
+          });
           // 이후 처리되는 내용.
           if (getName) {
             axios
-              .delete(process.env.REACT_APP_BASE_URL + `users`,
-                {
-                  data: { "password": getName },
-                  headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` }
-                })
+              .delete(process.env.REACT_APP_BASE_URL + `users`, {
+                data: { password: getName },
+                headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` },
+              })
               .then(() => {
-                Swal.fire('회원탈퇴 성공', '회원탈퇴에 성공하였습니다.', 'success');
-                RemoveToken()
+                Swal.fire("회원탈퇴 성공", "회원탈퇴에 성공하였습니다.", "success");
+                RemoveToken();
               })
               .catch((e) => {
                 ToastError("회원탈퇴에 실패하였습니다.");
-              })
+              });
           }
-        })()
-        break
+        })();
+        break;
       case "changepw":
-        setChangeModalValue("ChangePwMy")
+        setChangeModalValue("ChangePwMy");
     }
   };
 
