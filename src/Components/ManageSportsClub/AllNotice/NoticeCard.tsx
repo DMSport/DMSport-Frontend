@@ -8,11 +8,11 @@ interface IAdminNotice extends IPost {
 }
 
 const NoticeCard = ({ id, setModalType, title, content_preview }: IAdminNotice) => {
-  const setNoticeModalAtom = useSetRecoilState(isNoticeModalAtom);
-  const setNoticeIdAtom = useSetRecoilState(NoticeIdAtom);
+  const setNoticeModal = useSetRecoilState(isNoticeModalAtom);
+  const setNoticeId = useSetRecoilState(NoticeIdAtom);
   const toggleNoticeModalAtom = () => {
-    setNoticeModalAtom((prev) => !prev);
-    setNoticeIdAtom(id);
+    setNoticeModal((prev) => !prev);
+    setNoticeId(id);
     setModalType("VIEW");
   };
 

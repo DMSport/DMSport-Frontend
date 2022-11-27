@@ -19,14 +19,14 @@ interface IModalType {
 
 function NoticeModal({ modalType, setModalType, color }: IModalType) {
   const [isEditClicked, setIsEditClicked] = useState(false);
-  const setNoticeModalAtom = useSetRecoilState(isNoticeModalAtom);
-  const [noticeTypeAtom, setNoticeTypeAtom] = useRecoilState(NoticeTypeAtom);
+  const setNoticeModal = useSetRecoilState(isNoticeModalAtom);
+  const [noticeType, setNoticeType] = useRecoilState(NoticeTypeAtom);
   const NoticeId = useRecoilValue(NoticeIdAtom);
   const [title, onChangeTitle, setTitle] = useInput();
   const [content, onChangeContent, setContent] = useInput();
   const navigate = useNavigate();
-  const toggleNoticeModalAtom = () => {
-    setNoticeModalAtom((prev) => !prev);
+  const toggleNoticeModal = () => {
+    setNoticeModal((prev) => !prev);
   };
   const { data, isLoading } = useQuery(["Notice", NoticeId], () => api.getNoticeDetail(NoticeId));
 
@@ -41,19 +41,19 @@ function NoticeModal({ modalType, setModalType, color }: IModalType) {
   const SelectClub = (e: React.ChangeEvent<HTMLSelectElement>) => {
     switch (e.currentTarget.value) {
       case "전체":
-        setNoticeTypeAtom("ALL");
+        setNoticeType("ALL");
         break;
       case "축구":
-        setNoticeTypeAtom("SOCCER");
+        setNoticeType("SOCCER");
         break;
       case "농구":
-        setNoticeTypeAtom("BASKETBALL");
+        setNoticeType("BASKETBALL");
         break;
       case "배드민턴":
-        setNoticeTypeAtom("BADMINTON");
+        setNoticeType("BADMINTON");
         break;
       case "배구":
-        setNoticeTypeAtom("VOLLEYBALL");
+        setNoticeType("VOLLEYBALL");
         break;
       default:
         return;
@@ -65,7 +65,7 @@ function NoticeModal({ modalType, setModalType, color }: IModalType) {
       .postClubNotice(title, content)
       .then(() => {
         Swal.fire("게시 성공", "공지가 게시되었습니다", "success").then(() => {
-          setNoticeModalAtom(false);
+          setNoticeModal(false);
           navigate(0);
         });
       })
@@ -80,9 +80,9 @@ function NoticeModal({ modalType, setModalType, color }: IModalType) {
   };
 
   const postAdminNotice = () => {
-    api.postAdminNotice(title, content, noticeTypeAtom).then(() => {
+    api.postAdminNotice(title, content, noticeType).then(() => {
       Swal.fire("게시 성공", "공지가 게시되었습니다", "success").then(() => {
-        setNoticeModalAtom(false);
+        setNoticeModal(false);
         navigate(0);
       });
     });
@@ -100,7 +100,7 @@ function NoticeModal({ modalType, setModalType, color }: IModalType) {
       .editClubNotice(title, content, NoticeId)
       .then(() => {
         Swal.fire("수정 성공", "공지가 수정되었습니다", "success").then(() => {
-          setNoticeModalAtom((prev) => !prev);
+          setNoticeModal((prev) => !prev);
           navigate(0);
         });
       })
@@ -129,7 +129,7 @@ function NoticeModal({ modalType, setModalType, color }: IModalType) {
           .deleteClubNotice(NoticeId)
           .then(() => {
             Swal.fire("삭제 성공", "공지가 삭제되었습니다", "success").then(() => {
-              setNoticeModalAtom((prev) => !prev);
+              setNoticeModal((prev) => !prev);
               navigate(0);
             });
           })
@@ -225,11 +225,11 @@ function NoticeModal({ modalType, setModalType, color }: IModalType) {
 
   return (
     <_.Container>
-      <_.Background onClick={toggleNoticeModalAtom} />
+      <_.Background onClick={toggleNoticeModal} />
       <_.White>
         {ModalContent()}
         {((localStorage.getItem("authority") !== "USER" &&
-          localStorage.getItem("authority")?.split("_")[0] === noticeTypeAtom &&
+          localStorage.getItem("authority")?.split("_")[0] === noticeType &&
           modalType !== "WRITE") ||
           (localStorage.getItem("authority") === "ADMIN" && modalType !== "ADMINWRITE")) && (
           <>

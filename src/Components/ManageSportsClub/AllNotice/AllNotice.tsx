@@ -10,13 +10,13 @@ import * as _ from "./AllNotice.style";
 import AdminPageNation from "../PageNation/AdminPageNation";
 
 const AllNotice = ({ margin }: { margin: boolean }) => {
-  const [isNoticeModal, setNoticeModalAtom] = useRecoilState(isNoticeModalAtom);
+  const [isNoticeModal, setNoticeModal] = useRecoilState(isNoticeModalAtom);
   const [modalType, setModalType] = useState<ModalType>("VIEW");
   const { data } = useQuery(["Notice"], () => api.getNoticeAll());
   const [page, setPage] = useState<number>(0);
 
   const writeNotice = () => {
-    setNoticeModalAtom((prev) => !prev);
+    setNoticeModal((prev) => !prev);
     setModalType("ADMINWRITE");
   };
 
