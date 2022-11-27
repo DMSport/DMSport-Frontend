@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import React, { SelectHTMLAttributes, useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { isNoticeModalAtom, NoticeIdAtom, NoticeTypeAtom } from "../../Store/atoms";
 import * as _ from "./NoticeModal.style";
 import api from "../../Utils/api/notice";
@@ -9,21 +9,24 @@ import useInput from "../../Hooks/useInput";
 import ToastError from "../../Utils/Function/ErrorMessage";
 import Swal from "sweetalert2";
 import { ModalType } from "../../Pages/NoticePage/NoticePage";
+import { useNavigate } from "react-router-dom";
 
 interface IModalType {
   modalType: string;
   setModalType: React.Dispatch<React.SetStateAction<ModalType>>;
+  color: string;
 }
 
-function NoticeModal({ modalType, setModalType }: IModalType) {
+function NoticeModal({ modalType, setModalType, color }: IModalType) {
   const [isEditClicked, setIsEditClicked] = useState(false);
-  const setNoticeModalAtom = useSetRecoilState(isNoticeModalAtom);
-  const noticeTypeAtom = useRecoilValue(NoticeTypeAtom);
+  const setNoticeModal = useSetRecoilState(isNoticeModalAtom);
+  const [noticeType, setNoticeType] = useRecoilState(NoticeTypeAtom);
   const NoticeId = useRecoilValue(NoticeIdAtom);
   const [title, onChangeTitle, setTitle] = useInput();
   const [content, onChangeContent, setContent] = useInput();
-  const toggleNoticeModalAtom = () => {
-    setNoticeModalAtom((prev) => !prev);
+  const navigate = useNavigate();
+  const toggleNoticeModal = () => {
+    setNoticeModal((prev) => !prev);
   };
   const { data, isLoading } = useQuery(["Notice", NoticeId], () => api.getNoticeDetail(NoticeId));
 
@@ -35,12 +38,36 @@ function NoticeModal({ modalType, setModalType }: IModalType) {
     };
   }, []);
 
+  const SelectClub = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    switch (e.currentTarget.value) {
+      case "전체":
+        setNoticeType("ALL");
+        break;
+      case "축구":
+        setNoticeType("SOCCER");
+        break;
+      case "농구":
+        setNoticeType("BASKETBALL");
+        break;
+      case "배드민턴":
+        setNoticeType("BADMINTON");
+        break;
+      case "배구":
+        setNoticeType("VOLLEYBALL");
+        break;
+      default:
+        return;
+    }
+  };
+
   const postNotice = () => {
     api
       .postClubNotice(title, content)
       .then(() => {
-        Swal.fire("게시 성공", "공지가 게시되었습니다", "success");
-        setNoticeModalAtom(false);
+        Swal.fire("게시 성공", "공지가 게시되었습니다", "success").then(() => {
+          setNoticeModal(false);
+          navigate(0);
+        });
       })
       .catch((err) => {
         switch (err.response.data.status) {
@@ -50,6 +77,15 @@ function NoticeModal({ modalType, setModalType }: IModalType) {
             return ToastError("권한이 없어요");
         }
       });
+  };
+
+  const postAdminNotice = () => {
+    api.postAdminNotice(title, content, noticeType).then(() => {
+      Swal.fire("게시 성공", "공지가 게시되었습니다", "success").then(() => {
+        setNoticeModal(false);
+        navigate(0);
+      });
+    });
   };
 
   const BeforeEdit = () => {
@@ -63,8 +99,10 @@ function NoticeModal({ modalType, setModalType }: IModalType) {
     api
       .editClubNotice(title, content, NoticeId)
       .then(() => {
-        Swal.fire("수정 성공", "공지가 수정되었습니다", "success");
-        setNoticeModalAtom((prev) => !prev);
+        Swal.fire("수정 성공", "공지가 수정되었습니다", "success").then(() => {
+          setNoticeModal((prev) => !prev);
+          navigate(0);
+        });
       })
       .catch((err) => {
         switch (err.response.data.status) {
@@ -85,19 +123,24 @@ function NoticeModal({ modalType, setModalType }: IModalType) {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        api
+          .deleteClubNotice(NoticeId)
+          .then(() => {
+            Swal.fire("삭제 성공", "공지가 삭제되었습니다", "success").then(() => {
+              setNoticeModal((prev) => !prev);
+              navigate(0);
+            });
+          })
+          .catch((err) => {
+            switch (err.response.data.status) {
+              case 403:
+                return ToastError("권한이 없어요");
+            }
+          });
+      }
     });
-    await api
-      .deleteClubNotice(NoticeId)
-      .then(() => {
-        Swal.fire("삭제 성공", "공지가 삭제되었습니다", "success");
-        setNoticeModalAtom((prev) => !prev);
-      })
-      .catch((err) => {
-        switch (err.response.data.status) {
-          case 403:
-            return ToastError("권한이 없어요");
-        }
-      });
   };
 
   const ModalContent = () => {
@@ -146,7 +189,35 @@ function NoticeModal({ modalType, setModalType }: IModalType) {
               maxLength={255}
               placeholder="내용을 입력하세요(255자 이내)"
             ></_.Notice>
-            <_.Button type="button" onClick={postNotice} value="완료" />
+            <_.Button color="#5596aa" type="button" onClick={postNotice} value="완료" />
+          </form>
+        );
+      case "ADMINWRITE":
+        return (
+          <form>
+            <_.Wrapper>
+              <_.Title
+                type="text"
+                value={title}
+                onChange={onChangeTitle}
+                maxLength={20}
+                placeholder="제목을 입력하세요(20자 이내)"
+              />
+              <_.Select onChange={SelectClub}>
+                <option>전체</option>
+                <option>축구</option>
+                <option>농구</option>
+                <option>배드민턴</option>
+                <option>배구</option>
+              </_.Select>
+            </_.Wrapper>
+            <_.Notice
+              value={content}
+              onChange={onChangeContent}
+              maxLength={255}
+              placeholder="내용을 입력하세요(255자 이내)"
+            ></_.Notice>
+            <_.Button color="#7D9BE9" type="button" onClick={postAdminNotice} value="완료" />
           </form>
         );
     }
@@ -154,20 +225,20 @@ function NoticeModal({ modalType, setModalType }: IModalType) {
 
   return (
     <_.Container>
-      <_.Background onClick={toggleNoticeModalAtom} />
+      <_.Background onClick={toggleNoticeModal} />
       <_.White>
         {ModalContent()}
         {((localStorage.getItem("authority") !== "USER" &&
-          localStorage.getItem("authority")?.split("_")[0] === noticeTypeAtom &&
+          localStorage.getItem("authority")?.split("_")[0] === noticeType &&
           modalType !== "WRITE") ||
-          localStorage.getItem("authority") === "ADMIN") && (
+          (localStorage.getItem("authority") === "ADMIN" && modalType !== "ADMINWRITE")) && (
           <>
             {isEditClicked ? (
-              <_.Button onClick={AfterEdit} type="button" value="완료" />
+              <_.Button color={color} onClick={AfterEdit} type="button" value="완료" />
             ) : (
               <>
-                <_.EditButton onClick={BeforeEdit} type="button" value="수정하기" />
-                <_.DeleteButton onClick={Delete} type="button" value="삭제하기" />
+                <_.EditButton color={color} onClick={BeforeEdit} type="button" value="수정하기" />
+                <_.DeleteButton color={color} onClick={Delete} type="button" value="삭제하기" />
               </>
             )}
           </>

@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { ISearchType, IUser } from "../studentsearch/StudentSearch";
 import * as _ from "./PageNation.style";
 
-interface IPage {
+export interface IPage {
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   data: IUser[];

@@ -4,11 +4,12 @@ import Ban from "../../Assets/SVG/ban";
 import WriteNotice from "../../Assets/SVG/writeNotice";
 import { useRecoilState } from "recoil";
 import { MenuAtom } from "../../Store/atoms";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StudentSearch from "../../Components/ManageSportsClub/studentsearch/StudentSearch";
 import { MenuType } from "../../Store/atoms";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import * as _ from "./adminPage.style";
+import AllNotice from "../../Components/ManageSportsClub/AllNotice/AllNotice";
 import BanPage from "../../Components/ManageSportsClub/ClubBan/BanPage";
 
 interface IMenu {
@@ -46,12 +47,30 @@ const AdminPage = ({ aside }: { aside: string }) => {
     switch (aside) {
       case "SearchUser":
         return <StudentSearch margin={clicked} />;
+      case "AdminNotice":
+        return <AllNotice margin={clicked} />;
       case "ClubBan":
         return <BanPage margin={clicked} />
       default:
         return null;
     }
   };
+
+  const location = useLocation();
+
+  useEffect(() => {
+    switch (location.pathname) {
+      case "/adminpage/noticepage":
+        setSelect("NOTICE");
+        break;
+      case "/adminpage/banpage":
+        setSelect("SPORTS");
+        break;
+      case "/adminpage":
+        setSelect("STUDENT");
+        break;
+    }
+  }, [location.pathname]);
 
   return (
     <_.Container>
