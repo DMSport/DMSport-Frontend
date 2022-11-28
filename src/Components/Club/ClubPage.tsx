@@ -9,6 +9,7 @@ import BadmintonIcon from "../../Assets/SVG/club/badminton";
 import MoonIcon from "../../Assets/SVG/moonIcon";
 import SunIcon from "../../Assets/SVG/SunIcon";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
+import axios from "axios";
 
 const WhatTime = atom<"DINNER" | "LUNCH">({
   key: "whatTime",
@@ -94,21 +95,35 @@ function ClubMainPages({
     `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
   );
   const [POSTvoteClub] = useFetch(
-    `${process.env.REACT_APP_BASE_URL}club/vote/${voteData?.vote_id}`
+    `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
   );
 
   const onValidVoteClub = () => {
     POSTvoteClub({
       method: "post",
+      headers:{
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+      options:{
+        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
+      }
+    }).then(() => {
+      alert("투표 성공")
+    })
+    GETvote({
+      method: "get",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
+      options:{
+        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
+      }
     });
   };
 
   useEffect(() => {
     setVoteData(
-      allVoteData?.vote?.filter((prev: any) => prev.time === whatTime)[0]
+      allVoteData?.vote?.find((prev: any) => prev.time === whatTime)
     );
   }, [allVoteData?.vote, whatTime]);
 
@@ -118,19 +133,21 @@ function ClubMainPages({
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
+      options:{
+        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
+      }
     });
   }, [whatTime, pathname]);
-
-  console.log(allVoteData);
   return (
     <_.MainContainer>
+      {!voteData && <_.IsNone/>}
       <img src={src} alt="" height={"70%"} />
-      {Icon && <Icon />}
+      <Icon/>
       <_.Text
         size={24}
         color={"white"}
+        style={{"position":"absolute"}}
         weight={700}
-        style={{ position: "absolute" }}
         onClick={onValidVoteClub}
       >
         참가하기
