@@ -18,6 +18,7 @@ export const SideContainer = styled.div`
   overflow-x: scroll;
   padding-left: 15rem;
   padding-right: 15rem;
+  z-index: 2;
   div {
     display: flex;
     gap: 22px;
@@ -28,13 +29,14 @@ export const SideBtnWrapper = styled.div<{ isUserClick: boolean }>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: white;
   width: 148px;
   height: 92px;
   border: ${(props) => (props.isUserClick ? "1px solid #55acee" : "0")};
   border-radius: 30px;
   box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  z-index: -1;
+  z-index: 2;
   div {
     display: flex;
     justify-content: space-between;
@@ -65,7 +67,6 @@ export const Text = styled.p<{
   height: ${(props) => props.height}px;
   font-size: ${(props) => props.size}px;
   width: ${(props) => props.width}px;
-  z-index: 1;
 `;
 
 export const ToggleBtnWrapper = styled.div`
@@ -73,6 +74,7 @@ export const ToggleBtnWrapper = styled.div`
   align-items: center;
   position: relative;
   justify-content: space-between;
+  z-index: 2;
   width: 176px;
   height: 60px;
   background-color: white;
@@ -99,7 +101,6 @@ export const MainContainer = styled.div`
   width: 100vw;
   justify-content: center;
   align-items: center;
-  z-index: -1;
   img {
     position: absolute;
     z-index: -1;
@@ -112,6 +113,14 @@ export const MainContainer = styled.div`
     z-index: 0;
   }
 `;
+export const IsNone = styled.div`
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+`
 /**
  * 배드민턴 새로운 버전 스타일
  */
