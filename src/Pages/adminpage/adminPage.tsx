@@ -50,7 +50,7 @@ const AdminPage = ({ aside }: { aside: string }) => {
       case "AdminNotice":
         return <AllNotice margin={clicked} />;
       case "ClubBan":
-        return <BanPage margin={clicked} />
+        return <BanPage margin={clicked} />;
       default:
         return null;
     }

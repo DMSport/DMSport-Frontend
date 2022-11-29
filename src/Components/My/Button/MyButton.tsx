@@ -28,20 +28,24 @@ function MyButton({ type, color, content }: IMy) {
     navigater("/");
   };
 
+  const LogOut = () => {
+    axios
+      .delete(process.env.REACT_APP_BASE_URL + `users/logout`, {
+        headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` },
+      })
+      .then(() => {
+        Swal.fire("로그아웃 성공", "로그아웃되었습니다.", "success");
+        RemoveToken();
+      })
+      .catch(() => {
+        ToastError("로그아웃에 실패하였습니다.");
+      });
+  };
+
   const Button = () => {
     switch (type) {
       case "logout":
-        axios
-          .delete(process.env.REACT_APP_BASE_URL + `users/logout`, {
-            headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` },
-          })
-          .then(() => {
-            Swal.fire("로그아웃 성공", "로그아웃되었습니다.", "success");
-            RemoveToken();
-          })
-          .catch(() => {
-            ToastError("로그아웃에 실패하였습니다.");
-          });
+        LogOut();
         break;
       case "deleteuser":
         (async () => {
