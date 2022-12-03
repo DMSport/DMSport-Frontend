@@ -85,16 +85,11 @@ function ClubMainPages({
   const [voteData, setVoteData] = useState<IVoteData>();
   const [isOnPositionsModal, setIsOnPositionsModal] = useState(false);
 
-  const date = new Date();
-  const parseDate = `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()}`;
-
   const whatTime = useRecoilValue(WhatTime);
 
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
-    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
-  );
+    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`);
+
   const [POSTvoteClub] = useFetch(
     `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
   );
