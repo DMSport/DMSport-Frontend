@@ -1,7 +1,7 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SoccerIcon from "../../Assets/SVG/club/soccer";
 import useFetch from "../../Hooks/useFetch";
-import * as _ from "./style";
+import * as _ from "./Clubpage.style";
 import { useEffect, useState } from "react";
 import VolleyballIcon from "../../Assets/SVG/club/volleyball";
 import BasketballIcon from "../../Assets/SVG/club/basketball";
@@ -9,7 +9,8 @@ import BadmintonIcon from "../../Assets/SVG/club/badminton";
 import MoonIcon from "../../Assets/SVG/moonIcon";
 import SunIcon from "../../Assets/SVG/SunIcon";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import Swal from "sweetalert2";
 
 const WhatTime = atom<"DINNER" | "LUNCH">({
   key: "whatTime",
@@ -30,6 +31,27 @@ interface ITodayVoteData {
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname: oldPathname } = useLocation();
   const pathname = oldPathname.slice(6);
+  const [GETuser] = useFetch(`${process.env.REACT_APP_BASE_URL}users/my`);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    GETuser({
+      method: "get",
+      headers:{
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    }).catch((err) => {
+      if(err.response.data.status === 401){
+        Swal.fire({
+          icon: "error",
+          title: "로그인 에러",
+          text: "로그인을 확인해주세요."
+        }).then(() => {
+          navigate("/");
+        })
+      }
+    });
+  },[]);
 
   // key 이름은 clubName과 일치하게 작성해야 한다.
   const clubPages: { [key: string]: object } = {
@@ -83,17 +105,13 @@ function ClubMainPages({
   Icon: () => JSX.Element;
 }) {
   const [voteData, setVoteData] = useState<IVoteData>();
-
-  const date = new Date();
-  const parseDate = `${date.getFullYear()}-${
-    date.getMonth() + 1
-  }-${date.getDate()}`;
+  const [isOnPositionsModal, setIsOnPositionsModal] = useState(false);
 
   const whatTime = useRecoilValue(WhatTime);
 
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
-    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
-  );
+    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`);
+
   const [POSTvoteClub] = useFetch(
     `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
   );
@@ -116,7 +134,7 @@ function ClubMainPages({
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
       options:{
-        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
+        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`
       }
     });
   };
@@ -134,13 +152,27 @@ function ClubMainPages({
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
       options:{
-        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}&date=${parseDate}`
+        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
       }
     });
   }, [whatTime, pathname]);
   return (
     <_.MainContainer>
-      {!voteData && <_.IsNone/>}
+      {!voteData && <>
+        <_.IsNone/>
+        <_.IsNoneText size={42} color="white" weight={700}>경기를 찾을 수 없습니다.</_.IsNoneText>
+      </>}
+      {isOnPositionsModal && <_.PositionModalWrapper>
+          {[1,2,3,4,5,6,7,8,9,10, 11, 12, 13,14, 15, 16, 17].map((i) => (
+            <_.PositionWrapper>
+              <_.Text size={16} weight={700}>안녕</_.Text>
+              <_.SubmitBtn onClick={() => {
+                onValidVoteClub();
+                setIsOnPositionsModal(false);
+              }}>신청</_.SubmitBtn>
+            </_.PositionWrapper>
+          ))}
+        </_.PositionModalWrapper>}
       <img src={src} alt="" height={"70%"} />
       <Icon/>
       <_.Text
@@ -148,7 +180,7 @@ function ClubMainPages({
         color={"white"}
         style={{"position":"absolute"}}
         weight={700}
-        onClick={onValidVoteClub}
+        onClick={() => setIsOnPositionsModal(true)}
       >
         참가하기
       </_.Text>

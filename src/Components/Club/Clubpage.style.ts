@@ -115,12 +115,53 @@ export const MainContainer = styled.div`
 `;
 export const IsNone = styled.div`
   position: absolute;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
+  bottom: 35px;
+  height: 70vh;
+  width: 71vw;
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
 `
+export const IsNoneText = styled(Text)`
+  z-index: 2;
+  position: absolute;
+  top: 60%;
+`
+export const PositionModalWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  top: 35%;
+  background-color: white;
+  width: 350px;
+  height: 500px;
+  border-radius: 20px;
+  padding: 20px;
+  z-index: 2;
+  overflow-y: scroll;
+
+`
+export const PositionWrapper = styled.div`
+  display: flex;
+  width: auto;
+  min-height: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top:5px;
+  padding-bottom:5px;
+  line-height: 40px;
+  border-radius: 20px;
+  justify-content: space-between;
+  box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
+`
+export const SubmitBtn = styled.button`
+  border-radius: 90px;
+  background-color: #80CCE3;
+  padding-left: 15px;
+  padding-right: 15px;
+  color: white;
+  font-weight: 700;
+`;
 /**
  * 배드민턴 새로운 버전 스타일
  */
