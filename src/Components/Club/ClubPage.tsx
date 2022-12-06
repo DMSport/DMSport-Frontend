@@ -17,15 +17,23 @@ const WhatTime = atom<"DINNER" | "LUNCH">({
   default: "DINNER",
 });
 interface IVoteData {
-  vote_id: number;
-  time: "LUNCH" | "DINNER";
-  vote_count: number;
+  "vote_id" : number,
+  "time" : "DINNER" | "LUNCH",
+  "vote_count" : number,
+  "max_people" : number,
+  "is_complete" : boolean;
+	"vote_user":IUser[];
+}
+
+interface IUser {
+  "name" : string;
+  "team" : number;
 }
 interface ITodayVoteData {
   is_ban: boolean;
   ban_period: string;
   max_people: number;
-  vote: IVoteData[];
+  vote_list: IVoteData[];
 }
 
 export default function ClubPage({ clubName }: { clubName: string }) {
@@ -52,9 +60,8 @@ export default function ClubPage({ clubName }: { clubName: string }) {
       }
     });
   },[]);
-
   // key 이름은 clubName과 일치하게 작성해야 한다.
-  const clubPages: { [key: string]: object } = {
+  const clubPageModel: { [key: string]: object } = {
     soccer: (
       <ClubMainPages
         src={require("../../Assets/PNG/soccerBg.png")}
@@ -89,7 +96,7 @@ export default function ClubPage({ clubName }: { clubName: string }) {
     <_.Container>
       <>
         <SideBar pathname={pathname} />
-        {clubPages[clubName]}
+        {clubPageModel[clubName]}
       </>
     </_.Container>
   );
@@ -141,9 +148,9 @@ function ClubMainPages({
 
   useEffect(() => {
     setVoteData(
-      allVoteData?.vote?.find((prev: any) => prev.time === whatTime)
+      allVoteData?.vote_list?.find((prev: any) => prev.time == whatTime)
     );
-  }, [allVoteData?.vote, whatTime]);
+  }, [allVoteData?.vote_list, whatTime]);
 
   useEffect(() => {
     GETvote({
@@ -156,16 +163,24 @@ function ClubMainPages({
       }
     });
   }, [whatTime, pathname]);
+
+  const postitionModel: {[key:string]: string[]} = {
+    SOCCER: ['C.F', 'S.F', 'L.W', 'C.M', 'R.W', 'A.M', 'D.M', 'L.S.T', 'R.S.T', 'S.W', 'G.K'],
+    BASKETBALL: ['P.G', 'S.G', 'S.F', 'P.F', 'C'],
+    VOLLEYBALL: ['Right', 'Left', 'Center', 'Libero'],
+    BADMINTON: ['신청']
+  }
+  console.log(voteData);
   return (
     <_.MainContainer>
-      {!voteData && <>
+      {Boolean(voteData?.is_complete || !voteData) && <>
         <_.IsNone/>
-        <_.IsNoneText size={42} color="white" weight={700}>경기를 찾을 수 없습니다.</_.IsNoneText>
+        <_.IsNoneText size={42} color="white" weight={700}>{voteData?.is_complete ? "마감되었습니다." : "경기를 찾을 수 없습니다."}</_.IsNoneText>
       </>}
       {isOnPositionsModal && <_.PositionModalWrapper>
-          {[1,2,3,4,5,6,7,8,9,10, 11, 12, 13,14, 15, 16, 17].map((i) => (
+          {postitionModel[pathname].map((i) => (
             <_.PositionWrapper>
-              <_.Text size={16} weight={700}>안녕</_.Text>
+              <_.Text size={16} weight={700}>{i}</_.Text>
               <_.SubmitBtn onClick={() => {
                 onValidVoteClub();
                 setIsOnPositionsModal(false);
@@ -173,7 +188,7 @@ function ClubMainPages({
             </_.PositionWrapper>
           ))}
         </_.PositionModalWrapper>}
-      <img src={src} alt="" height={"70%"} />
+      <img src={src} alt="" style={{"width":"70%", "height": "70vh"}} />
       <Icon/>
       <_.Text
         size={24}
