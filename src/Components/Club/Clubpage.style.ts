@@ -24,6 +24,19 @@ export const SideContainer = styled.div`
     gap: 22px;
   }
 `;
+export const Button = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 130px;
+  height: 45px;
+  border-radius: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #beefff;
+  filter: drop-shadow(5px 5px 15px rgba(0, 0, 0, 0.25));
+  cursor: pointer;
+`;
 export const SideBtnWrapper = styled.div<{ isUserClick: boolean }>`
   display: flex;
   flex-direction: column;
@@ -89,10 +102,8 @@ export const ToggleBtn = styled.div<{ isNight: string }>`
   width: 88px;
   height: 60px;
   background-color: #575757;
-  transform: ${(props) =>
-    props.isNight === "DINNER" ? "translate(88px)" : "translate(0)"};
-  border-radius: ${(props) =>
-    props.isNight === "DINNER" ? "0 60px 60px 0" : "60px 0 0 60px"};
+  transform: ${(props) => (props.isNight === "DINNER" ? "translate(88px)" : "translate(0)")};
+  border-radius: ${(props) => (props.isNight === "DINNER" ? "0 60px 60px 0" : "60px 0 0 60px")};
 `;
 export const MainContainer = styled.div`
   display: flex;
@@ -120,12 +131,12 @@ export const IsNone = styled.div`
   width: 71vw;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.6);
-`
+`;
 export const IsNoneText = styled(Text)`
   z-index: 2;
   position: absolute;
   top: 60%;
-`
+`;
 export const PositionModalWrapper = styled.div`
   position: absolute;
   display: flex;
@@ -139,24 +150,23 @@ export const PositionModalWrapper = styled.div`
   padding: 20px;
   z-index: 2;
   overflow-y: scroll;
-
-`
+`;
 export const PositionWrapper = styled.div`
   display: flex;
   width: auto;
   min-height: 50px;
   padding-left: 20px;
   padding-right: 20px;
-  padding-top:5px;
-  padding-bottom:5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   line-height: 40px;
   border-radius: 20px;
   justify-content: space-between;
   box-shadow: 2px 2px 8px 0px rgba(0, 0, 0, 0.2);
-`
+`;
 export const SubmitBtn = styled.button`
   border-radius: 90px;
-  background-color: #80CCE3;
+  background-color: #80cce3;
   padding-left: 15px;
   padding-right: 15px;
   color: white;

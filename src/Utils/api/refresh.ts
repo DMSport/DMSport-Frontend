@@ -9,7 +9,7 @@ const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> 
   let token = localStorage.getItem("access_token");
 
   // 토큰이 만료되었고, refreshToken 이 저장되어 있을 때
-  if (moment(expireAt).diff(moment()) < 0 && refreshToken) {
+  if (moment(expireAt).diff(moment()) < 120 && refreshToken) {
     // 토큰 갱신 서버통신
     const { data } = await axios({
       method: "PUT",
@@ -19,6 +19,7 @@ const refresh = async (config: AxiosRequestConfig): Promise<AxiosRequestConfig> 
       },
     });
     token = data.access_token;
+    cookies.remove("refresh_token");
     localStorage.setItem("access_token", data.access_token);
     cookies.set("refresh_token", data.refresh_token);
     localStorage.setItem("expiresAt", data.expired_at);
