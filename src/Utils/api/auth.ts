@@ -10,4 +10,13 @@ export default {
       },
     });
   },
+  logOut() {
+    return request({
+      url: "users/logout",
+      method: "delete",
+      headers: {
+        Authorization: ` Bearer ${localStorage.getItem("access_token")}`,
+      },
+    });
+  },
 };

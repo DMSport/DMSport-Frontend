@@ -9,28 +9,29 @@ import BadmintonIcon from "../../Assets/SVG/club/badminton";
 import MoonIcon from "../../Assets/SVG/moonIcon";
 import SunIcon from "../../Assets/SVG/SunIcon";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
-import axios, { AxiosError } from "axios";
 import Swal from "sweetalert2";
+import { isNoticeModalAtom } from "../../Store/atoms";
+import UserListModal from "./UserListModal";
 
 const WhatTime = atom<"DINNER" | "LUNCH">({
   key: "whatTime",
   default: "DINNER",
 });
 interface IVoteData {
-  "vote_id" : number,
-  "time" : "DINNER" | "LUNCH",
-  "vote_count" : number,
-  "max_people" : number,
-  "is_complete" : boolean;
-	"vote_user":IUser[];
+  vote_id: number;
+  time: "DINNER" | "LUNCH";
+  vote_count: number;
+  max_people: number;
+  is_complete: boolean;
+  vote_user: IUser[];
 }
 
 interface IUser {
-  "name" : string;
-  "team" : number;
+  name: string;
+  team: number;
 }
 interface ITodayVoteData {
-  is_ban: boolean;
+  ban: boolean;
   ban_period: string;
   max_people: number;
   vote_list: IVoteData[];
@@ -45,21 +46,21 @@ export default function ClubPage({ clubName }: { clubName: string }) {
   useEffect(() => {
     GETuser({
       method: "get",
-      headers:{
+      headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     }).catch((err) => {
-      if(err.response.data.status === 401){
+      if (err.response.data.status === 401) {
         Swal.fire({
           icon: "error",
           title: "로그인 에러",
-          text: "로그인을 확인해주세요."
+          text: "로그인을 확인해주세요.",
         }).then(() => {
           navigate("/");
-        })
+        });
       }
     });
-  },[]);
+  }, []);
   // key 이름은 clubName과 일치하게 작성해야 한다.
   const clubPageModel: { [key: string]: object } = {
     soccer: (
@@ -102,54 +103,44 @@ export default function ClubPage({ clubName }: { clubName: string }) {
   );
 }
 
-function ClubMainPages({
-  src,
-  pathname,
-  Icon,
-}: {
-  src: string;
-  pathname: string;
-  Icon: () => JSX.Element;
-}) {
+function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string; Icon: () => JSX.Element }) {
   const [voteData, setVoteData] = useState<IVoteData>();
   const [isOnPositionsModal, setIsOnPositionsModal] = useState(false);
+  const [isNoticeModal, setIsNoticeModal] = useRecoilState(isNoticeModalAtom);
 
   const whatTime = useRecoilValue(WhatTime);
 
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
-    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`);
-
-  const [POSTvoteClub] = useFetch(
-    `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
+    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`
   );
+
+  const [POSTvoteClub] = useFetch(`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`);
 
   const onValidVoteClub = () => {
     POSTvoteClub({
       method: "post",
-      headers:{
+      headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
-      options:{
-        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
-      }
+      options: {
+        newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`,
+      },
     }).then(() => {
-      alert("투표 성공")
-    })
+      alert("투표 성공");
+    });
     GETvote({
       method: "get",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
-      options:{
-        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`
-      }
+      options: {
+        newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
+      },
     });
   };
 
   useEffect(() => {
-    setVoteData(
-      allVoteData?.vote_list?.find((prev: any) => prev.time == whatTime)
-    );
+    setVoteData(allVoteData?.vote_list?.find((prev: any) => prev.time == whatTime));
   }, [allVoteData?.vote_list, whatTime]);
 
   useEffect(() => {
@@ -158,42 +149,54 @@ function ClubMainPages({
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
-      options:{
-        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
-      }
+      options: {
+        newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
+      },
     });
   }, [whatTime, pathname]);
 
-  const postitionModel: {[key:string]: string[]} = {
-    SOCCER: ['C.F', 'S.F', 'L.W', 'C.M', 'R.W', 'A.M', 'D.M', 'L.S.T', 'R.S.T', 'S.W', 'G.K'],
-    BASKETBALL: ['P.G', 'S.G', 'S.F', 'P.F', 'C'],
-    VOLLEYBALL: ['Right', 'Left', 'Center', 'Libero'],
-    BADMINTON: ['신청']
-  }
+  const postitionModel: { [key: string]: string[] } = {
+    SOCCER: ["C.F", "S.F", "L.W", "C.M", "R.W", "A.M", "D.M", "L.S.T", "R.S.T", "S.W", "G.K"],
+    BASKETBALL: ["P.G", "S.G", "S.F", "P.F", "C"],
+    VOLLEYBALL: ["Right", "Left", "Center", "Libero"],
+    BADMINTON: ["신청"],
+  };
   console.log(voteData);
   return (
     <_.MainContainer>
-      {Boolean(voteData?.is_complete || !voteData) && <>
-        <_.IsNone/>
-        <_.IsNoneText size={42} color="white" weight={700}>{voteData?.is_complete ? "마감되었습니다." : "경기를 찾을 수 없습니다."}</_.IsNoneText>
-      </>}
-      {isOnPositionsModal && <_.PositionModalWrapper>
+      {Boolean(voteData?.is_complete || !voteData) && (
+        <>
+          <_.IsNone />
+          <_.IsNoneText size={42} color="white" weight={700}>
+            {voteData?.is_complete ? "마감되었습니다." : "경기를 찾을 수 없습니다."}
+          </_.IsNoneText>
+        </>
+      )}
+      {isOnPositionsModal && (
+        <_.PositionModalWrapper>
           {postitionModel[pathname].map((i) => (
             <_.PositionWrapper>
-              <_.Text size={16} weight={700}>{i}</_.Text>
-              <_.SubmitBtn onClick={() => {
-                onValidVoteClub();
-                setIsOnPositionsModal(false);
-              }}>신청</_.SubmitBtn>
+              <_.Text size={16} weight={700}>
+                {i}
+              </_.Text>
+              <_.SubmitBtn
+                onClick={() => {
+                  onValidVoteClub();
+                  setIsOnPositionsModal(false);
+                }}
+              >
+                신청
+              </_.SubmitBtn>
             </_.PositionWrapper>
           ))}
-        </_.PositionModalWrapper>}
-      <img src={src} alt="" style={{"width":"70%", "height": "70vh"}} />
-      <Icon/>
+        </_.PositionModalWrapper>
+      )}
+      <img src={src} alt="" style={{ width: "70%", height: "70vh" }} />
+      <Icon />
       <_.Text
         size={24}
         color={"white"}
-        style={{"position":"absolute"}}
+        style={{ position: "absolute" }}
         weight={700}
         onClick={() => setIsOnPositionsModal(true)}
       >
@@ -210,16 +213,19 @@ function ClubMainPages({
       >
         <_.Text size={32} weight={600}>
           <>
-            {Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}/
-            {allVoteData?.max_people}
+            {Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}/{allVoteData?.max_people}
           </>
         </_.Text>
         <_.Text size={32} weight={600}>
-          {Number(allVoteData?.max_people) -
-            Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}
-          명 남음
+          {Number(allVoteData?.max_people) - Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}명 남음
         </_.Text>
+        {allVoteData?.vote_list[0].is_complete ? (
+          <_.Button onClick={() => setIsNoticeModal(true)}>팀 보기</_.Button>
+        ) : (
+          <_.Button onClick={() => setIsNoticeModal(true)}>신청자 목록 보기</_.Button>
+        )}
       </div>
+      {isNoticeModal && <UserListModal list={allVoteData?.vote_list} />}
     </_.MainContainer>
   );
 }
@@ -237,11 +243,7 @@ function SideBar({ pathname }: { pathname: string }) {
         <SideBtn content="축구" link="soccer" pathname={pathname} />
         <SideBtn content="배구" link="volleyball" pathname={pathname} />
       </div>
-      <_.ToggleBtnWrapper
-        onClick={() =>
-          setWhatTime((prev) => (prev !== "DINNER" ? "DINNER" : "LUNCH"))
-        }
-      >
+      <_.ToggleBtnWrapper onClick={() => setWhatTime((prev) => (prev !== "DINNER" ? "DINNER" : "LUNCH"))}>
         <MoonIcon />
         <SunIcon />
         <_.ToggleBtn isNight={whatTime} />
@@ -250,15 +252,7 @@ function SideBar({ pathname }: { pathname: string }) {
   );
 }
 
-function SideBtn({
-  content,
-  link,
-  pathname,
-}: {
-  content: string;
-  link: string;
-  pathname: string;
-}) {
+function SideBtn({ content, link, pathname }: { content: string; link: string; pathname: string }) {
   return (
     <Link to={`/club/${link}`}>
       <_.SideBtnWrapper isUserClick={pathname.slice(6) === link}>
@@ -301,14 +295,7 @@ function BadmintonLine() {
       xmlns="http://www.w3.org/2000/svg"
       style={{ position: "absolute", left: "50%" }}
     >
-      <line
-        x1="2"
-        y1="156.338"
-        x2="2"
-        y2="0.645233"
-        stroke="black"
-        strokeWidth="3"
-      />
+      <line x1="2" y1="156.338" x2="2" y2="0.645233" stroke="black" strokeWidth="3" />
     </svg>
   );
 }

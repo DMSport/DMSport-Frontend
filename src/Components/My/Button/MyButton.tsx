@@ -6,6 +6,7 @@ import ToastError from "../../../Utils/Function/ErrorMessage";
 import { Cookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import api from "../../../Utils/api/auth";
 
 interface IMy {
   type: string;
@@ -29,10 +30,8 @@ function MyButton({ type, color, content }: IMy) {
   };
 
   const LogOut = () => {
-    axios
-      .delete(process.env.REACT_APP_BASE_URL + `users/logout`, {
-        headers: { Authorization: ` Bearer ${localStorage.getItem("access_token")}` },
-      })
+    api
+      .logOut()
       .then(() => {
         Swal.fire("로그아웃 성공", "로그아웃되었습니다.", "success");
         RemoveToken();
