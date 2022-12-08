@@ -9,25 +9,29 @@ import BadmintonIcon from "../../Assets/SVG/club/badminton";
 import MoonIcon from "../../Assets/SVG/moonIcon";
 import SunIcon from "../../Assets/SVG/SunIcon";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosResponse } from "axios";
 import Swal from "sweetalert2";
 
 const WhatTime = atom<"DINNER" | "LUNCH">({
   key: "whatTime",
   default: "DINNER",
 });
+
 interface IVoteData {
   "vote_id" : number,
   "time" : "DINNER" | "LUNCH",
   "vote_count" : number,
   "max_people" : number,
   "is_complete" : boolean;
-	"vote_user":IUser[];
+	"vote_user":{
+    "name" : string;
+    "team" : number;
+  }[];
 }
-
 interface IUser {
-  "name" : string;
-  "team" : number;
+  name: string;
+  email : string;
+  authority :string;
 }
 interface ITodayVoteData {
   is_ban: boolean;
@@ -39,27 +43,6 @@ interface ITodayVoteData {
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname: oldPathname } = useLocation();
   const pathname = oldPathname.slice(6);
-  const [GETuser] = useFetch(`${process.env.REACT_APP_BASE_URL}users/my`);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    GETuser({
-      method: "get",
-      headers:{
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    }).catch((err) => {
-      if(err.response.data.status === 401){
-        Swal.fire({
-          icon: "error",
-          title: "로그인 에러",
-          text: "로그인을 확인해주세요."
-        }).then(() => {
-          navigate("/");
-        })
-      }
-    });
-  },[]);
   // key 이름은 clubName과 일치하게 작성해야 한다.
   const clubPageModel: { [key: string]: object } = {
     soccer: (
@@ -113,15 +96,37 @@ function ClubMainPages({
 }) {
   const [voteData, setVoteData] = useState<IVoteData>();
   const [isOnPositionsModal, setIsOnPositionsModal] = useState(false);
+  const [isVote, setIsVote] = useState(false);
 
   const whatTime = useRecoilValue(WhatTime);
+  
+  const navigate = useNavigate();
 
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
     `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`);
-
+  const [GETuser, {data: userData}] = useFetch<IUser>(`${process.env.REACT_APP_BASE_URL}users/my`);
   const [POSTvoteClub] = useFetch(
     `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
   );
+
+  useEffect(() => {
+    GETuser({
+      method: "get",
+      headers:{
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    }).catch((err) => {
+      if(err.response.data.status === 401){
+        Swal.fire({
+          icon: "error",
+          title: "로그인 에러",
+          text: "로그인을 확인해주세요."
+        }).then(() => {
+          navigate("/");
+        })
+      }
+    });
+  },[]);
 
   const onValidVoteClub = () => {
     POSTvoteClub({
@@ -133,8 +138,8 @@ function ClubMainPages({
         newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
       }
     }).then(() => {
-      alert("투표 성공")
-    })
+      alert(isVote ? "취소 성공" :  "투표 성공")
+    });
     GETvote({
       method: "get",
       headers: {
@@ -161,8 +166,15 @@ function ClubMainPages({
       options:{
         newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
       }
+    }).then((res) => {
+      const userVoteData = res.data.vote_list;
+      if(userVoteData.find((i:any) => i.vote_user[0]?.name === userData?.name)){
+        setIsVote(true);
+      }else{
+        setIsVote(false);
+      }
     });
-  }, [whatTime, pathname]);
+  }, [whatTime, pathname, voteData]);
 
   const postitionModel: {[key:string]: string[]} = {
     SOCCER: ['C.F', 'S.F', 'L.W', 'C.M', 'R.W', 'A.M', 'D.M', 'L.S.T', 'R.S.T', 'S.W', 'G.K'],
@@ -195,9 +207,9 @@ function ClubMainPages({
         color={"white"}
         style={{"position":"absolute"}}
         weight={700}
-        onClick={() => setIsOnPositionsModal(true)}
+        onClick={() => isVote ? onValidVoteClub() : setIsOnPositionsModal(true)}
       >
-        참가하기
+        {isVote ? "취소하기" :"참가하기"}
       </_.Text>
       <div
         style={{
