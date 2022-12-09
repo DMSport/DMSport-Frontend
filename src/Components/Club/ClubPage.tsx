@@ -9,10 +9,7 @@ import BadmintonIcon from "../../Assets/SVG/club/badminton";
 import MoonIcon from "../../Assets/SVG/moonIcon";
 import SunIcon from "../../Assets/SVG/SunIcon";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
-<<<<<<< hotFix/clubPage
 import axios, { AxiosResponse } from "axios";
-=======
->>>>>>> main
 import Swal from "sweetalert2";
 import { isNoticeModalAtom } from "../../Store/atoms";
 import UserListModal from "./UserListModal";
@@ -23,33 +20,20 @@ const WhatTime = atom<"DINNER" | "LUNCH">({
 });
 
 interface IVoteData {
-<<<<<<< hotFix/clubPage
-  "vote_id" : number,
-  "time" : "DINNER" | "LUNCH",
-  "vote_count" : number,
-  "max_people" : number,
-  "is_complete" : boolean;
-	"vote_user":{
-    "name" : string;
-    "team" : number;
-  }[];
-=======
   vote_id: number;
   time: "DINNER" | "LUNCH";
   vote_count: number;
   max_people: number;
   is_complete: boolean;
-  vote_user: IUser[];
->>>>>>> main
+  vote_user: {
+    name: string;
+    team: number;
+  }[];
 }
 interface IUser {
   name: string;
-<<<<<<< hotFix/clubPage
-  email : string;
-  authority :string;
-=======
-  team: number;
->>>>>>> main
+  email: string;
+  authority: string;
 }
 interface ITodayVoteData {
   ban: boolean;
@@ -61,30 +45,6 @@ interface ITodayVoteData {
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname: oldPathname } = useLocation();
   const pathname = oldPathname.slice(6);
-<<<<<<< hotFix/clubPage
-=======
-  const [GETuser] = useFetch(`${process.env.REACT_APP_BASE_URL}users/my`);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    GETuser({
-      method: "get",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    }).catch((err) => {
-      if (err.response.data.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "로그인 에러",
-          text: "로그인을 확인해주세요.",
-        }).then(() => {
-          navigate("/");
-        });
-      }
-    });
-  }, []);
->>>>>>> main
   // key 이름은 clubName과 일치하게 작성해야 한다.
   const clubPageModel: { [key: string]: object } = {
     soccer: (
@@ -130,48 +90,36 @@ export default function ClubPage({ clubName }: { clubName: string }) {
 function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string; Icon: () => JSX.Element }) {
   const [voteData, setVoteData] = useState<IVoteData>();
   const [isOnPositionsModal, setIsOnPositionsModal] = useState(false);
-<<<<<<< hotFix/clubPage
   const [isVote, setIsVote] = useState(false);
-=======
   const [isNoticeModal, setIsNoticeModal] = useRecoilState(isNoticeModalAtom);
->>>>>>> main
-
   const whatTime = useRecoilValue(WhatTime);
-  
+
   const navigate = useNavigate();
 
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
-<<<<<<< hotFix/clubPage
-    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`);
-  const [GETuser, {data: userData}] = useFetch<IUser>(`${process.env.REACT_APP_BASE_URL}users/my`);
-  const [POSTvoteClub] = useFetch(
-    `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
+    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`
   );
+  const [GETuser, { data: userData }] = useFetch<IUser>(`${process.env.REACT_APP_BASE_URL}users/my`);
+  const [POSTvoteClub] = useFetch(`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`);
 
   useEffect(() => {
     GETuser({
       method: "get",
-      headers:{
+      headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     }).catch((err) => {
-      if(err.response.data.status === 401){
+      if (err.response.data.status === 401) {
         Swal.fire({
           icon: "error",
           title: "로그인 에러",
-          text: "로그인을 확인해주세요."
+          text: "로그인을 확인해주세요.",
         }).then(() => {
           navigate("/");
-        })
+        });
       }
     });
-  },[]);
-=======
-    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`
-  );
-
-  const [POSTvoteClub] = useFetch(`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`);
->>>>>>> main
+  }, []);
 
   const onValidVoteClub = () => {
     POSTvoteClub({
@@ -183,11 +131,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
         newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`,
       },
     }).then(() => {
-<<<<<<< hotFix/clubPage
-      alert(isVote ? "취소 성공" :  "투표 성공")
-=======
-      alert("투표 성공");
->>>>>>> main
+      alert(isVote ? "취소 성공" : "투표 성공");
     });
     GETvote({
       method: "get",
@@ -210,22 +154,16 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
-<<<<<<< hotFix/clubPage
-      options:{
-        newUrl:`${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
-      }
-    }).then((res) => {
-      const userVoteData = res.data.vote_list;
-      if(userVoteData.find((i:any) => i.vote_user[0]?.name === userData?.name)){
-        setIsVote(true);
-      }else{
-        setIsVote(false);
-      }
-=======
       options: {
         newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
       },
->>>>>>> main
+    }).then((res) => {
+      const userVoteData = res.data.vote_list;
+      if (userVoteData.find((i: any) => i.vote_user[0]?.name === userData?.name)) {
+        setIsVote(true);
+      } else {
+        setIsVote(false);
+      }
     });
   }, [whatTime, pathname, voteData]);
 
@@ -272,9 +210,9 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
         color={"white"}
         style={{ position: "absolute" }}
         weight={700}
-        onClick={() => isVote ? onValidVoteClub() : setIsOnPositionsModal(true)}
+        onClick={() => (isVote ? onValidVoteClub() : setIsOnPositionsModal(true))}
       >
-        {isVote ? "취소하기" :"참가하기"}
+        {isVote ? "취소하기" : "참가하기"}
       </_.Text>
       <div
         style={{
@@ -293,7 +231,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
         <_.Text size={32} weight={600}>
           {Number(allVoteData?.max_people) - Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}명 남음
         </_.Text>
-        {allVoteData?.vote_list[0].is_complete ? (
+        {allVoteData?.vote_list[0]?.is_complete ? (
           <_.Button onClick={() => setIsNoticeModal(true)}>팀 보기</_.Button>
         ) : (
           <_.Button onClick={() => setIsNoticeModal(true)}>신청자 목록 보기</_.Button>
