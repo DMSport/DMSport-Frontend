@@ -92,12 +92,17 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
   const [isOnPositionsModal, setIsOnPositionsModal] = useState(false);
   const [isVote, setIsVote] = useState(false);
   const [isNoticeModal, setIsNoticeModal] = useRecoilState(isNoticeModalAtom);
+
   const whatTime = useRecoilValue(WhatTime);
 
   const navigate = useNavigate();
 
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
-    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`
+
+    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`);
+  const [GETuser, {data: userData}] = useFetch<IUser>(`${process.env.REACT_APP_BASE_URL}users/my`);
+  const [POSTvoteClub] = useFetch(
+    `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
   );
   const [GETuser, { data: userData }] = useFetch<IUser>(`${process.env.REACT_APP_BASE_URL}users/my`);
   const [POSTvoteClub] = useFetch(`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`);
@@ -120,7 +125,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
       }
     });
   }, []);
-
+  
   const onValidVoteClub = () => {
     POSTvoteClub({
       method: "post",
@@ -142,13 +147,10 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
         newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
       },
     });
+    getUser();
   };
 
-  useEffect(() => {
-    setVoteData(allVoteData?.vote_list?.find((prev: any) => prev.time == whatTime));
-  }, [allVoteData?.vote_list, whatTime]);
-
-  useEffect(() => {
+  const getUser = () => {
     GETvote({
       method: "get",
       headers: {
@@ -165,7 +167,31 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
         setIsVote(false);
       }
     });
-  }, [whatTime, pathname, voteData]);
+  }
+  useEffect(() => {
+    setVoteData(allVoteData?.vote_list?.find((prev: any) => prev.time == whatTime));
+  }, [allVoteData?.vote_list, whatTime]);
+
+  useEffect(() => {
+    GETuser({
+      method: "get",
+      headers:{
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+    }).catch((err) => {
+      if(err.response.data.status === 401){
+        Swal.fire({
+          icon: "error",
+          title: "로그인 에러",
+          text: "로그인을 확인해주세요."
+        }).then(() => {
+          navigate("/");
+        })
+      }
+    });
+  },[]);
+
+  useEffect(getUser, [whatTime, pathname]);
 
   const postitionModel: { [key: string]: string[] } = {
     SOCCER: ["C.F", "S.F", "L.W", "C.M", "R.W", "A.M", "D.M", "L.S.T", "R.S.T", "S.W", "G.K"],
