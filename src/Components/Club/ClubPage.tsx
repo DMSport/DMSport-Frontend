@@ -98,11 +98,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
   const navigate = useNavigate();
 
   const [GETvote, { data: allVoteData }] = useFetch<ITodayVoteData>(
-
-    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`);
-  const [GETuser, {data: userData}] = useFetch<IUser>(`${process.env.REACT_APP_BASE_URL}users/my`);
-  const [POSTvoteClub] = useFetch(
-    `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`
+    `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`
   );
   const [GETuser, { data: userData }] = useFetch<IUser>(`${process.env.REACT_APP_BASE_URL}users/my`);
   const [POSTvoteClub] = useFetch(`${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`);
@@ -125,7 +121,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
       }
     });
   }, []);
-  
+
   const onValidVoteClub = () => {
     POSTvoteClub({
       method: "post",
@@ -167,7 +163,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
         setIsVote(false);
       }
     });
-  }
+  };
   useEffect(() => {
     setVoteData(allVoteData?.vote_list?.find((prev: any) => prev.time == whatTime));
   }, [allVoteData?.vote_list, whatTime]);
@@ -175,21 +171,21 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
   useEffect(() => {
     GETuser({
       method: "get",
-      headers:{
+      headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
       },
     }).catch((err) => {
-      if(err.response.data.status === 401){
+      if (err.response.data.status === 401) {
         Swal.fire({
           icon: "error",
           title: "로그인 에러",
-          text: "로그인을 확인해주세요."
+          text: "로그인을 확인해주세요.",
         }).then(() => {
           navigate("/");
-        })
+        });
       }
     });
-  },[]);
+  }, []);
 
   useEffect(getUser, [whatTime, pathname]);
 
@@ -258,7 +254,9 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
           {Number(allVoteData?.max_people) - Number(Boolean(voteData?.vote_count) ? voteData?.vote_count : 0)}명 남음
         </_.Text>
         {allVoteData?.vote_list[0]?.is_complete ? (
-          <_.Button onClick={() => setIsNoticeModal(true)}>팀 보기</_.Button>
+          <_.Button style={{ zIndex: 99 }} onClick={() => setIsNoticeModal(true)}>
+            팀 보기
+          </_.Button>
         ) : (
           <_.Button onClick={() => setIsNoticeModal(true)}>신청자 목록 보기</_.Button>
         )}
