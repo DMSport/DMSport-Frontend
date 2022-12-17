@@ -7,7 +7,7 @@ export interface IFetchStates<T> {
   loading?: boolean;
   error?: object;
 }
-interface IFetchingConfig {
+export interface IFetchingConfig {
   method: "get" | "post" | "patch" | "delete" | "put";
   headers?: {
     [key: string]: any;
