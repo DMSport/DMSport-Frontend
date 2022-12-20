@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SoccerIcon from "../../Assets/SVG/club/soccer";
-import useFetch from "../../Hooks/useFetch";
+import useFetch, {IFetchingConfig} from "../../Hooks/useFetch";
 import * as _ from "./Clubpage.style";
 import { useEffect, useState } from "react";
 import VolleyballIcon from "../../Assets/SVG/club/volleyball";
@@ -44,34 +44,34 @@ interface ITodayVoteData {
 
 export default function ClubPage({ clubName }: { clubName: string }) {
   const { pathname: oldPathname } = useLocation();
-  const pathname = oldPathname.slice(6);
+  const pathname = oldPathname.slice(6).toUpperCase();
   // key 이름은 clubName과 일치하게 작성해야 한다.
   const clubPageModel: { [key: string]: object } = {
     soccer: (
       <ClubMainPages
         src={require("../../Assets/PNG/soccerBg.png")}
-        pathname={pathname.toUpperCase()}
+        pathname={pathname}
         Icon={() => <SoccerIcon />}
       />
     ),
     basketball: (
       <ClubMainPages
         src={require("../../Assets/PNG/basketballBg.png")}
-        pathname={pathname.toUpperCase()}
+        pathname={pathname}
         Icon={() => <BasketballIcon />}
       />
     ),
     badminton: (
       <ClubMainPages
         src={require("../../Assets/PNG/badmintonBg.png")}
-        pathname={pathname.toUpperCase()}
+        pathname={pathname}
         Icon={() => <BadmintonIcon />}
       />
     ),
     volleyball: (
       <ClubMainPages
         src={require("../../Assets/PNG/volleyball.png")}
-        pathname={pathname.toUpperCase()}
+        pathname={pathname}
         Icon={() => <VolleyballIcon />}
       />
     ),
@@ -123,7 +123,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
   }, []);
 
   const onValidVoteClub = () => {
-    POSTvoteClub({
+    const POSTvoteClubConfig: IFetchingConfig = {
       method: "post",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -131,10 +131,8 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
       options: {
         newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote/${voteData?.vote_id}`,
       },
-    }).then(() => {
-      alert(isVote ? "취소 성공" : "투표 성공");
-    });
-    GETvote({
+    }
+    const GETvoteConfig: IFetchingConfig = {
       method: "get",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("access_token"),
@@ -142,8 +140,16 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
       options: {
         newUrl: `${process.env.REACT_APP_BASE_URL}clubs/vote?type=${pathname}`,
       },
+    }
+
+    const POSTvoteClubPromise = POSTvoteClub(POSTvoteClubConfig).then(() => {
+      alert(isVote ? "취소 성공" : "투표 성공");
     });
-    getUser();
+    const GETvotePromise = GETvote(GETvoteConfig);
+
+    Promise.all([POSTvoteClubPromise, GETvotePromise]).then(() => {
+      getUser();
+    })
   };
 
   const getUser = () => {
@@ -167,25 +173,6 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
   useEffect(() => {
     setVoteData(allVoteData?.vote_list?.find((prev: any) => prev.time == whatTime));
   }, [allVoteData?.vote_list, whatTime]);
-
-  useEffect(() => {
-    GETuser({
-      method: "get",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-    }).catch((err) => {
-      if (err.response.data.status === 401) {
-        Swal.fire({
-          icon: "error",
-          title: "로그인 에러",
-          text: "로그인을 확인해주세요.",
-        }).then(() => {
-          navigate("/");
-        });
-      }
-    });
-  }, []);
 
   useEffect(getUser, [whatTime, pathname]);
 
