@@ -212,7 +212,7 @@ function ClubMainPages({ src, pathname, Icon }: { src: string; pathname: string;
           ))}
         </_.PositionModalWrapper>
       )}
-      <img src={src} alt="" style={{ width: "70%", height: "70vh" }} />
+      <img src={src} alt="" style={{ width: "71%", height: "70%" }} />
       <Icon />
       <_.Text
         size={24}

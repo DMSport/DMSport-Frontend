@@ -65,7 +65,7 @@ export const SideBtnColorStick = styled.div<{ width: number }>`
 export const SideBtnGrayStick = styled.div<{ width: number }>`
   width: ${(props) => props.width}px;
   height: 25px;
-  background: "white";
+  background-color: "white";
   border-radius: 60px;
 `;
 export const Text = styled.p<{
@@ -126,7 +126,7 @@ export const MainContainer = styled.div`
 `;
 export const IsNone = styled.div`
   position: absolute;
-  bottom: 35px;
+  bottom: 5vh;
   height: 70vh;
   width: 71vw;
   z-index: 1;
